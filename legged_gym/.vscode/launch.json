@@ -1,0 +1,37 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Train Go1_Flat",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "legged_gym/scripts/train.py",
+            "console": "integratedTerminal", 
+            "env": {
+                "PYTHONPATH": "/home/bridge/miniconda3/envs/legged_gym/bin/python3.8"
+            }, 
+            "args":["--task", "go1_flat"]
+        }, 
+
+        {
+
+            "name": "Python: Play Go1_Flat", 
+            "type": "debugpy",
+            "request": "launch",
+            "program": "legged_gym/scripts/play.py",
+
+            "env": {
+                "PYTHONPATH": "/home/bridge/miniconda3/envs/legged_gym/bin/python3.8"
+            },
+            "console": "integratedTerminal",
+            "args": ["--task", "go1_flat"]
+
+
+        }
+
+    ]
+}
+
