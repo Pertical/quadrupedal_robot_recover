@@ -1019,6 +1019,9 @@ class LeggedRobot(BaseTask):
 
         base_height_error = torch.square(self.commands[:, 3] - self.root_states[:, 2])
 
+        # print("Base height error", base_height_error)
+      
+
         # print("Height Commands", self.commands[:, 3])
         # print("Current base height", self.root_states[:, 2])
 
@@ -1030,6 +1033,7 @@ class LeggedRobot(BaseTask):
         # print("Base Height of env 20", self.root_states[20, 2] )
         # print("Target DOF pos of env 20", self.target_dof_pos[20, :3] )
         # print("Current DOF pos of env 20", self.dof_pos[20, :3] ) #
+
 
         return torch.exp(-base_height_error/self.cfg.rewards.tracking_sigma)
     
@@ -1067,9 +1071,17 @@ class LeggedRobot(BaseTask):
     #     reward = sum(reward)
     #     return reward 
     
-    def _reward_target_dof_pos(self):
-        # Penalize difference between target and current dof positions
-        return torch.sum(torch.square(self.dof_pos - self.target_dof_pos), dim=1)
+    # def _reward_target_dof_pos(self):
+    #     # Penalize difference between target and current dof positions
+    #     return torch.sum(torch.square(self.dof_pos - self.target_dof_pos), dim=1)
+
+    def _reward_target_dof_pos(self): 
+        #Reward for lower difference between target and current dof positions
+
+        target_dof_error = torch.square(self.dof_pos[:, :] - self.target_dof_pos[:, :]) 
+
+        return torch.exp(-target_dof_error/self.cfg.rewards.tracking_sigma)
+
 
 
 

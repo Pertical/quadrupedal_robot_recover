@@ -33,8 +33,7 @@ import os
 from datetime import datetime
 
 import isaacgym
-# from legged_gym.envs import *
-from quadrupedal_robot_recover.test.legged_gym.legged_gym.envs import *
+from legged_gym.envs import *
 from legged_gym.utils import get_args, task_registry
 import torch
 

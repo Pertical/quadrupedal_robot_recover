@@ -1,11 +1,10 @@
 
-
+#!/usr/bin/env python3
 """
 Config for simulation Unitree go1 recover from fail on flat terrain
 Adopted from ETH Zurich "legged_gym example configs"
 
 """
-
 
 from legged_gym.envs.base.legged_robot_config import LeggedRobotCfg, LeggedRobotCfgPPO
 
@@ -15,7 +14,7 @@ class Go1RecFlatConfig(LeggedRobotCfg):
     class env(LeggedRobotCfg.env):
 
         num_observations = 49
-        episode_length_s = 20.
+        episode_length_s = 30.
 
         num_envs = 4096
 
@@ -29,7 +28,7 @@ class Go1RecFlatConfig(LeggedRobotCfg):
 
         heading_command = False
         num_commands = 4
-        resampling_time = 5.
+        resampling_time = 15.
 
         base_height_command = True
         default_base_height = 0.25
@@ -96,7 +95,7 @@ class Go1RecFlatConfig(LeggedRobotCfg):
 
         self_collision = 1 # 1 to disable, 0 to enable...bitwise filter
         
-        file = "{LEGGED_GYM_ROOT_DIR}/resources/robots/go1/urdf/Xinhua_go1.urdf"
+        file = "{LEGGED_GYM_ROOT_DIR}/resources/robots/go1/urdf/go1_bridgedp.urdf"
 
         name = "go1"
         foot_name = "foot"
@@ -116,14 +115,14 @@ class Go1RecFlatConfig(LeggedRobotCfg):
             lin_vel_z = -0.0 
             ang_vel_xy = -0.0
 
-            orientation = -0.1
+            orientation = -0.5
 
             torques = -0.00001
             dof_vel = -0.
             dof_acc = -2.5e-7
             action_rate = -0.002
 
-            collision = -0.1 
+            collision = -0.5
             termination = -0.0
 
             dof_pos_limits = -0.1
@@ -139,7 +138,7 @@ class Go1RecFlatConfig(LeggedRobotCfg):
             # hip_angle = -2.
             # thigh_angle = 2.
             # calf_angle = -2.
-            target_dof_pos = -1.5
+            target_dof_pos = 2.0
 
             lin_vel_xy = -0.5
 
@@ -148,10 +147,10 @@ class Go1RecFlatConfig(LeggedRobotCfg):
             tracking_ang_vel = 0.
             feet_air_time = 0.0 
 
-            base_uprightness = 2.0 
+            base_uprightness = 1.0 
             foot_contact = 1.0
 
-            tracking_base_height = 0.5
+            tracking_base_height = 1.0
 
     class domain_rand(LeggedRobotCfg.domain_rand):
 
@@ -170,13 +169,13 @@ class Go1RecFlatConfigPPO(LeggedRobotCfgPPO):
         #load_run = r"/home/bridge/Desktop/legged_gym/logs/flat_unitree_go1/Jun24_12-12-20_go1_flat" #This one can recover, but poor position. 
         #load_run = r"/home/bridge/Desktop/legged_gym/logs/flat_unitree_go1/Jun24_14-28-43_go1_flat"
 
-        max_iterations = 1501
+        max_iterations = 3001
         num_steps_per_env = 24 # 30 steps per env
 
         #logging
         save_interval = 100
 
-        run_name = ''
+        run_name = 'go1_recover_flat'
         experiment_name = 'flat_unitree_go1'
         load_run = -1
         checkpoint = -1 
