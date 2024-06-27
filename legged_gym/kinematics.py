@@ -192,9 +192,9 @@ if __name__ == "__main__":
     # print("Joint angles:", angles) 
 
     foot_positions = [
-    [0, 0.08, -0.23],  # FL
-    [0, 0.08, -0.23],  # RL
-    [0, -0.08, -0.23],  # FR
+    [0, 0.08, -0.24],  # FL
+    [0, 0.08, -0.24],  # RL
+    [0, -0.08, -0.25],  # FR
     [0, -0.08, -0.23]] # RR
 
     for i, foot_positions in enumerate(foot_positions):

@@ -217,21 +217,58 @@ class LeggedRobot(BaseTask):
     def compute_observations(self):
         """ Computes observations
         """
-        self.obs_buf = torch.cat((  self.base_lin_vel * self.obs_scales.lin_vel,
+
+        #Only one command for base height
+        if self.cfg.commands.base_height_command:
+
+            # print("base_lin_vel shape", self.base_lin_vel.shape)
+            self.obs_buf = torch.cat((  self.base_lin_vel * self.obs_scales.lin_vel, #3
                                     self.base_ang_vel  * self.obs_scales.ang_vel,
                                     self.projected_gravity,
-                                    self.commands[:, :] * self.commands_scale, 
+                                    self.commands[:, :] * self.commands_scale[3], 
                                     (self.dof_pos - self.default_dof_pos) * self.obs_scales.dof_pos,
                                     self.dof_vel * self.obs_scales.dof_vel,
                                     self.actions
-                                    ),dim=-1)
-        # add perceptive inputs if not blind
+                                    ),dim=-1) 
+            
+            #Without base_lin_vel, the shape should be 43
+            self.obs_buf = torch.cat((self.base_ang_vel * self.obs_scales.ang_vel,
+                                      self.projected_gravity, 
+                                      self.commands[:, :] * self.commands_scale[3],
+                                      (self.dof_pos - self.default_dof_pos)*self.obs_scales.dof_pos,
+                                      self.dof_vel * self.obs_scales.dof_vel,
+                                      self.actions), dim = -1) 
+            #print all the shapes 
+            # print("lin vel", self.base_lin_vel.shape)
+            # print("ang_vel", self.base_ang_vel.shape)
+            # print("gravity", self.projected_gravity.shape)
+            # print("commands", self.commands.shape)
+            # print("dof", self.dof_pos.shape)
+            # print("dof_vel", self.dof_vel.shape)
+            # print("action", self.actions.shape)
+
+        
+
+        else:
+
+            self.obs_buf = torch.cat((  self.base_lin_vel * self.obs_scales.lin_vel,
+                                        self.base_ang_vel  * self.obs_scales.ang_vel,
+                                        self.projected_gravity,
+                                        self.commands[:, :] * self.commands_scale, 
+                                        (self.dof_pos - self.default_dof_pos) * self.obs_scales.dof_pos,
+                                        self.dof_vel * self.obs_scales.dof_vel,
+                                        self.actions
+                                        ),dim=-1)
+            # add perceptive inputs if not blind
         if self.cfg.terrain.measure_heights:
             heights = torch.clip(self.root_states[:, 2].unsqueeze(1) - 0.5 - self.measured_heights, -1, 1.) * self.obs_scales.height_measurements
             self.obs_buf = torch.cat((self.obs_buf, heights), dim=-1)
         # add noise if needed
         if self.add_noise:
+            # print("self.obs_buf shape ", self.obs_buf.shape)
+            # print("nose_scale_vec shape ", self.noise_scale_vec.shape)
             self.obs_buf += (2 * torch.rand_like(self.obs_buf) - 1) * self.noise_scale_vec
+
 
     def create_sim(self):
         """ Creates simulation, terrain and evironments
@@ -360,34 +397,41 @@ class LeggedRobot(BaseTask):
         
         """
 
-        self.commands[env_ids, 0] = torch_rand_float(self.command_ranges["lin_vel_x"][0], self.command_ranges["lin_vel_x"][1], (len(env_ids), 1), device=self.device).squeeze(1)
-        self.commands[env_ids, 1] = torch_rand_float(self.command_ranges["lin_vel_y"][0], self.command_ranges["lin_vel_y"][1], (len(env_ids), 1), device=self.device).squeeze(1)
-
-        if self.cfg.commands.heading_command: #False 
-            self.commands[env_ids, 3] = torch_rand_float(self.command_ranges["heading"][0], self.command_ranges["heading"][1], (len(env_ids), 1), device=self.device).squeeze(1)
-        else:
-            self.commands[env_ids, 2] = torch_rand_float(self.command_ranges["ang_vel_yaw"][0], self.command_ranges["ang_vel_yaw"][1], (len(env_ids), 1), device=self.device).squeeze(1)
-
         if self.cfg.commands.base_height_command:
-            
-            self.commands[env_ids, 3] = torch_rand_float(self.command_ranges["base_height"][0], self.command_ranges["base_height"][1], (len(env_ids), 1), device=self.device).squeeze(1)
-
+            self.commands[env_ids, 0] = torch_rand_float(self.command_ranges["base_height"][0], self.command_ranges["base_height"][1], (len(env_ids), 1), device=self.device).squeeze(1)
+            #print("self.commands shape", self.commands.shape)
             for i in range(len(env_ids)):
-                self._get_target_dof_pos(i)
-        # set small commands to zero
-        self.commands[env_ids, :2] *= (torch.norm(self.commands[env_ids, :2], dim=1) > 0.2).unsqueeze(1) #why? 
+                    self._get_target_dof_pos(i)
+        else: 
+            self.commands[env_ids, 0] = torch_rand_float(self.command_ranges["lin_vel_x"][0], self.command_ranges["lin_vel_x"][1], (len(env_ids), 1), device=self.device).squeeze(1)
+            self.commands[env_ids, 1] = torch_rand_float(self.command_ranges["lin_vel_y"][0], self.command_ranges["lin_vel_y"][1], (len(env_ids), 1), device=self.device).squeeze(1)
+
+            if self.cfg.commands.heading_command: #False 
+                self.commands[env_ids, 3] = torch_rand_float(self.command_ranges["heading"][0], self.command_ranges["heading"][1], (len(env_ids), 1), device=self.device).squeeze(1)
+            else:
+                self.commands[env_ids, 2] = torch_rand_float(self.command_ranges["ang_vel_yaw"][0], self.command_ranges["ang_vel_yaw"][1], (len(env_ids), 1), device=self.device).squeeze(1)
+
+            if self.cfg.commands.base_height_command:
+                
+                self.commands[env_ids, 3] = torch_rand_float(self.command_ranges["base_height"][0], self.command_ranges["base_height"][1], (len(env_ids), 1), device=self.device).squeeze(1)
+
+                
+
+            # set small commands to zero
+            self.commands[env_ids, :2] *= (torch.norm(self.commands[env_ids, :2], dim=1) > 0.2).unsqueeze(1) #why? 
+
+        #round base height command to 3 decimal places
+        self.commands[env_ids, 0] = torch.round(self.commands[env_ids, 0] * 1000) / 1000
 
         # for i in range(self.num_envs):
         #     self._get_target_dof_pos(env_ids=i)
 
-
-
     def _get_target_dof_pos(self, env_ids):
         # Calculate target joint angles
-        target_height = self.commands[env_ids, 3].cpu().numpy()
+        target_height = self.commands[env_ids, 0].cpu().numpy()
         foot_position = [0, 0.08, -target_height]
         target_joint_angle = torch.tensor(k.leg_IK(foot_position, legID=0), dtype=torch.float)
-
+        
         # Direct assignment using slicing and indexing
         self.target_dof_pos[env_ids, [0, 3, 6, 9]] = target_joint_angle[0]  # hip joints
         self.target_dof_pos[env_ids, [1, 4, 7, 10]] = target_joint_angle[1]  # thigh joints
@@ -537,16 +581,50 @@ class LeggedRobot(BaseTask):
         self.add_noise = self.cfg.noise.add_noise
         noise_scales = self.cfg.noise.noise_scales
         noise_level = self.cfg.noise.noise_level
-        noise_vec[:3] = noise_scales.lin_vel * noise_level * self.obs_scales.lin_vel
-        noise_vec[3:6] = noise_scales.ang_vel * noise_level * self.obs_scales.ang_vel
-        noise_vec[6:9] = noise_scales.gravity * noise_level
-        noise_vec[9:12] = 0. # commands
-        noise_vec[12:24] = noise_scales.dof_pos * noise_level * self.obs_scales.dof_pos
-        noise_vec[24:36] = noise_scales.dof_vel * noise_level * self.obs_scales.dof_vel
-        noise_vec[36:48] = 0. # previous actions
-        if self.cfg.terrain.measure_heights:
-            noise_vec[48:235] = noise_scales.height_measurements* noise_level * self.obs_scales.height_measurements
-        return noise_vec
+
+
+        if self.cfg.commands.base_height_command:
+            #There are only 1 command
+
+            # noise_vec[:3] = noise_scales.lin_vel * noise_level * self.obs_scales.lin_vel #3
+            # noise_vec[3:6] = noise_scales.ang_vel * noise_level * self.obs_scales.ang_vel #3
+            # noise_vec[6:9] = noise_scales.gravity * noise_level #3
+            # noise_vec[9:10] = 0. 
+
+            # noise_vec[10:22] = noise_scales.dof_pos * noise_level * self.obs_scales.dof_pos
+            # noise_vec[22:34] = noise_scales.dof_vel * noise_level * self.obs_scales.dof_vel
+            # noise_vec[34:46] = 0. # previous actions
+
+            # if self.cfg.terrain.measure_heights:
+            #     noise_vec[46:232] = noise_scales.height_measurements* noise_level * self.obs_scales.height_measurements
+            # return noise_vec
+        
+            #Remove lin_vel_x and lin_vel_y
+        
+            noise_vec[:3] = noise_scales.ang_vel * noise_level * self.obs_scales.ang_vel #3
+            noise_vec[3:6] = noise_scales.gravity * noise_level #3
+            noise_vec[6:7] = 0. 
+
+            noise_vec[7:19] = noise_scales.dof_pos * noise_level * self.obs_scales.dof_pos
+            noise_vec[19:31] = noise_scales.dof_vel * noise_level * self.obs_scales.dof_vel
+            noise_vec[31:43] = 0. # previous actions
+
+            if self.cfg.terrain.measure_heights:
+                noise_vec[43:229] = noise_scales.height_measurements* noise_level * self.obs_scales.height_measurements
+            return noise_vec
+        
+        
+        else:
+            noise_vec[:3] = noise_scales.lin_vel * noise_level * self.obs_scales.lin_vel
+            noise_vec[3:6] = noise_scales.ang_vel * noise_level * self.obs_scales.ang_vel
+            noise_vec[6:9] = noise_scales.gravity * noise_level
+            noise_vec[9:12] = 0. # commands
+            noise_vec[12:24] = noise_scales.dof_pos * noise_level * self.obs_scales.dof_pos
+            noise_vec[24:36] = noise_scales.dof_vel * noise_level * self.obs_scales.dof_vel
+            noise_vec[36:48] = 0. # previous actions
+            if self.cfg.terrain.measure_heights:
+                noise_vec[48:235] = noise_scales.height_measurements* noise_level * self.obs_scales.height_measurements
+            return noise_vec
 
     #----------------------------------------
     def _init_buffers(self):
@@ -568,8 +646,9 @@ class LeggedRobot(BaseTask):
         self.base_quat = self.root_states[:, 3:7]
         
         #TODO empty tensor for the target dof position from inverse kinematics 
-        
         self.target_dof_pos = torch.zeros(self.num_envs, self.num_dof, dtype=torch.float, device=self.device, requires_grad=False)
+
+        
         # print("target tensor shape", self.target_dof_pos.shape)
 
         self.contact_forces = gymtorch.wrap_tensor(net_contact_forces).view(self.num_envs, -1, 3) # shape: num_envs, num_bodies, xyz axis
@@ -589,18 +668,26 @@ class LeggedRobot(BaseTask):
         self.last_root_vel = torch.zeros_like(self.root_states[:, 7:13])
         #self.commands = torch.zeros(self.num_envs, self.cfg.commands.num_commands, dtype=torch.float, device=self.device, requires_grad=False) # x vel, y vel, yaw vel, heading
         #Add height command
-        if self.cfg.commands.base_height_command:
-            self.commands = self.commands = torch.zeros(self.num_envs, self.cfg.commands.num_commands, dtype=torch.float, device=self.device, requires_grad=False)
-            self.commands[:, 3] = self.cfg.commands.default_base_height
+        self.commands = torch.zeros(self.num_envs, self.cfg.commands.num_commands, dtype=torch.float, device=self.device, requires_grad=False)
+        # if self.cfg.commands.base_height_command:
+        #     self.commands = torch.zeros(self.num_envs, self.cfg.commands.num_commands, dtype=torch.float, device=self.device, requires_grad=False)
+        #     # self.commands[:, 0] = self.cfg.commands.default_base_height
 
-            for i in range(self.num_envs):
-                self._get_target_dof_pos(env_ids=i)
-
+        #     for i in range(self.num_envs):
+        #         self._get_target_dof_pos(env_ids=i)
+     
+        # else:
+        #     self.commands = torch.zeros(self.num_envs, self.cfg.commands.num_commands, dtype=torch.float, device=self.device, requires_grad=False) # x vel, y vel, yaw vel, heading
         
-        else:
-            self.commands = torch.zeros(self.num_envs, self.cfg.commands.num_commands, dtype=torch.float, device=self.device, requires_grad=False) # x vel, y vel, yaw vel, heading
+        # TODO change this
 
-        self.commands_scale = torch.tensor([self.obs_scales.lin_vel, self.obs_scales.lin_vel, self.obs_scales.ang_vel, self.obs_scales.height], device=self.device, requires_grad=False,) # TODO change this
+        # if self.cfg.commands.base_height_command:
+        #     self.commands_scale = torch.tensor([self.obs_scales.base_height], device=self.device, requires_grad=False,) 
+        # else:
+        self.commands_scale = torch.tensor([self.obs_scales.lin_vel, self.obs_scales.lin_vel, self.obs_scales.ang_vel, self.obs_scales.base_height], device=self.device, requires_grad=False,) 
+    
+
+
         self.feet_air_time = torch.zeros(self.num_envs, self.feet_indices.shape[0], dtype=torch.float, device=self.device, requires_grad=False)
         self.last_contacts = torch.zeros(self.num_envs, len(self.feet_indices), dtype=torch.bool, device=self.device, requires_grad=False)
         self.base_lin_vel = quat_rotate_inverse(self.base_quat, self.root_states[:, 7:10])
@@ -1017,13 +1104,13 @@ class LeggedRobot(BaseTask):
 
         #The larger the error, the smaller the reward
 
-        base_height_error = torch.square(self.commands[:, 3] - self.root_states[:, 2])
+        base_height_error = torch.square(self.commands[:, 0] - self.root_states[:, 2])
 
         # print("Base height error", base_height_error)
       
 
-        # print("Height Commands", self.commands[:, 3])
-        # print("Current base height", self.root_states[:, 2])
+        print("Height Commands", self.commands[:, 0])
+        print("Current base height", self.root_states[:, 2])
 
         # print("Base height target", self.cfg.rewards.base_height_target)
         # print("Base height", self.root_states[:, 2 ])
@@ -1031,56 +1118,59 @@ class LeggedRobot(BaseTask):
 
         # print("Command Height of env 20", self.commands[20, 3])
         # print("Base Height of env 20", self.root_states[20, 2] )
-        # print("Target DOF pos of env 20", self.target_dof_pos[20, :3] )
-        # print("Current DOF pos of env 20", self.dof_pos[20, :3] ) #
+        print("Target DOF pos of env 20", self.target_dof_pos[:, :3] )
+        print("Current DOF pos of env 20", self.dof_pos[:, :3] ) #
 
 
         return torch.exp(-base_height_error/self.cfg.rewards.tracking_sigma)
     
 
-    # #TODO Add controls on the hip_angle, for defaul position, we should have hip angle = 0
-    # def _reward_hip_angle(self):
+    #TODO Add controls on the hip_angle, for defaul position, we should have hip angle = 0
+    def _reward_hip_angle(self):
       
-    #     # Calculate absolute differences for hip joints
-    #     hip_joint_indices = [0, 3, 6, 9] #FR, FL, RR, RL
-    #     hip_diffs = [torch.abs(self.dof_pos[:, i] - self.target_dof_pos[:, i]) for i in hip_joint_indices]
+        # Calculate absolute differences for hip joints
+        hip_joint_indices = [0, 3, 6, 9] #FR, FL, RR, RL
+        hip_diffs = [torch.abs(self.dof_pos[:, i] - self.target_dof_pos[:, i]) for i in hip_joint_indices]
 
-    #     reward = sum(hip_diffs)
-    #     return reward
+        reward = sum(hip_diffs)/self.dof_pos.shape[1]
+        return reward
             
     
-    # #TODO Add controls on the thigh_angle, for defaul position, the foot's x&y is set, the thigh angle should be based on the cmd height 
-    # def _reward_thigh_angle(self):
+    #TODO Add controls on the thigh_angle, for defaul position, the foot's x&y is set, the thigh angle should be based on the cmd height 
+    def _reward_thigh_angle(self):
         
         
-    #     thigh_joint_indices = [1, 4, 7, 10] #FR, FL, RR, RL
+        thigh_joint_indices = [1, 4, 7, 10] #FR, FL, RR, RL
 
-    #     thigh_diff = [torch.abs(self.dof_pos[:, i] - self.target_dof_pos[:, i]) for i in thigh_joint_indices]
-    #     reward = sum(thigh_diff)
+        thigh_diff = [torch.abs(self.dof_pos[:, i] - self.target_dof_pos[:, i]) for i in thigh_joint_indices]
+        reward = sum(thigh_diff)/self.dof_pos.shape[1]
 
-    #     return reward
+        return reward
 
     
-    # #TODO Add controls on the calf_angle, for defaul position, the foot's x&y is set, the calf angle should be based on the cmd height
-    # def _reward_calf_angle(self):
+    #TODO Add controls on the calf_angle, for defaul position, the foot's x&y is set, the calf angle should be based on the cmd height
+    def _reward_calf_angle(self):
         
         
-    #     calf_joint_indices = [2, 5, 8, 11] #FR, FL, RR, RL
+        calf_joint_indices = [2, 5, 8, 11] #FR, FL, RR, RL
 
-    #     reward = [torch.abs(self.dof_pos[:, i] - self.target_dof_pos[:, i]) for i in calf_joint_indices]
-    #     reward = sum(reward)
-    #     return reward 
+        reward = [torch.abs(self.dof_pos[:, i] - self.target_dof_pos[:, i]) for i in calf_joint_indices]
+        reward = sum(reward)/self.dof_pos.shape[1]
+        return reward 
     
     # def _reward_target_dof_pos(self):
     #     # Penalize difference between target and current dof positions
     #     return torch.sum(torch.square(self.dof_pos - self.target_dof_pos), dim=1)
 
-    def _reward_target_dof_pos(self): 
-        #Reward for lower difference between target and current dof positions
+    # def _reward_target_dof_pos(self): 
+    #     #Reward for lower difference between target and current dof positions
 
-        target_dof_error = torch.square(self.dof_pos[:, :] - self.target_dof_pos[:, :]) 
+    #     # print("dof_pos shape", self.dof_pos.shape) 
+    #     # print("target_dof_pos shape", self.target_dof_pos.shape)
 
-        return torch.exp(-target_dof_error/self.cfg.rewards.tracking_sigma)
+    #     target_dof_error =torch.sum(torch.square(self.dof_pos - self.target_dof_pos), dim=1) 
+
+    #     return torch.exp(-target_dof_error/self.cfg.rewards.tracking_sigma)
 
 
 

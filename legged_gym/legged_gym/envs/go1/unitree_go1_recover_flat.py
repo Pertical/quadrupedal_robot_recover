@@ -1,5 +1,5 @@
 
-#!/usr/bin/env python3
+
 """
 Config for simulation Unitree go1 recover from fail on flat terrain
 Adopted from ETH Zurich "legged_gym example configs"
@@ -13,8 +13,13 @@ class Go1RecFlatConfig(LeggedRobotCfg):
 
     class env(LeggedRobotCfg.env):
 
-        num_observations = 49
-        episode_length_s = 30.
+
+        # num_observations = 49 #This includes 4 commands
+        #num_observations = 46 #This includes 1 command
+
+        num_observations = 43 #This includes 1 command and without base lin vel
+
+        episode_length_s = 10.
 
         num_envs = 4096
 
@@ -27,11 +32,17 @@ class Go1RecFlatConfig(LeggedRobotCfg):
     class commands(LeggedRobotCfg.commands):
 
         heading_command = False
-        num_commands = 4
-        resampling_time = 15.
+        
+        resampling_time = 5.
 
         base_height_command = True
         default_base_height = 0.25
+
+        if base_height_command: 
+            num_commands = 1 #Only one command for base height
+
+        else: 
+            num_commands = 4
 
         class ranges:
             lin_vel_x = [0., 0.]
@@ -117,15 +128,15 @@ class Go1RecFlatConfig(LeggedRobotCfg):
 
             orientation = -0.5
 
-            torques = -0.00001
+            torques = -0.0
             dof_vel = -0.
             dof_acc = -2.5e-7
             action_rate = -0.002
 
-            collision = -0.5
+            collision = -0.0
             termination = -0.0
 
-            dof_pos_limits = -0.1
+            dof_pos_limits = -0.0
             dof_vel_limits = -0.0
             torque_limits = -0.0
 
@@ -135,32 +146,37 @@ class Go1RecFlatConfig(LeggedRobotCfg):
 
             dof_power = -0.0
 
-            # hip_angle = -2.
-            # thigh_angle = 2.
-            # calf_angle = -2.
-            target_dof_pos = 2.0
+            hip_angle = -2.
+            thigh_angle = -1.
+            calf_angle = -1.
+            # target_dof_pos = -2.0
 
-            lin_vel_xy = -0.5
+            lin_vel_xy = -0.0
 
             #Reward 
             tracking_lin_vel = 0.
             tracking_ang_vel = 0.
             feet_air_time = 0.0 
 
-            base_uprightness = 1.0 
+            base_uprightness = 1.0
             foot_contact = 1.0
 
-            tracking_base_height = 1.0
+            tracking_base_height = 0.0
 
     class domain_rand(LeggedRobotCfg.domain_rand):
 
-        randomize_friction = False 
+        randomize_friction = True 
         push_robots = False
         push_intervel_s = 5. 
         max_push_vel_xy = 1.
 
+    # class normalization:
+    #     class obs_scales:
+
+    #         base_height=3.
     
 class Go1RecFlatConfigPPO(LeggedRobotCfgPPO):
+
 
 
     class runner(LeggedRobotCfgPPO.runner):
