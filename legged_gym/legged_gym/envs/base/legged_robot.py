@@ -1156,6 +1156,22 @@ class LeggedRobot(BaseTask):
 
         reward = [torch.abs(self.dof_pos[:, i] - self.target_dof_pos[:, i]) for i in calf_joint_indices]
         reward = sum(reward)/self.dof_pos.shape[1]
+
+        print("Height Commands", self.commands[:, 0])
+        print("Current base height", self.root_states[:, 2])
+
+        # print("Base height target", self.cfg.rewards.base_height_target)
+        # print("Base height", self.root_states[:, 2 ])
+        # print("self.commands", self.commands.shape)
+
+        # print("Command Height of env 20", self.commands[20, 3])
+        # print("Base Height of env 20", self.root_states[20, 2] )
+        print("Target DOF pos of env 20", self.target_dof_pos[:, :3] )
+        print("Current DOF pos of env 20", self.dof_pos[:, :3] ) #
+
+
+
+
         return reward 
     
     # def _reward_target_dof_pos(self):

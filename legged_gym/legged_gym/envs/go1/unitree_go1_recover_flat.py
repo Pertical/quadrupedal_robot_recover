@@ -19,7 +19,7 @@ class Go1RecFlatConfig(LeggedRobotCfg):
 
         num_observations = 43 #This includes 1 command and without base lin vel
 
-        episode_length_s = 10.
+        episode_length_s = 20.
 
         num_envs = 4096
 
@@ -33,7 +33,7 @@ class Go1RecFlatConfig(LeggedRobotCfg):
 
         heading_command = False
         
-        resampling_time = 5.
+        resampling_time = 10.
 
         base_height_command = True
         default_base_height = 0.25
@@ -146,7 +146,7 @@ class Go1RecFlatConfig(LeggedRobotCfg):
 
             dof_power = -0.0
 
-            hip_angle = -2.
+            hip_angle = -3.
             thigh_angle = -1.
             calf_angle = -1.
             # target_dof_pos = -2.0
@@ -166,14 +166,14 @@ class Go1RecFlatConfig(LeggedRobotCfg):
     class domain_rand(LeggedRobotCfg.domain_rand):
 
         randomize_friction = True 
-        push_robots = False
-        push_intervel_s = 5. 
-        max_push_vel_xy = 1.
+        push_robots = True
+        push_intervel_s = 2. 
+        max_push_vel_xy = 5.
 
     # class normalization:
     #     class obs_scales:
 
-    #         base_height=3.
+    #         base_height= 5.0
     
 class Go1RecFlatConfigPPO(LeggedRobotCfgPPO):
 
@@ -185,8 +185,8 @@ class Go1RecFlatConfigPPO(LeggedRobotCfgPPO):
         #load_run = r"/home/bridge/Desktop/legged_gym/logs/flat_unitree_go1/Jun24_12-12-20_go1_flat" #This one can recover, but poor position. 
         #load_run = r"/home/bridge/Desktop/legged_gym/logs/flat_unitree_go1/Jun24_14-28-43_go1_flat"
 
-        max_iterations = 3001
-        num_steps_per_env = 24 # 30 steps per env
+        max_iterations = 10001
+        num_steps_per_env = 48 # 30 steps per env
 
         #logging
         save_interval = 100
@@ -195,7 +195,7 @@ class Go1RecFlatConfigPPO(LeggedRobotCfgPPO):
         experiment_name = 'flat_unitree_go1'
         load_run = -1
         checkpoint = -1 
-        resume_path = None 
+        resume_path = -1 
 
 
 
