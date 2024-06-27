@@ -170,10 +170,20 @@ class Go1RecFlatConfig(LeggedRobotCfg):
         push_intervel_s = 2. 
         max_push_vel_xy = 5.
 
-    # class normalization:
-    #     class obs_scales:
+    class normalization:
+        class obs_scales:
+            lin_vel = 2.0
+            ang_vel = 0.25
+            dof_pos = 1.0
+            dof_vel = 0.05
+            base_height = 20.0
+            height_measurements = 10.0
+        clip_observations = 100.
+        clip_actions = 100.
 
-    #         base_height= 5.0
+
+    class noise(LeggedRobotCfg.noise):
+        add_noise = False
     
 class Go1RecFlatConfigPPO(LeggedRobotCfgPPO):
 

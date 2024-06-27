@@ -4,7 +4,7 @@
 Sim to sim from Isaac gym to mujoco
 
 """
-
+import argparse
 import math
 import numpy as np 
 import mujoco, mujoco_viewer
@@ -177,23 +177,32 @@ def run_mujoco(policy, cfg):
         mujoco.mj_step(model, data)
         viewer.render()
         count_lowlevel += 1
+    viewer.close()
 
-if __name__ =="__main__":
+if __name__ == "__main__":
 
-    
-    import argparse
 
     parser = argparse.ArgumentParser(description='Deployment script.')
     parser.add_argument('--load_model', type=str, required=True, help='Run to load from.')
-
-    args = parser.parse_args
+    args = parser.parse_args()
 
     class Sim2simCfg(Go1RecFlatConfig):
-
         class sim_config:
-
-            mujuco_model_path = ""
-
+            mujoco_model_path = f'{LEGGED_GYM_ROOT_DIR}/resources/robots/go1/mjmodel.xml'
             sim_duration = 60.0 
             dt = 0.001
             decimation = 10 
+
+        class robot_config:
+            kps = np.array([200, 200, 350, 350, 15, 15, 200, 200, 350, 350, 15, 15], dtype=np.double)
+            kds = np.array([10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10], dtype=np.double)
+            tau_limit = 200. * np.ones(12, dtype=np.double)
+
+    try:
+        policy = torch.jit.load(args.load_model)
+        print("Model loaded successfully.")
+        run_mujoco(policy, Sim2simCfg())
+    except RuntimeError as e:
+        print(f"Error loading the model: {e}")
+    except FileNotFoundError as e:
+        print(f"File not found: {e}")

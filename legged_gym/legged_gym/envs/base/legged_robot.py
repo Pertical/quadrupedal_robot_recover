@@ -222,19 +222,19 @@ class LeggedRobot(BaseTask):
         if self.cfg.commands.base_height_command:
 
             # print("base_lin_vel shape", self.base_lin_vel.shape)
-            self.obs_buf = torch.cat((  self.base_lin_vel * self.obs_scales.lin_vel, #3
-                                    self.base_ang_vel  * self.obs_scales.ang_vel,
-                                    self.projected_gravity,
-                                    self.commands[:, :] * self.commands_scale[3], 
-                                    (self.dof_pos - self.default_dof_pos) * self.obs_scales.dof_pos,
-                                    self.dof_vel * self.obs_scales.dof_vel,
-                                    self.actions
-                                    ),dim=-1) 
+            # self.obs_buf = torch.cat((  self.base_lin_vel * self.obs_scales.lin_vel, #3
+            #                         self.base_ang_vel  * self.obs_scales.ang_vel,
+            #                         self.projected_gravity,
+            #                         self.commands[:, :] * self.commands_scale[3], 
+            #                         (self.dof_pos - self.default_dof_pos) * self.obs_scales.dof_pos,
+            #                         self.dof_vel * self.obs_scales.dof_vel,
+            #                         self.actions
+            #                         ),dim=-1) 
             
             #Without base_lin_vel, the shape should be 43
             self.obs_buf = torch.cat((self.base_ang_vel * self.obs_scales.ang_vel,
                                       self.projected_gravity, 
-                                      self.commands[:, :] * self.commands_scale[3],
+                                      self.commands[:, :] * 20. , 
                                       (self.dof_pos - self.default_dof_pos)*self.obs_scales.dof_pos,
                                       self.dof_vel * self.obs_scales.dof_vel,
                                       self.actions), dim = -1) 
@@ -415,8 +415,7 @@ class LeggedRobot(BaseTask):
                 
                 self.commands[env_ids, 3] = torch_rand_float(self.command_ranges["base_height"][0], self.command_ranges["base_height"][1], (len(env_ids), 1), device=self.device).squeeze(1)
 
-                
-
+            
             # set small commands to zero
             self.commands[env_ids, :2] *= (torch.norm(self.commands[env_ids, :2], dim=1) > 0.2).unsqueeze(1) #why? 
 

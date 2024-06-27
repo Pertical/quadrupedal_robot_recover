@@ -192,7 +192,7 @@ if __name__ == "__main__":
     # print("Joint angles:", angles) 
 
     foot_positions = [
-    [0, 0.08, -0.24],  # FL
+    [0, 0.08, -0.2710],  # FL
     [0, 0.08, -0.24],  # RL
     [0, -0.08, -0.25],  # FR
     [0, -0.08, -0.23]] # RR
