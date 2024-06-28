@@ -1,0 +1,35 @@
+
+Setting seed: 1
+/home/bridge/miniconda3/envs/legged_gym/lib/python3.8/site-packages/torch/functional.py:512: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at ../aten/src/ATen/native/TensorShape.cpp:3587.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+Actor MLP: Sequential(
+  (0): Linear(in_features=43, out_features=512, bias=True)
+  (1): ELU(alpha=1.0)
+  (2): Linear(in_features=512, out_features=256, bias=True)
+  (3): ELU(alpha=1.0)
+  (4): Linear(in_features=256, out_features=128, bias=True)
+  (5): ELU(alpha=1.0)
+  (6): Linear(in_features=128, out_features=12, bias=True)
+)
+Critic MLP: Sequential(
+  (0): Linear(in_features=43, out_features=512, bias=True)
+  (1): ELU(alpha=1.0)
+  (2): Linear(in_features=512, out_features=256, bias=True)
+  (3): ELU(alpha=1.0)
+  (4): Linear(in_features=256, out_features=128, bias=True)
+  (5): ELU(alpha=1.0)
+  (6): Linear(in_features=128, out_features=1, bias=True)
+)
+Traceback (most recent call last):
+  File "train.py", line 87, in <module>
+    train(args)
+  File "train.py", line 82, in train
+    ppo_runner.learn(num_learning_iterations=train_cfg.runner.max_iterations, init_at_random_ep_len=True)
+  File "/home/bridge/Desktop/rsl_rl/rsl_rl/runners/on_policy_runner.py", line 141, in learn
+    self.log(locals())
+  File "/home/bridge/Desktop/rsl_rl/rsl_rl/runners/on_policy_runner.py", line 199, in log
+    wandb.log({'mean_reward': statistics.mean(statistics.mean(locs['rewbuffer'])), 'mean_episode_length': statistics.mean(locs['lenbuffer'])})
+  File "/home/bridge/miniconda3/envs/legged_gym/lib/python3.8/statistics.py", line 311, in mean
+    if iter(data) is data:
+TypeError: 'float' object is not iterable
+obs shape:  torch.Size([4096, 43])

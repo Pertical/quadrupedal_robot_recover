@@ -1,0 +1,663 @@
+
+Setting seed: 1
+/home/bridge/miniconda3/envs/legged_gym/lib/python3.8/site-packages/torch/functional.py:512: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at ../aten/src/ATen/native/TensorShape.cpp:3587.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+Actor MLP: Sequential(
+  (0): Linear(in_features=43, out_features=512, bias=True)
+  (1): ELU(alpha=1.0)
+  (2): Linear(in_features=512, out_features=256, bias=True)
+  (3): ELU(alpha=1.0)
+  (4): Linear(in_features=256, out_features=128, bias=True)
+  (5): ELU(alpha=1.0)
+  (6): Linear(in_features=128, out_features=12, bias=True)
+)
+Critic MLP: Sequential(
+  (0): Linear(in_features=43, out_features=512, bias=True)
+  (1): ELU(alpha=1.0)
+  (2): Linear(in_features=512, out_features=256, bias=True)
+  (3): ELU(alpha=1.0)
+  (4): Linear(in_features=256, out_features=128, bias=True)
+  (5): ELU(alpha=1.0)
+  (6): Linear(in_features=128, out_features=1, bias=True)
+)
+obs shape:  torch.Size([4096, 43])
+################################################################################
+                      [1m Learning iteration 0/2001 
+                       Computation: 136098 steps/s (collection: 0.973s, learning 0.472s)
+               Value function loss: 0.1167
+                    Surrogate loss: 0.0671
+             Mean action noise std: 1.00
+                       Mean reward: 0.14
+               Mean episode length: 38.75
+      Mean episode rew_action_rate: -0.0011
+ Mean episode rew_base_uprightness: 0.0190
+       Mean episode rew_calf_angle: -0.0033
+          Mean episode rew_dof_acc: -0.0123
+     Mean episode rew_foot_contact: 0.0021
+        Mean episode rew_hip_angle: -0.0030
+      Mean episode rew_orientation: -0.0068
+      Mean episode rew_thigh_angle: -0.0016
+--------------------------------------------------------------------------------
+                   Total timesteps: 196608
+                    Iteration time: 1.44s
+                        Total time: 1.44s
+                               ETA: 2890.6s
+################################################################################
+                      [1m Learning iteration 1/2001 
+                       Computation: 178812 steps/s (collection: 0.902s, learning 0.198s)
+               Value function loss: 0.0119
+                    Surrogate loss: 0.0011
+             Mean action noise std: 1.00
+                       Mean reward: 0.38
+               Mean episode length: 86.30
+      Mean episode rew_action_rate: -0.0035
+ Mean episode rew_base_uprightness: 0.0442
+       Mean episode rew_calf_angle: -0.0099
+          Mean episode rew_dof_acc: -0.0368
+     Mean episode rew_foot_contact: 0.0065
+        Mean episode rew_hip_angle: -0.0087
+      Mean episode rew_orientation: -0.0147
+      Mean episode rew_thigh_angle: -0.0044
+--------------------------------------------------------------------------------
+                   Total timesteps: 393216
+                    Iteration time: 1.10s
+                        Total time: 2.54s
+                               ETA: 2544.1s
+################################################################################
+                      [1m Learning iteration 2/2001 
+                       Computation: 176710 steps/s (collection: 0.908s, learning 0.204s)
+               Value function loss: 0.0038
+                    Surrogate loss: -0.0005
+             Mean action noise std: 1.01
+                       Mean reward: 0.43
+               Mean episode length: 129.21
+      Mean episode rew_action_rate: -0.0058
+ Mean episode rew_base_uprightness: 0.0512
+       Mean episode rew_calf_angle: -0.0159
+          Mean episode rew_dof_acc: -0.0602
+     Mean episode rew_foot_contact: 0.0087
+        Mean episode rew_hip_angle: -0.0142
+      Mean episode rew_orientation: -0.0151
+      Mean episode rew_thigh_angle: -0.0074
+--------------------------------------------------------------------------------
+                   Total timesteps: 589824
+                    Iteration time: 1.11s
+                        Total time: 3.66s
+                               ETA: 2436.6s
+################################################################################
+                      [1m Learning iteration 3/2001 
+                       Computation: 153989 steps/s (collection: 1.039s, learning 0.238s)
+               Value function loss: 0.0029
+                    Surrogate loss: -0.0005
+             Mean action noise std: 1.02
+                       Mean reward: 0.39
+               Mean episode length: 179.95
+      Mean episode rew_action_rate: -0.0082
+ Mean episode rew_base_uprightness: 0.0543
+       Mean episode rew_calf_angle: -0.0238
+          Mean episode rew_dof_acc: -0.0866
+     Mean episode rew_foot_contact: 0.0082
+        Mean episode rew_hip_angle: -0.0196
+      Mean episode rew_orientation: -0.0191
+      Mean episode rew_thigh_angle: -0.0107
+--------------------------------------------------------------------------------
+                   Total timesteps: 786432
+                    Iteration time: 1.28s
+                        Total time: 4.93s
+                               ETA: 2464.3s
+################################################################################
+                      [1m Learning iteration 4/2001 
+                       Computation: 160427 steps/s (collection: 1.025s, learning 0.200s)
+               Value function loss: 0.0027
+                    Surrogate loss: -0.0005
+             Mean action noise std: 1.03
+                       Mean reward: 0.52
+               Mean episode length: 228.43
+      Mean episode rew_action_rate: -0.0106
+ Mean episode rew_base_uprightness: 0.0729
+       Mean episode rew_calf_angle: -0.0275
+          Mean episode rew_dof_acc: -0.1101
+     Mean episode rew_foot_contact: 0.0131
+        Mean episode rew_hip_angle: -0.0251
+      Mean episode rew_orientation: -0.0228
+      Mean episode rew_thigh_angle: -0.0131
+--------------------------------------------------------------------------------
+                   Total timesteps: 983040
+                    Iteration time: 1.23s
+                        Total time: 6.16s
+                               ETA: 2459.9s
+################################################################################
+                      [1m Learning iteration 5/2001 
+                       Computation: 156061 steps/s (collection: 1.053s, learning 0.206s)
+               Value function loss: 0.0103
+                    Surrogate loss: 0.0000
+             Mean action noise std: 1.04
+                       Mean reward: 0.63
+               Mean episode length: 277.03
+      Mean episode rew_action_rate: -0.0131
+ Mean episode rew_base_uprightness: 0.0819
+       Mean episode rew_calf_angle: -0.0356
+          Mean episode rew_dof_acc: -0.1344
+     Mean episode rew_foot_contact: 0.0160
+        Mean episode rew_hip_angle: -0.0306
+      Mean episode rew_orientation: -0.0226
+      Mean episode rew_thigh_angle: -0.0161
+--------------------------------------------------------------------------------
+                   Total timesteps: 1179648
+                    Iteration time: 1.26s
+                        Total time: 7.42s
+                               ETA: 2468.0s
+################################################################################
+                      [1m Learning iteration 6/2001 
+                       Computation: 164552 steps/s (collection: 0.985s, learning 0.210s)
+               Value function loss: 0.0027
+                    Surrogate loss: -0.0005
+             Mean action noise std: 1.05
+                       Mean reward: 0.36
+               Mean episode length: 326.32
+      Mean episode rew_action_rate: -0.0155
+ Mean episode rew_base_uprightness: 0.0635
+       Mean episode rew_calf_angle: -0.0446
+          Mean episode rew_dof_acc: -0.1618
+     Mean episode rew_foot_contact: 0.0097
+        Mean episode rew_hip_angle: -0.0359
+      Mean episode rew_orientation: -0.0219
+      Mean episode rew_thigh_angle: -0.0199
+--------------------------------------------------------------------------------
+                   Total timesteps: 1376256
+                    Iteration time: 1.19s
+                        Total time: 8.61s
+                               ETA: 2454.9s
+################################################################################
+                      [1m Learning iteration 7/2001 
+                       Computation: 159615 steps/s (collection: 1.033s, learning 0.199s)
+               Value function loss: 0.0278
+                    Surrogate loss: 0.0003
+             Mean action noise std: 1.05
+                       Mean reward: 0.48
+               Mean episode length: 371.26
+      Mean episode rew_action_rate: -0.0181
+ Mean episode rew_base_uprightness: 0.0510
+       Mean episode rew_calf_angle: -0.0483
+          Mean episode rew_dof_acc: -0.1899
+     Mean episode rew_foot_contact: 0.0076
+        Mean episode rew_hip_angle: -0.0415
+      Mean episode rew_orientation: -0.0182
+      Mean episode rew_thigh_angle: -0.0217
+--------------------------------------------------------------------------------
+                   Total timesteps: 1572864
+                    Iteration time: 1.23s
+                        Total time: 9.85s
+                               ETA: 2454.0s
+################################################################################
+                      [1m Learning iteration 8/2001 
+                       Computation: 160536 steps/s (collection: 1.013s, learning 0.212s)
+               Value function loss: 0.0035
+                    Surrogate loss: -0.0009
+             Mean action noise std: 1.06
+                       Mean reward: 0.60
+               Mean episode length: 420.74
+      Mean episode rew_action_rate: -0.0207
+ Mean episode rew_base_uprightness: 0.0801
+       Mean episode rew_calf_angle: -0.0562
+          Mean episode rew_dof_acc: -0.2148
+     Mean episode rew_foot_contact: 0.0156
+        Mean episode rew_hip_angle: -0.0469
+      Mean episode rew_orientation: -0.0235
+      Mean episode rew_thigh_angle: -0.0253
+--------------------------------------------------------------------------------
+                   Total timesteps: 1769472
+                    Iteration time: 1.22s
+                        Total time: 11.07s
+                               ETA: 2451.4s
+################################################################################
+                      [1m Learning iteration 9/2001 
+                       Computation: 159338 steps/s (collection: 1.028s, learning 0.205s)
+               Value function loss: 0.0022
+                    Surrogate loss: -0.0010
+             Mean action noise std: 1.07
+                       Mean reward: 0.51
+               Mean episode length: 470.58
+      Mean episode rew_action_rate: -0.0232
+ Mean episode rew_base_uprightness: 0.0820
+       Mean episode rew_calf_angle: -0.0615
+          Mean episode rew_dof_acc: -0.2412
+     Mean episode rew_foot_contact: 0.0141
+        Mean episode rew_hip_angle: -0.0529
+      Mean episode rew_orientation: -0.0271
+      Mean episode rew_thigh_angle: -0.0283
+--------------------------------------------------------------------------------
+                   Total timesteps: 1966080
+                    Iteration time: 1.23s
+                        Total time: 12.30s
+                               ETA: 2451.0s
+################################################################################
+                      [1m Learning iteration 10/2001 
+                       Computation: 175836 steps/s (collection: 0.919s, learning 0.199s)
+               Value function loss: 0.0020
+                    Surrogate loss: -0.0005
+             Mean action noise std: 1.07
+                       Mean reward: 0.63
+               Mean episode length: 517.02
+      Mean episode rew_action_rate: -0.0258
+ Mean episode rew_base_uprightness: 0.0794
+       Mean episode rew_calf_angle: -0.0690
+          Mean episode rew_dof_acc: -0.2684
+     Mean episode rew_foot_contact: 0.0143
+        Mean episode rew_hip_angle: -0.0582
+      Mean episode rew_orientation: -0.0225
+      Mean episode rew_thigh_angle: -0.0313
+--------------------------------------------------------------------------------
+                   Total timesteps: 2162688
+                    Iteration time: 1.12s
+                        Total time: 13.42s
+                               ETA: 2429.4s
+################################################################################
+                      [1m Learning iteration 11/2001 
+                       Computation: 157946 steps/s (collection: 1.024s, learning 0.221s)
+               Value function loss: 0.0022
+                    Surrogate loss: -0.0012
+             Mean action noise std: 1.08
+                       Mean reward: 0.96
+               Mean episode length: 562.67
+      Mean episode rew_action_rate: -0.0286
+ Mean episode rew_base_uprightness: 0.0843
+       Mean episode rew_calf_angle: -0.0724
+          Mean episode rew_dof_acc: -0.2985
+     Mean episode rew_foot_contact: 0.0168
+        Mean episode rew_hip_angle: -0.0639
+      Mean episode rew_orientation: -0.0247
+      Mean episode rew_thigh_angle: -0.0331
+--------------------------------------------------------------------------------
+                   Total timesteps: 2359296
+                    Iteration time: 1.24s
+                        Total time: 14.67s
+                               ETA: 2432.3s
+################################################################################
+                      [1m Learning iteration 12/2001 
+                       Computation: 160832 steps/s (collection: 1.011s, learning 0.211s)
+               Value function loss: 0.0019
+                    Surrogate loss: -0.0010
+             Mean action noise std: 1.08
+                       Mean reward: 1.24
+               Mean episode length: 613.57
+      Mean episode rew_action_rate: -0.0313
+ Mean episode rew_base_uprightness: 0.1452
+       Mean episode rew_calf_angle: -0.0819
+          Mean episode rew_dof_acc: -0.3193
+     Mean episode rew_foot_contact: 0.0343
+        Mean episode rew_hip_angle: -0.0697
+      Mean episode rew_orientation: -0.0367
+      Mean episode rew_thigh_angle: -0.0372
+--------------------------------------------------------------------------------
+                   Total timesteps: 2555904
+                    Iteration time: 1.22s
+                        Total time: 15.89s
+                               ETA: 2431.1s
+################################################################################
+                      [1m Learning iteration 13/2001 
+                       Computation: 169923 steps/s (collection: 0.959s, learning 0.198s)
+               Value function loss: 0.0019
+                    Surrogate loss: -0.0017
+             Mean action noise std: 1.09
+                       Mean reward: 0.75
+               Mean episode length: 661.61
+      Mean episode rew_action_rate: -0.0339
+ Mean episode rew_base_uprightness: 0.0839
+       Mean episode rew_calf_angle: -0.0847
+          Mean episode rew_dof_acc: -0.3537
+     Mean episode rew_foot_contact: 0.0161
+        Mean episode rew_hip_angle: -0.0755
+      Mean episode rew_orientation: -0.0258
+      Mean episode rew_thigh_angle: -0.0388
+--------------------------------------------------------------------------------
+                   Total timesteps: 2752512
+                    Iteration time: 1.16s
+                        Total time: 17.05s
+                               ETA: 2420.6s
+################################################################################
+                      [1m Learning iteration 14/2001 
+                       Computation: 176118 steps/s (collection: 0.916s, learning 0.201s)
+               Value function loss: 0.0021
+                    Surrogate loss: -0.0016
+             Mean action noise std: 1.10
+                       Mean reward: 0.79
+               Mean episode length: 709.09
+      Mean episode rew_action_rate: -0.0367
+ Mean episode rew_base_uprightness: 0.0894
+       Mean episode rew_calf_angle: -0.0907
+          Mean episode rew_dof_acc: -0.3817
+     Mean episode rew_foot_contact: 0.0182
+        Mean episode rew_hip_angle: -0.0812
+      Mean episode rew_orientation: -0.0249
+      Mean episode rew_thigh_angle: -0.0420
+--------------------------------------------------------------------------------
+                   Total timesteps: 2949120
+                    Iteration time: 1.12s
+                        Total time: 18.16s
+                               ETA: 2406.0s
+################################################################################
+                      [1m Learning iteration 15/2001 
+                       Computation: 173868 steps/s (collection: 0.916s, learning 0.214s)
+               Value function loss: 0.0024
+                    Surrogate loss: -0.0017
+             Mean action noise std: 1.11
+                       Mean reward: 1.02
+               Mean episode length: 758.74
+      Mean episode rew_action_rate: -0.0397
+ Mean episode rew_base_uprightness: 0.0809
+       Mean episode rew_calf_angle: -0.0975
+          Mean episode rew_dof_acc: -0.4119
+     Mean episode rew_foot_contact: 0.0152
+        Mean episode rew_hip_angle: -0.0868
+      Mean episode rew_orientation: -0.0243
+      Mean episode rew_thigh_angle: -0.0454
+--------------------------------------------------------------------------------
+                   Total timesteps: 3145728
+                    Iteration time: 1.13s
+                        Total time: 19.29s
+                               ETA: 2394.8s
+################################################################################
+                      [1m Learning iteration 16/2001 
+                       Computation: 173125 steps/s (collection: 0.912s, learning 0.224s)
+               Value function loss: 0.0032
+                    Surrogate loss: -0.0022
+             Mean action noise std: 1.13
+                       Mean reward: 0.87
+               Mean episode length: 802.99
+      Mean episode rew_action_rate: -0.0424
+ Mean episode rew_base_uprightness: 0.1258
+       Mean episode rew_calf_angle: -0.1073
+          Mean episode rew_dof_acc: -0.4372
+     Mean episode rew_foot_contact: 0.0284
+        Mean episode rew_hip_angle: -0.0927
+      Mean episode rew_orientation: -0.0331
+      Mean episode rew_thigh_angle: -0.0490
+--------------------------------------------------------------------------------
+                   Total timesteps: 3342336
+                    Iteration time: 1.14s
+                        Total time: 20.43s
+                               ETA: 2385.4s
+################################################################################
+                      [1m Learning iteration 17/2001 
+                       Computation: 155213 steps/s (collection: 0.988s, learning 0.278s)
+               Value function loss: 0.0025
+                    Surrogate loss: -0.0021
+             Mean action noise std: 1.14
+                       Mean reward: 1.58
+               Mean episode length: 852.46
+      Mean episode rew_action_rate: -0.0453
+ Mean episode rew_base_uprightness: 0.1462
+       Mean episode rew_calf_angle: -0.1129
+          Mean episode rew_dof_acc: -0.4644
+     Mean episode rew_foot_contact: 0.0331
+        Mean episode rew_hip_angle: -0.0990
+      Mean episode rew_orientation: -0.0366
+      Mean episode rew_thigh_angle: -0.0525
+--------------------------------------------------------------------------------
+                   Total timesteps: 3538944
+                    Iteration time: 1.27s
+                        Total time: 21.70s
+                               ETA: 2391.4s
+################################################################################
+                      [1m Learning iteration 18/2001 
+                       Computation: 169930 steps/s (collection: 0.896s, learning 0.261s)
+               Value function loss: 0.0026
+                    Surrogate loss: -0.0027
+             Mean action noise std: 1.16
+                       Mean reward: 0.84
+               Mean episode length: 898.99
+      Mean episode rew_action_rate: -0.0485
+ Mean episode rew_base_uprightness: 0.0825
+       Mean episode rew_calf_angle: -0.1198
+          Mean episode rew_dof_acc: -0.5030
+     Mean episode rew_foot_contact: 0.0159
+        Mean episode rew_hip_angle: -0.1047
+      Mean episode rew_orientation: -0.0246
+      Mean episode rew_thigh_angle: -0.0557
+--------------------------------------------------------------------------------
+                   Total timesteps: 3735552
+                    Iteration time: 1.16s
+                        Total time: 22.85s
+                               ETA: 2385.1s
+################################################################################
+                      [1m Learning iteration 19/2001 
+                       Computation: 162413 steps/s (collection: 1.002s, learning 0.209s)
+               Value function loss: 0.0027
+                    Surrogate loss: -0.0026
+             Mean action noise std: 1.18
+                       Mean reward: 1.02
+               Mean episode length: 949.01
+      Mean episode rew_action_rate: -0.0516
+ Mean episode rew_base_uprightness: 0.0957
+       Mean episode rew_calf_angle: -0.1234
+          Mean episode rew_dof_acc: -0.5339
+     Mean episode rew_foot_contact: 0.0204
+        Mean episode rew_hip_angle: -0.1108
+      Mean episode rew_orientation: -0.0267
+      Mean episode rew_thigh_angle: -0.0571
+--------------------------------------------------------------------------------
+                   Total timesteps: 3932160
+                    Iteration time: 1.21s
+                        Total time: 24.06s
+                               ETA: 2384.7s
+################################################################################
+                      [1m Learning iteration 20/2001 
+                       Computation: 173448 steps/s (collection: 0.934s, learning 0.199s)
+               Value function loss: 0.0038
+                    Surrogate loss: -0.0026
+             Mean action noise std: 1.20
+                       Mean reward: 1.07
+               Mean episode length: 995.11
+      Mean episode rew_action_rate: -0.0548
+ Mean episode rew_base_uprightness: 0.1419
+       Mean episode rew_calf_angle: -0.1326
+          Mean episode rew_dof_acc: -0.5634
+     Mean episode rew_foot_contact: 0.0304
+        Mean episode rew_hip_angle: -0.1172
+      Mean episode rew_orientation: -0.0389
+      Mean episode rew_thigh_angle: -0.0613
+--------------------------------------------------------------------------------
+                   Total timesteps: 4128768
+                    Iteration time: 1.13s
+                        Total time: 25.20s
+                               ETA: 2376.9s
+################################################################################
+                      [1m Learning iteration 21/2001 
+                       Computation: 174168 steps/s (collection: 0.930s, learning 0.199s)
+               Value function loss: 0.0040
+                    Surrogate loss: -0.0037
+             Mean action noise std: 1.21
+                       Mean reward: 1.03
+               Mean episode length: 1002.00
+      Mean episode rew_action_rate: -0.0567
+ Mean episode rew_base_uprightness: 0.1439
+       Mean episode rew_calf_angle: -0.1302
+          Mean episode rew_dof_acc: -0.5788
+     Mean episode rew_foot_contact: 0.0344
+        Mean episode rew_hip_angle: -0.1206
+      Mean episode rew_orientation: -0.0325
+      Mean episode rew_thigh_angle: -0.0621
+--------------------------------------------------------------------------------
+                   Total timesteps: 4325376
+                    Iteration time: 1.13s
+                        Total time: 26.33s
+                               ETA: 2369.3s
+################################################################################
+                      [1m Learning iteration 22/2001 
+                       Computation: 178202 steps/s (collection: 0.905s, learning 0.199s)
+               Value function loss: 0.0036
+                    Surrogate loss: -0.0026
+             Mean action noise std: 1.24
+                       Mean reward: 0.44
+               Mean episode length: 1002.00
+      Mean episode rew_action_rate: -0.0577
+ Mean episode rew_base_uprightness: 0.0751
+       Mean episode rew_calf_angle: -0.1331
+          Mean episode rew_dof_acc: -0.5937
+     Mean episode rew_foot_contact: 0.0152
+        Mean episode rew_hip_angle: -0.1210
+      Mean episode rew_orientation: -0.0199
+      Mean episode rew_thigh_angle: -0.0622
+--------------------------------------------------------------------------------
+                   Total timesteps: 4521984
+                    Iteration time: 1.10s
+                        Total time: 27.43s
+                               ETA: 2360.1s
+################################################################################
+                      [1m Learning iteration 23/2001 
+                       Computation: 184026 steps/s (collection: 0.870s, learning 0.198s)
+               Value function loss: 0.0036
+                    Surrogate loss: -0.0039
+             Mean action noise std: 1.25
+                       Mean reward: 1.14
+               Mean episode length: 1002.00
+      Mean episode rew_action_rate: -0.0588
+ Mean episode rew_base_uprightness: 0.1129
+       Mean episode rew_calf_angle: -0.1281
+          Mean episode rew_dof_acc: -0.6036
+     Mean episode rew_foot_contact: 0.0234
+        Mean episode rew_hip_angle: -0.1224
+      Mean episode rew_orientation: -0.0313
+      Mean episode rew_thigh_angle: -0.0615
+--------------------------------------------------------------------------------
+                   Total timesteps: 4718592
+                    Iteration time: 1.07s
+                        Total time: 28.50s
+                               ETA: 2348.7s
+################################################################################
+                      [1m Learning iteration 24/2001 
+                       Computation: 175782 steps/s (collection: 0.920s, learning 0.199s)
+               Value function loss: 0.0034
+                    Surrogate loss: -0.0036
+             Mean action noise std: 1.26
+                       Mean reward: 1.71
+               Mean episode length: 1002.00
+      Mean episode rew_action_rate: -0.0602
+ Mean episode rew_base_uprightness: 0.1693
+       Mean episode rew_calf_angle: -0.1394
+          Mean episode rew_dof_acc: -0.6097
+     Mean episode rew_foot_contact: 0.0399
+        Mean episode rew_hip_angle: -0.1245
+      Mean episode rew_orientation: -0.0377
+      Mean episode rew_thigh_angle: -0.0664
+--------------------------------------------------------------------------------
+                   Total timesteps: 4915200
+                    Iteration time: 1.12s
+                        Total time: 29.62s
+                               ETA: 2342.0s
+################################################################################
+                      [1m Learning iteration 25/2001 
+                       Computation: 172062 steps/s (collection: 0.926s, learning 0.216s)
+               Value function loss: 0.0029
+                    Surrogate loss: -0.0036
+             Mean action noise std: 1.28
+                       Mean reward: 0.88
+               Mean episode length: 1002.00
+      Mean episode rew_action_rate: -0.0613
+ Mean episode rew_base_uprightness: 0.1304
+       Mean episode rew_calf_angle: -0.1219
+          Mean episode rew_dof_acc: -0.6254
+     Mean episode rew_foot_contact: 0.0290
+        Mean episode rew_hip_angle: -0.1252
+      Mean episode rew_orientation: -0.0296
+      Mean episode rew_thigh_angle: -0.0622
+--------------------------------------------------------------------------------
+                   Total timesteps: 5111808
+                    Iteration time: 1.14s
+                        Total time: 30.76s
+                               ETA: 2337.6s
+################################################################################
+                      [1m Learning iteration 26/2001 
+                       Computation: 166559 steps/s (collection: 0.979s, learning 0.201s)
+               Value function loss: 0.0058
+                    Surrogate loss: -0.0035
+             Mean action noise std: 1.29
+                       Mean reward: 1.41
+               Mean episode length: 1002.00
+      Mean episode rew_action_rate: -0.0628
+ Mean episode rew_base_uprightness: 0.0961
+       Mean episode rew_calf_angle: -0.1365
+          Mean episode rew_dof_acc: -0.6404
+     Mean episode rew_foot_contact: 0.0194
+        Mean episode rew_hip_angle: -0.1265
+      Mean episode rew_orientation: -0.0266
+      Mean episode rew_thigh_angle: -0.0658
+--------------------------------------------------------------------------------
+                   Total timesteps: 5308416
+                    Iteration time: 1.18s
+                        Total time: 31.94s
+                               ETA: 2336.3s
+################################################################################
+                      [1m Learning iteration 27/2001 
+                       Computation: 173704 steps/s (collection: 0.929s, learning 0.202s)
+               Value function loss: 0.0027
+                    Surrogate loss: -0.0028
+             Mean action noise std: 1.30
+                       Mean reward: 0.30
+               Mean episode length: 1002.00
+      Mean episode rew_action_rate: -0.0642
+ Mean episode rew_base_uprightness: 0.0685
+       Mean episode rew_calf_angle: -0.1357
+          Mean episode rew_dof_acc: -0.6568
+     Mean episode rew_foot_contact: 0.0111
+        Mean episode rew_hip_angle: -0.1276
+      Mean episode rew_orientation: -0.0220
+      Mean episode rew_thigh_angle: -0.0653
+--------------------------------------------------------------------------------
+                   Total timesteps: 5505024
+                    Iteration time: 1.13s
+                        Total time: 33.07s
+                               ETA: 2331.5s
+################################################################################
+                      [1m Learning iteration 28/2001 
+                       Computation: 179607 steps/s (collection: 0.896s, learning 0.199s)
+               Value function loss: 0.0030
+                    Surrogate loss: -0.0029
+             Mean action noise std: 1.31
+                       Mean reward: 0.74
+               Mean episode length: 1002.00
+      Mean episode rew_action_rate: -0.0656
+ Mean episode rew_base_uprightness: 0.0991
+       Mean episode rew_calf_angle: -0.1316
+          Mean episode rew_dof_acc: -0.6649
+     Mean episode rew_foot_contact: 0.0210
+        Mean episode rew_hip_angle: -0.1300
+      Mean episode rew_orientation: -0.0237
+      Mean episode rew_thigh_angle: -0.0648
+--------------------------------------------------------------------------------
+                   Total timesteps: 5701632
+                    Iteration time: 1.09s
+                        Total time: 34.17s
+                               ETA: 2324.4s
+################################################################################
+                      [1m Learning iteration 29/2001 
+                       Computation: 168495 steps/s (collection: 0.966s, learning 0.201s)
+               Value function loss: 0.0032
+                    Surrogate loss: -0.0035
+             Mean action noise std: 1.32
+                       Mean reward: 0.46
+               Mean episode length: 1002.00
+      Mean episode rew_action_rate: -0.0670
+ Mean episode rew_base_uprightness: 0.1503
+       Mean episode rew_calf_angle: -0.1379
+          Mean episode rew_dof_acc: -0.6721
+     Mean episode rew_foot_contact: 0.0345
+        Mean episode rew_hip_angle: -0.1317
+      Mean episode rew_orientation: -0.0306
+      Mean episode rew_thigh_angle: -0.0668
+--------------------------------------------------------------------------------
+                   Total timesteps: 5898240
+                    Iteration time: 1.17s
+                        Total time: 35.33s
+                               ETA: 2322.5s
+Traceback (most recent call last):
+  File "train.py", line 87, in <module>
+    train(args)
+  File "train.py", line 82, in train
+    ppo_runner.learn(num_learning_iterations=train_cfg.runner.max_iterations, init_at_random_ep_len=True)
+  File "/home/bridge/Desktop/rsl_rl/rsl_rl/runners/on_policy_runner.py", line 113, in learn
+    obs, privileged_obs, rewards, dones, infos = self.env.step(actions)
+  File "/home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/envs/base/legged_robot.py", line 102, in step
+    self.gym.simulate(self.sim)
+KeyboardInterrupt
