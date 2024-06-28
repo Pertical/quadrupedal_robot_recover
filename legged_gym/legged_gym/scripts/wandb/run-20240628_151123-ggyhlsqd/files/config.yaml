@@ -1,0 +1,104 @@
+wandb_version: 1
+
+sim_device:
+  desc: null
+  value: cuda:0
+pipeline:
+  desc: null
+  value: gpu
+graphics_device_id:
+  desc: null
+  value: 0
+flex:
+  desc: null
+  value: false
+physx:
+  desc: null
+  value: false
+num_threads:
+  desc: null
+  value: 0
+subscenes:
+  desc: null
+  value: 0
+slices:
+  desc: null
+  value: 0
+task:
+  desc: null
+  value: go1_flat
+resume:
+  desc: null
+  value: false
+experiment_name:
+  desc: null
+  value: null
+run_name:
+  desc: null
+  value: null
+load_run:
+  desc: null
+  value: null
+checkpoint:
+  desc: null
+  value: null
+headless:
+  desc: null
+  value: true
+horovod:
+  desc: null
+  value: false
+rl_device:
+  desc: null
+  value: cuda:0
+num_envs:
+  desc: null
+  value: null
+seed:
+  desc: null
+  value: null
+max_iterations:
+  desc: null
+  value: null
+sim_device_type:
+  desc: null
+  value: cuda
+compute_device_id:
+  desc: null
+  value: 0
+use_gpu_pipeline:
+  desc: null
+  value: true
+physics_engine:
+  desc: null
+  value: SimType.SIM_PHYSX
+use_gpu:
+  desc: null
+  value: true
+sim_device_id:
+  desc: null
+  value: 0
+_wandb:
+  desc: null
+  value:
+    python_version: 3.8.19
+    cli_version: 0.17.1
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    start_time: 1719558683
+    t:
+      1:
+      - 1
+      - 55
+      2:
+      - 1
+      - 55
+      3:
+      - 16
+      - 23
+      4: 3.8.19
+      5: 0.17.1
+      8:
+      - 5
+      13: linux-x86_64

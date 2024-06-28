@@ -1,0 +1,195 @@
+2024-06-28 15:08:11,716 INFO    StreamThr :1776992 [internal.py:wandb_internal():85] W&B internal server running at pid: 1776992, started at: 2024-06-28 15:08:11.716626
+2024-06-28 15:08:11,717 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: status
+2024-06-28 15:08:11,719 INFO    WriterThread:1776992 [datastore.py:open_for_write():87] open: /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_150811-rn47751w/run-rn47751w.wandb
+2024-06-28 15:08:11,720 DEBUG   SenderThread:1776992 [sender.py:send():379] send: header
+2024-06-28 15:08:11,730 DEBUG   SenderThread:1776992 [sender.py:send():379] send: run
+2024-06-28 15:08:12,840 INFO    SenderThread:1776992 [dir_watcher.py:__init__():211] watching files in: /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_150811-rn47751w/files
+2024-06-28 15:08:12,840 INFO    SenderThread:1776992 [sender.py:_start_run_threads():1188] run started: rn47751w with start time 1719558491.716529
+2024-06-28 15:08:12,845 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: check_version
+2024-06-28 15:08:12,845 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: check_version
+2024-06-28 15:08:14,078 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: run_start
+2024-06-28 15:08:14,114 DEBUG   HandlerThread:1776992 [system_info.py:__init__():26] System info init
+2024-06-28 15:08:14,114 DEBUG   HandlerThread:1776992 [system_info.py:__init__():41] System info init done
+2024-06-28 15:08:14,115 INFO    HandlerThread:1776992 [system_monitor.py:start():194] Starting system monitor
+2024-06-28 15:08:14,115 INFO    SystemMonitor:1776992 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2024-06-28 15:08:14,115 INFO    HandlerThread:1776992 [system_monitor.py:probe():214] Collecting system info
+2024-06-28 15:08:14,117 INFO    SystemMonitor:1776992 [interfaces.py:start():188] Started cpu monitoring
+2024-06-28 15:08:14,117 INFO    SystemMonitor:1776992 [interfaces.py:start():188] Started disk monitoring
+2024-06-28 15:08:14,119 INFO    SystemMonitor:1776992 [interfaces.py:start():188] Started gpu monitoring
+2024-06-28 15:08:14,119 INFO    SystemMonitor:1776992 [interfaces.py:start():188] Started memory monitoring
+2024-06-28 15:08:14,120 INFO    SystemMonitor:1776992 [interfaces.py:start():188] Started network monitoring
+2024-06-28 15:08:14,154 DEBUG   HandlerThread:1776992 [system_info.py:probe():152] Probing system
+2024-06-28 15:08:14,163 DEBUG   HandlerThread:1776992 [system_info.py:_probe_git():137] Probing git
+2024-06-28 15:08:14,177 DEBUG   HandlerThread:1776992 [system_info.py:_probe_git():145] Probing git done
+2024-06-28 15:08:14,178 DEBUG   HandlerThread:1776992 [system_info.py:probe():200] Probing system done
+2024-06-28 15:08:14,178 DEBUG   HandlerThread:1776992 [system_monitor.py:probe():223] {'os': 'Linux-5.15.0-113-generic-x86_64-with-glibc2.17', 'python': '3.8.19', 'heartbeatAt': '2024-06-28T07:08:14.154435', 'startedAt': '2024-06-28T07:08:11.711835', 'docker': None, 'cuda': None, 'args': ('--task', 'go1_flat', '--headless'), 'state': 'running', 'program': 'train.py', 'codePathLocal': 'train.py', 'codePath': 'legged_gym/legged_gym/scripts/train.py', 'git': {'remote': 'https://github.com/Pertical/quadrupedal_robot_recover.git', 'commit': '5a74c350284ed56be3fae4da32d739f8f4be2429'}, 'email': 'zhufeiyapeter@gmail.com', 'root': '/home/bridge/Desktop/quadrupedal_robot_recover', 'host': 'dp10', 'username': 'bridge', 'executable': '/home/bridge/miniconda3/envs/legged_gym/bin/python', 'cpu_count': 12, 'cpu_count_logical': 20, 'cpu_freq': {'current': 3460.3667499999997, 'min': 800.0, 'max': 4700.0}, 'cpu_freq_per_core': [{'current': 3600.0, 'min': 800.0, 'max': 4900.0}, {'current': 3600.0, 'min': 800.0, 'max': 4900.0}, {'current': 3600.0, 'min': 800.0, 'max': 4900.0}, {'current': 3600.0, 'min': 800.0, 'max': 4900.0}, {'current': 3600.0, 'min': 800.0, 'max': 5000.0}, {'current': 3600.0, 'min': 800.0, 'max': 5000.0}, {'current': 807.335, 'min': 800.0, 'max': 5000.0}, {'current': 3600.0, 'min': 800.0, 'max': 5000.0}, {'current': 3600.0, 'min': 800.0, 'max': 4900.0}, {'current': 3600.0, 'min': 800.0, 'max': 4900.0}, {'current': 3600.0, 'min': 800.0, 'max': 4900.0}, {'current': 3600.0, 'min': 800.0, 'max': 4900.0}, {'current': 3600.0, 'min': 800.0, 'max': 4900.0}, {'current': 3600.0, 'min': 800.0, 'max': 4900.0}, {'current': 3600.0, 'min': 800.0, 'max': 4900.0}, {'current': 3600.0, 'min': 800.0, 'max': 4900.0}, {'current': 3600.0, 'min': 800.0, 'max': 3800.0}, {'current': 3600.0, 'min': 800.0, 'max': 3800.0}, {'current': 3600.0, 'min': 800.0, 'max': 3800.0}, {'current': 3600.0, 'min': 800.0, 'max': 3800.0}], 'disk': {'/': {'total': 915.3232879638672, 'used': 87.13833618164062}}, 'gpu': 'NVIDIA GeForce RTX 4070 Ti SUPER', 'gpu_count': 1, 'gpu_devices': [{'name': 'NVIDIA GeForce RTX 4070 Ti SUPER', 'memory_total': 17171480576}], 'memory': {'total': 31.17174530029297}}
+2024-06-28 15:08:14,178 INFO    HandlerThread:1776992 [system_monitor.py:probe():224] Finished collecting system info
+2024-06-28 15:08:14,178 INFO    HandlerThread:1776992 [system_monitor.py:probe():227] Publishing system info
+2024-06-28 15:08:14,178 DEBUG   HandlerThread:1776992 [system_info.py:_save_conda():209] Saving list of conda packages installed into the current environment
+2024-06-28 15:08:14,841 INFO    Thread-12 :1776992 [dir_watcher.py:_on_file_created():271] file/dir created: /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_150811-rn47751w/files/conda-environment.yaml
+2024-06-28 15:08:15,147 DEBUG   HandlerThread:1776992 [system_info.py:_save_conda():224] Saving conda packages done
+2024-06-28 15:08:15,147 INFO    HandlerThread:1776992 [system_monitor.py:probe():229] Finished publishing system info
+2024-06-28 15:08:15,152 DEBUG   SenderThread:1776992 [sender.py:send():379] send: files
+2024-06-28 15:08:15,152 INFO    SenderThread:1776992 [sender.py:_save_file():1454] saving file wandb-metadata.json with policy now
+2024-06-28 15:08:15,201 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: python_packages
+2024-06-28 15:08:15,201 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: python_packages
+2024-06-28 15:08:15,202 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: internal_messages
+2024-06-28 15:08:15,202 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: stop_status
+2024-06-28 15:08:15,202 DEBUG   SenderThread:1776992 [sender.py:send():379] send: telemetry
+2024-06-28 15:08:15,203 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: stop_status
+2024-06-28 15:08:15,842 INFO    Thread-12 :1776992 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_150811-rn47751w/files/conda-environment.yaml
+2024-06-28 15:08:15,842 INFO    Thread-12 :1776992 [dir_watcher.py:_on_file_created():271] file/dir created: /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_150811-rn47751w/files/requirements.txt
+2024-06-28 15:08:15,842 INFO    Thread-12 :1776992 [dir_watcher.py:_on_file_created():271] file/dir created: /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_150811-rn47751w/files/wandb-metadata.json
+2024-06-28 15:08:16,112 DEBUG   SenderThread:1776992 [sender.py:send():379] send: exit
+2024-06-28 15:08:16,112 INFO    SenderThread:1776992 [sender.py:send_exit():586] handling exit code: 1
+2024-06-28 15:08:16,113 INFO    SenderThread:1776992 [sender.py:send_exit():588] handling runtime: 1
+2024-06-28 15:08:16,117 INFO    SenderThread:1776992 [sender.py:_save_file():1454] saving file wandb-summary.json with policy end
+2024-06-28 15:08:16,117 INFO    SenderThread:1776992 [sender.py:send_exit():594] send defer
+2024-06-28 15:08:16,118 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: defer
+2024-06-28 15:08:16,118 INFO    HandlerThread:1776992 [handler.py:handle_request_defer():184] handle defer: 0
+2024-06-28 15:08:16,120 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: defer
+2024-06-28 15:08:16,120 INFO    SenderThread:1776992 [sender.py:send_request_defer():610] handle sender defer: 0
+2024-06-28 15:08:16,120 INFO    SenderThread:1776992 [sender.py:transition_state():614] send defer: 1
+2024-06-28 15:08:16,120 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: defer
+2024-06-28 15:08:16,121 INFO    HandlerThread:1776992 [handler.py:handle_request_defer():184] handle defer: 1
+2024-06-28 15:08:16,122 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: defer
+2024-06-28 15:08:16,122 INFO    SenderThread:1776992 [sender.py:send_request_defer():610] handle sender defer: 1
+2024-06-28 15:08:16,122 INFO    SenderThread:1776992 [sender.py:transition_state():614] send defer: 2
+2024-06-28 15:08:16,123 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: defer
+2024-06-28 15:08:16,124 INFO    HandlerThread:1776992 [handler.py:handle_request_defer():184] handle defer: 2
+2024-06-28 15:08:16,125 INFO    HandlerThread:1776992 [system_monitor.py:finish():203] Stopping system monitor
+2024-06-28 15:08:16,125 DEBUG   SystemMonitor:1776992 [system_monitor.py:_start():172] Starting system metrics aggregation loop
+2024-06-28 15:08:16,125 INFO    HandlerThread:1776992 [interfaces.py:finish():200] Joined cpu monitor
+2024-06-28 15:08:16,126 DEBUG   SystemMonitor:1776992 [system_monitor.py:_start():179] Finished system metrics aggregation loop
+2024-06-28 15:08:16,129 DEBUG   SystemMonitor:1776992 [system_monitor.py:_start():183] Publishing last batch of metrics
+2024-06-28 15:08:16,132 INFO    HandlerThread:1776992 [interfaces.py:finish():200] Joined disk monitor
+2024-06-28 15:08:16,177 INFO    HandlerThread:1776992 [interfaces.py:finish():200] Joined gpu monitor
+2024-06-28 15:08:16,177 INFO    HandlerThread:1776992 [interfaces.py:finish():200] Joined memory monitor
+2024-06-28 15:08:16,177 INFO    HandlerThread:1776992 [interfaces.py:finish():200] Joined network monitor
+2024-06-28 15:08:16,177 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: defer
+2024-06-28 15:08:16,177 INFO    SenderThread:1776992 [sender.py:send_request_defer():610] handle sender defer: 2
+2024-06-28 15:08:16,177 INFO    SenderThread:1776992 [sender.py:transition_state():614] send defer: 3
+2024-06-28 15:08:16,177 DEBUG   SenderThread:1776992 [sender.py:send():379] send: stats
+2024-06-28 15:08:16,177 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: defer
+2024-06-28 15:08:16,177 INFO    HandlerThread:1776992 [handler.py:handle_request_defer():184] handle defer: 3
+2024-06-28 15:08:16,177 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: defer
+2024-06-28 15:08:16,177 INFO    SenderThread:1776992 [sender.py:send_request_defer():610] handle sender defer: 3
+2024-06-28 15:08:16,177 INFO    SenderThread:1776992 [sender.py:transition_state():614] send defer: 4
+2024-06-28 15:08:16,177 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: defer
+2024-06-28 15:08:16,178 INFO    HandlerThread:1776992 [handler.py:handle_request_defer():184] handle defer: 4
+2024-06-28 15:08:16,178 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: defer
+2024-06-28 15:08:16,178 INFO    SenderThread:1776992 [sender.py:send_request_defer():610] handle sender defer: 4
+2024-06-28 15:08:16,178 INFO    SenderThread:1776992 [sender.py:transition_state():614] send defer: 5
+2024-06-28 15:08:16,178 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: defer
+2024-06-28 15:08:16,178 INFO    HandlerThread:1776992 [handler.py:handle_request_defer():184] handle defer: 5
+2024-06-28 15:08:16,178 DEBUG   SenderThread:1776992 [sender.py:send():379] send: summary
+2024-06-28 15:08:16,178 INFO    SenderThread:1776992 [sender.py:_save_file():1454] saving file wandb-summary.json with policy end
+2024-06-28 15:08:16,178 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: defer
+2024-06-28 15:08:16,178 INFO    SenderThread:1776992 [sender.py:send_request_defer():610] handle sender defer: 5
+2024-06-28 15:08:16,178 INFO    SenderThread:1776992 [sender.py:transition_state():614] send defer: 6
+2024-06-28 15:08:16,178 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: defer
+2024-06-28 15:08:16,178 INFO    HandlerThread:1776992 [handler.py:handle_request_defer():184] handle defer: 6
+2024-06-28 15:08:16,178 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: defer
+2024-06-28 15:08:16,178 INFO    SenderThread:1776992 [sender.py:send_request_defer():610] handle sender defer: 6
+2024-06-28 15:08:16,180 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: status_report
+2024-06-28 15:08:16,249 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: poll_exit
+2024-06-28 15:08:16,528 INFO    wandb-upload_0:1776992 [upload_job.py:push():130] Uploaded file /tmp/tmpa9d4v0q3wandb/s8k2m668-wandb-metadata.json
+2024-06-28 15:08:16,565 INFO    SenderThread:1776992 [sender.py:transition_state():614] send defer: 7
+2024-06-28 15:08:16,566 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: poll_exit
+2024-06-28 15:08:16,566 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: defer
+2024-06-28 15:08:16,567 INFO    HandlerThread:1776992 [handler.py:handle_request_defer():184] handle defer: 7
+2024-06-28 15:08:16,567 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: defer
+2024-06-28 15:08:16,567 INFO    SenderThread:1776992 [sender.py:send_request_defer():610] handle sender defer: 7
+2024-06-28 15:08:16,842 INFO    Thread-12 :1776992 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_150811-rn47751w/files/config.yaml
+2024-06-28 15:08:16,843 INFO    Thread-12 :1776992 [dir_watcher.py:_on_file_created():271] file/dir created: /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_150811-rn47751w/files/wandb-summary.json
+2024-06-28 15:08:16,843 INFO    Thread-12 :1776992 [dir_watcher.py:_on_file_created():271] file/dir created: /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_150811-rn47751w/files/output.log
+2024-06-28 15:08:17,249 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: poll_exit
+2024-06-28 15:08:18,120 INFO    SenderThread:1776992 [sender.py:transition_state():614] send defer: 8
+2024-06-28 15:08:18,120 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: poll_exit
+2024-06-28 15:08:18,121 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: defer
+2024-06-28 15:08:18,121 INFO    HandlerThread:1776992 [handler.py:handle_request_defer():184] handle defer: 8
+2024-06-28 15:08:18,122 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: defer
+2024-06-28 15:08:18,122 INFO    SenderThread:1776992 [sender.py:send_request_defer():610] handle sender defer: 8
+2024-06-28 15:08:18,122 INFO    SenderThread:1776992 [job_builder.py:build():440] Attempting to build job artifact
+2024-06-28 15:08:18,123 INFO    SenderThread:1776992 [job_builder.py:_get_source_type():569] is repo sourced job
+2024-06-28 15:08:18,152 INFO    SenderThread:1776992 [job_builder.py:build():545] adding wandb-job metadata file
+2024-06-28 15:08:18,154 INFO    SenderThread:1776992 [sender.py:transition_state():614] send defer: 9
+2024-06-28 15:08:18,154 DEBUG   SenderThread:1776992 [sender.py:send():379] send: artifact
+2024-06-28 15:08:18,155 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: defer
+2024-06-28 15:08:18,155 INFO    HandlerThread:1776992 [handler.py:handle_request_defer():184] handle defer: 9
+2024-06-28 15:08:18,252 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: poll_exit
+2024-06-28 15:08:18,844 INFO    Thread-12 :1776992 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_150811-rn47751w/files/output.log
+2024-06-28 15:08:20,051 INFO    wandb-upload_1:1776992 [upload_job.py:push():85] Skipped uploading /home/bridge/.local/share/wandb/artifacts/staging/tmpoek4xg6h
+2024-06-28 15:08:20,319 INFO    wandb-upload_0:1776992 [upload_job.py:push():88] Uploaded file /tmp/tmpyel2vsb4/wandb-job.json
+2024-06-28 15:08:22,049 INFO    SenderThread:1776992 [sender.py:send_artifact():1530] sent artifact job-https___github.com_Pertical_quadrupedal_robot_recover.git_legged_gym_legged_gym_scripts_train.py - {'id': 'QXJ0aWZhY3Q6OTMyMDQ3Mzgx', 'state': 'PENDING', 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjIzNjc3Nzc4OQ==', 'latestArtifact': {'id': 'QXJ0aWZhY3Q6OTMyMDM4MDc2', 'versionIndex': 8}}}
+2024-06-28 15:08:22,049 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: defer
+2024-06-28 15:08:22,049 INFO    SenderThread:1776992 [sender.py:send_request_defer():610] handle sender defer: 9
+2024-06-28 15:08:22,049 INFO    SenderThread:1776992 [dir_watcher.py:finish():358] shutting down directory watcher
+2024-06-28 15:08:22,846 INFO    SenderThread:1776992 [dir_watcher.py:finish():388] scan: /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_150811-rn47751w/files
+2024-06-28 15:08:22,846 INFO    SenderThread:1776992 [dir_watcher.py:finish():402] scan save: /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_150811-rn47751w/files/wandb-summary.json wandb-summary.json
+2024-06-28 15:08:22,847 INFO    SenderThread:1776992 [dir_watcher.py:finish():402] scan save: /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_150811-rn47751w/files/conda-environment.yaml conda-environment.yaml
+2024-06-28 15:08:22,847 INFO    SenderThread:1776992 [dir_watcher.py:finish():402] scan save: /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_150811-rn47751w/files/output.log output.log
+2024-06-28 15:08:22,847 INFO    SenderThread:1776992 [dir_watcher.py:finish():402] scan save: /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_150811-rn47751w/files/requirements.txt requirements.txt
+2024-06-28 15:08:22,848 INFO    SenderThread:1776992 [dir_watcher.py:finish():402] scan save: /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_150811-rn47751w/files/config.yaml config.yaml
+2024-06-28 15:08:22,848 INFO    SenderThread:1776992 [dir_watcher.py:finish():402] scan save: /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_150811-rn47751w/files/wandb-metadata.json wandb-metadata.json
+2024-06-28 15:08:22,848 INFO    SenderThread:1776992 [sender.py:transition_state():614] send defer: 10
+2024-06-28 15:08:22,848 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: poll_exit
+2024-06-28 15:08:22,849 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: defer
+2024-06-28 15:08:22,849 INFO    HandlerThread:1776992 [handler.py:handle_request_defer():184] handle defer: 10
+2024-06-28 15:08:22,861 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: defer
+2024-06-28 15:08:22,866 INFO    SenderThread:1776992 [sender.py:send_request_defer():610] handle sender defer: 10
+2024-06-28 15:08:22,872 INFO    SenderThread:1776992 [file_pusher.py:finish():169] shutting down file pusher
+2024-06-28 15:08:23,254 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: keepalive
+2024-06-28 15:08:23,255 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: poll_exit
+2024-06-28 15:08:23,255 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: poll_exit
+2024-06-28 15:08:23,256 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: status_report
+2024-06-28 15:08:23,596 INFO    wandb-upload_2:1776992 [upload_job.py:push():130] Uploaded file /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_150811-rn47751w/files/wandb-summary.json
+2024-06-28 15:08:23,893 INFO    wandb-upload_1:1776992 [upload_job.py:push():130] Uploaded file /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_150811-rn47751w/files/conda-environment.yaml
+2024-06-28 15:08:24,100 INFO    wandb-upload_4:1776992 [upload_job.py:push():130] Uploaded file /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_150811-rn47751w/files/config.yaml
+2024-06-28 15:08:24,245 INFO    wandb-upload_3:1776992 [upload_job.py:push():130] Uploaded file /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_150811-rn47751w/files/requirements.txt
+2024-06-28 15:08:24,256 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: poll_exit
+2024-06-28 15:08:24,256 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: poll_exit
+2024-06-28 15:08:24,259 INFO    wandb-upload_0:1776992 [upload_job.py:push():130] Uploaded file /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_150811-rn47751w/files/output.log
+2024-06-28 15:08:24,459 INFO    Thread-11 :1776992 [sender.py:transition_state():614] send defer: 11
+2024-06-28 15:08:24,460 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: defer
+2024-06-28 15:08:24,460 INFO    HandlerThread:1776992 [handler.py:handle_request_defer():184] handle defer: 11
+2024-06-28 15:08:24,461 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: defer
+2024-06-28 15:08:24,462 INFO    SenderThread:1776992 [sender.py:send_request_defer():610] handle sender defer: 11
+2024-06-28 15:08:24,462 INFO    SenderThread:1776992 [file_pusher.py:join():175] waiting for file pusher
+2024-06-28 15:08:24,463 INFO    SenderThread:1776992 [sender.py:transition_state():614] send defer: 12
+2024-06-28 15:08:24,463 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: defer
+2024-06-28 15:08:24,463 INFO    HandlerThread:1776992 [handler.py:handle_request_defer():184] handle defer: 12
+2024-06-28 15:08:24,464 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: defer
+2024-06-28 15:08:24,464 INFO    SenderThread:1776992 [sender.py:send_request_defer():610] handle sender defer: 12
+2024-06-28 15:08:24,464 INFO    SenderThread:1776992 [file_stream.py:finish():601] file stream finish called
+2024-06-28 15:08:24,814 INFO    SenderThread:1776992 [file_stream.py:finish():605] file stream finish is done
+2024-06-28 15:08:24,815 INFO    SenderThread:1776992 [sender.py:transition_state():614] send defer: 13
+2024-06-28 15:08:24,815 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: defer
+2024-06-28 15:08:24,815 INFO    HandlerThread:1776992 [handler.py:handle_request_defer():184] handle defer: 13
+2024-06-28 15:08:24,816 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: defer
+2024-06-28 15:08:24,816 INFO    SenderThread:1776992 [sender.py:send_request_defer():610] handle sender defer: 13
+2024-06-28 15:08:24,816 INFO    SenderThread:1776992 [sender.py:transition_state():614] send defer: 14
+2024-06-28 15:08:24,817 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: defer
+2024-06-28 15:08:24,818 INFO    HandlerThread:1776992 [handler.py:handle_request_defer():184] handle defer: 14
+2024-06-28 15:08:24,818 DEBUG   SenderThread:1776992 [sender.py:send():379] send: final
+2024-06-28 15:08:24,819 DEBUG   SenderThread:1776992 [sender.py:send():379] send: footer
+2024-06-28 15:08:24,819 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: defer
+2024-06-28 15:08:24,819 INFO    SenderThread:1776992 [sender.py:send_request_defer():610] handle sender defer: 14
+2024-06-28 15:08:24,820 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: poll_exit
+2024-06-28 15:08:24,821 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: server_info
+2024-06-28 15:08:24,822 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: poll_exit
+2024-06-28 15:08:24,823 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: poll_exit
+2024-06-28 15:08:24,823 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: get_summary
+2024-06-28 15:08:24,823 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: server_info
+2024-06-28 15:08:24,824 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: sampled_history
+2024-06-28 15:08:24,829 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: internal_messages
+2024-06-28 15:08:25,112 DEBUG   SenderThread:1776992 [sender.py:send_request():406] send_request: poll_exit
+2024-06-28 15:08:25,113 INFO    MainThread:1776992 [wandb_run.py:_footer_history_summary_info():4008] rendering history
+2024-06-28 15:08:25,113 INFO    MainThread:1776992 [wandb_run.py:_footer_history_summary_info():4040] rendering summary
+2024-06-28 15:08:25,113 INFO    MainThread:1776992 [wandb_run.py:_footer_sync_info():3967] logging synced files
+2024-06-28 15:08:25,114 DEBUG   HandlerThread:1776992 [handler.py:handle_request():158] handle_request: shutdown
+2024-06-28 15:08:25,115 INFO    HandlerThread:1776992 [handler.py:finish():882] shutting down handler
+2024-06-28 15:08:25,830 INFO    WriterThread:1776992 [datastore.py:close():296] close: /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_150811-rn47751w/run-rn47751w.wandb
+2024-06-28 15:08:26,113 INFO    SenderThread:1776992 [sender.py:finish():1608] shutting down sender
+2024-06-28 15:08:26,113 INFO    SenderThread:1776992 [file_pusher.py:finish():169] shutting down file pusher
+2024-06-28 15:08:26,113 INFO    SenderThread:1776992 [file_pusher.py:join():175] waiting for file pusher

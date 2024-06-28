@@ -237,7 +237,7 @@ class LeggedRobot(BaseTask):
             #Without base_lin_vel, the shape should be 43
             self.obs_buf = torch.cat((self.base_ang_vel * self.obs_scales.ang_vel,
                                       self.projected_gravity, 
-                                      self.commands[:, :] * self.commands_scale, 
+                                      self.commands[:, :] * self.commands_scale[3], 
                                       (self.dof_pos - self.default_dof_pos)*self.obs_scales.dof_pos,
                                       self.dof_vel * self.obs_scales.dof_vel,
                                       self.actions), dim = -1) 
@@ -409,7 +409,18 @@ class LeggedRobot(BaseTask):
             for i in range(len(env_ids)):
                 self._get_target_dof_pos(i)
 
-            # print("Target_dof_pose after", self.target_dof_pos)
+            #Select one env and record its commanded height, current height, target dof, and current dof
+            #If wandb has been inititialized, log the data
+            if wandb.run is not None:
+                wandb.log({"Commanded Height": self.commands[30, 0].item(),
+                            "Current Height": self.root_states[30, 2].item(),
+                            "Target DOF Hip Mean": torch.mean(self.target_dof_pos[30, [0, 3, 6, 9]]).item(),
+                            "Current DOF Hip Mean": torch.mean(self.dof_pos[30, [0, 3, 6, 9]]).item(),
+                            "Target DOF Thight Mean": torch.mean(self.target_dof_pos[30, [1, 4, 7, 10]]).item(),
+                            "Current DOF Thight Mean": torch.mean(self.dof_pos[30, [1, 4, 7, 10]]).item(),
+                            "Target DOF Calf Mean": torch.mean(self.target_dof_pos[30, [2, 5, 8, 11]]).item(),
+                            "Current DOF Calf Mean": torch.mean(self.dof_pos[30, [2, 5, 8, 11]]).item()}) 
+
 
         else: 
             self.commands[env_ids, 0] = torch_rand_float(self.command_ranges["lin_vel_x"][0], self.command_ranges["lin_vel_x"][1], (len(env_ids), 1), device=self.device).squeeze(1)
@@ -522,7 +533,6 @@ class LeggedRobot(BaseTask):
             else:
                 self.root_states[env_ids, 3:7] = torch_rand_float(-0.5, 0.5, (len(env_ids), 4), device=self.device)
 
-        
         # base velocities
         self.root_states[env_ids, 7:13] = torch_rand_float(-0.5, 0.5, (len(env_ids), 6), device=self.device) # [7:10]: lin vel, [10:13]: ang vel
         env_ids_int32 = env_ids.to(dtype=torch.int32)
@@ -693,8 +703,6 @@ class LeggedRobot(BaseTask):
         # else:
         self.commands_scale = torch.tensor([self.obs_scales.lin_vel, self.obs_scales.lin_vel, self.obs_scales.ang_vel, self.obs_scales.base_height], device=self.device, requires_grad=False,) 
     
-
-
         self.feet_air_time = torch.zeros(self.num_envs, self.feet_indices.shape[0], dtype=torch.float, device=self.device, requires_grad=False)
         self.last_contacts = torch.zeros(self.num_envs, len(self.feet_indices), dtype=torch.bool, device=self.device, requires_grad=False)
         self.base_lin_vel = quat_rotate_inverse(self.base_quat, self.root_states[:, 7:10])
@@ -1175,9 +1183,6 @@ class LeggedRobot(BaseTask):
         # # print("Base Height of env 20", self.root_states[20, 2] )
         # print("Target DOF pos of env 20", self.target_dof_pos[:, :3] )
         # print("Current DOF pos of env 20", self.dof_pos[:, :3] ) #
-
-
-
 
         return reward 
     

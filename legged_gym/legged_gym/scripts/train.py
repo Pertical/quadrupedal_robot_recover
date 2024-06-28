@@ -63,14 +63,22 @@ def log_wandb(args):
         ]
     }
 
-    # Log configurations
+    # Log configurations with condition to skip zeros in 'scales'
     log_data = {}
     for group, keys in config_groups.items():
         for key in keys:
             # Handle nested attributes
             attr_path = key.split('.')
             value = getattr(getattr(Go1RecFlatConfig, group), attr_path[0]) if len(attr_path) == 1 else getattr(getattr(getattr(Go1RecFlatConfig, group), attr_path[0]), attr_path[1])
+            
+            # Skip logging if the value is zero and the key is in the 'scales' group
+            if group == 'rewards' and 'scales' in key and value == 0:
+                continue
+            
             log_data[key] = value
+
+
+    
 
     wandb.log(log_data)
 

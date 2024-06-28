@@ -1,0 +1,117 @@
+
+Setting seed: 1
+/home/bridge/miniconda3/envs/legged_gym/lib/python3.8/site-packages/torch/functional.py:512: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at ../aten/src/ATen/native/TensorShape.cpp:3587.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+Actor MLP: Sequential(
+  (0): Linear(in_features=43, out_features=512, bias=True)
+  (1): ELU(alpha=1.0)
+  (2): Linear(in_features=512, out_features=256, bias=True)
+  (3): ELU(alpha=1.0)
+  (4): Linear(in_features=256, out_features=128, bias=True)
+  (5): ELU(alpha=1.0)
+  (6): Linear(in_features=128, out_features=12, bias=True)
+)
+Critic MLP: Sequential(
+  (0): Linear(in_features=43, out_features=512, bias=True)
+  (1): ELU(alpha=1.0)
+  (2): Linear(in_features=512, out_features=256, bias=True)
+  (3): ELU(alpha=1.0)
+  (4): Linear(in_features=256, out_features=128, bias=True)
+  (5): ELU(alpha=1.0)
+  (6): Linear(in_features=128, out_features=1, bias=True)
+)
+obs shape:  torch.Size([4096, 43])
+################################################################################
+                      [1m Learning iteration 0/2001 
+                       Computation: 111969 steps/s (collection: 0.514s, learning 0.364s)
+               Value function loss: 0.1125
+                    Surrogate loss: 0.0892
+             Mean action noise std: 1.00
+                       Mean reward: 0.10
+               Mean episode length: 12.97
+      Mean episode rew_action_rate: -0.0006
+ Mean episode rew_base_uprightness: 0.0131
+       Mean episode rew_calf_angle: -0.0018
+          Mean episode rew_dof_acc: -0.0061
+     Mean episode rew_foot_contact: 0.0015
+        Mean episode rew_hip_angle: -0.0015
+      Mean episode rew_orientation: -0.0042
+      Mean episode rew_thigh_angle: -0.0008
+--------------------------------------------------------------------------------
+                   Total timesteps: 98304
+                    Iteration time: 0.88s
+                        Total time: 0.88s
+                               ETA: 1756.8s
+################################################################################
+                      [1m Learning iteration 1/2001 
+                       Computation: 166908 steps/s (collection: 0.485s, learning 0.104s)
+               Value function loss: 0.0139
+                    Surrogate loss: 0.0036
+             Mean action noise std: 1.00
+                       Mean reward: 0.14
+               Mean episode length: 38.75
+      Mean episode rew_action_rate: -0.0017
+ Mean episode rew_base_uprightness: 0.0249
+       Mean episode rew_calf_angle: -0.0049
+          Mean episode rew_dof_acc: -0.0189
+     Mean episode rew_foot_contact: 0.0027
+        Mean episode rew_hip_angle: -0.0046
+      Mean episode rew_orientation: -0.0095
+      Mean episode rew_thigh_angle: -0.0023
+--------------------------------------------------------------------------------
+                   Total timesteps: 196608
+                    Iteration time: 0.59s
+                        Total time: 1.47s
+                               ETA: 1466.9s
+Traceback (most recent call last):
+  File "train.py", line 92, in <module>
+    train(args)
+  File "train.py", line 87, in train
+    ppo_runner.learn(num_learning_iterations=train_cfg.runner.max_iterations, init_at_random_ep_len=True)
+  File "/home/bridge/Desktop/rsl_rl/rsl_rl/runners/on_policy_runner.py", line 137, in learn
+    mean_value_loss, mean_surrogate_loss = self.alg.update()
+  File "/home/bridge/Desktop/rsl_rl/rsl_rl/algorithms/ppo.py", line 145, in update
+    if kl_mean > self.desired_kl * 2.0:
+KeyboardInterrupt
+################################################################################
+                      [1m Learning iteration 2/2001 
+                       Computation: 173750 steps/s (collection: 0.461s, learning 0.105s)
+               Value function loss: 0.0078
+                    Surrogate loss: -0.0001
+             Mean action noise std: 1.00
+                       Mean reward: 0.27
+               Mean episode length: 61.77
+      Mean episode rew_action_rate: -0.0029
+ Mean episode rew_base_uprightness: 0.0415
+       Mean episode rew_calf_angle: -0.0084
+          Mean episode rew_dof_acc: -0.0306
+     Mean episode rew_foot_contact: 0.0058
+        Mean episode rew_hip_angle: -0.0072
+      Mean episode rew_orientation: -0.0146
+      Mean episode rew_thigh_angle: -0.0038
+--------------------------------------------------------------------------------
+                   Total timesteps: 294912
+                    Iteration time: 0.57s
+                        Total time: 2.03s
+                               ETA: 1354.5s
+################################################################################
+                      [1m Learning iteration 3/2001 
+                       Computation: 176690 steps/s (collection: 0.451s, learning 0.105s)
+               Value function loss: 0.0041
+                    Surrogate loss: -0.0017
+             Mean action noise std: 1.01
+                       Mean reward: 0.39
+               Mean episode length: 86.30
+      Mean episode rew_action_rate: -0.0040
+ Mean episode rew_base_uprightness: 0.0462
+       Mean episode rew_calf_angle: -0.0113
+          Mean episode rew_dof_acc: -0.0422
+     Mean episode rew_foot_contact: 0.0072
+        Mean episode rew_hip_angle: -0.0102
+      Mean episode rew_orientation: -0.0145
+      Mean episode rew_thigh_angle: -0.0052
+--------------------------------------------------------------------------------
+                   Total timesteps: 393216
+                    Iteration time: 0.56s
+                        Total time: 2.59s
+                               ETA: 1293.2s
