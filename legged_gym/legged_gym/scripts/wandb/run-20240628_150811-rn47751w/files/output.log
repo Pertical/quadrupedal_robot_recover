@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "train.py", line 93, in <module>
-    log_wandb(args)
-  File "train.py", line 80, in log_wandb
-    print("test", LeggedRobot.self.commands[30, 0].item())
-AttributeError: type object 'LeggedRobot' has no attribute 'self'

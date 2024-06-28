@@ -1,0 +1,29 @@
+2024-06-28 15:25:30,572 INFO    MainThread:1781878 [wandb_setup.py:_flush():76] Current SDK version is 0.17.1
+2024-06-28 15:25:30,572 INFO    MainThread:1781878 [wandb_setup.py:_flush():76] Configure stats pid to 1781878
+2024-06-28 15:25:30,572 INFO    MainThread:1781878 [wandb_setup.py:_flush():76] Loading settings from /home/bridge/.config/wandb/settings
+2024-06-28 15:25:30,572 INFO    MainThread:1781878 [wandb_setup.py:_flush():76] Loading settings from /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/settings
+2024-06-28 15:25:30,572 INFO    MainThread:1781878 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-06-28 15:25:30,572 INFO    MainThread:1781878 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-06-28 15:25:30,572 INFO    MainThread:1781878 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'legged_gym/legged_gym/scripts/train.py', 'program_abspath': '/home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/train.py', 'program': 'train.py'}
+2024-06-28 15:25:30,572 INFO    MainThread:1781878 [wandb_setup.py:_flush():76] Applying login settings: {}
+2024-06-28 15:25:30,572 INFO    MainThread:1781878 [wandb_init.py:_log_setup():520] Logging user logs to /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_152530-aw4drd7g/logs/debug.log
+2024-06-28 15:25:30,572 INFO    MainThread:1781878 [wandb_init.py:_log_setup():521] Logging internal logs to /home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/legged_gym/scripts/wandb/run-20240628_152530-aw4drd7g/logs/debug-internal.log
+2024-06-28 15:25:30,573 INFO    MainThread:1781878 [wandb_init.py:init():560] calling init triggers
+2024-06-28 15:25:30,573 INFO    MainThread:1781878 [wandb_init.py:init():567] wandb.init called with sweep_config: {}
+config: {'sim_device': 'cuda:0', 'pipeline': 'gpu', 'graphics_device_id': 0, 'flex': False, 'physx': False, 'num_threads': 0, 'subscenes': 0, 'slices': 0, 'task': 'go1_flat', 'resume': False, 'experiment_name': None, 'run_name': None, 'load_run': None, 'checkpoint': None, 'headless': True, 'horovod': False, 'rl_device': 'cuda:0', 'num_envs': None, 'seed': None, 'max_iterations': None, 'sim_device_type': 'cuda', 'compute_device_id': 0, 'use_gpu_pipeline': True, 'physics_engine': SimType.SIM_PHYSX, 'use_gpu': True, 'sim_device_id': 0}
+2024-06-28 15:25:30,573 INFO    MainThread:1781878 [wandb_init.py:init():610] starting backend
+2024-06-28 15:25:30,573 INFO    MainThread:1781878 [wandb_init.py:init():614] setting up manager
+2024-06-28 15:25:30,574 INFO    MainThread:1781878 [backend.py:_multiprocessing_setup():105] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2024-06-28 15:25:30,575 INFO    MainThread:1781878 [wandb_init.py:init():622] backend started and connected
+2024-06-28 15:25:30,578 INFO    MainThread:1781878 [wandb_init.py:init():711] updated telemetry
+2024-06-28 15:25:30,587 INFO    MainThread:1781878 [wandb_init.py:init():744] communicating run to backend with 90.0 second timeout
+2024-06-28 15:25:31,610 INFO    MainThread:1781878 [wandb_run.py:_on_init():2402] communicating current version
+2024-06-28 15:25:32,835 INFO    MainThread:1781878 [wandb_run.py:_on_init():2411] got version response upgrade_message: "wandb version 0.17.3 is available!  To upgrade, please run:\n $ pip install wandb --upgrade"
+
+2024-06-28 15:25:32,836 INFO    MainThread:1781878 [wandb_init.py:init():795] starting run threads in backend
+2024-06-28 15:25:34,014 INFO    MainThread:1781878 [wandb_run.py:_console_start():2380] atexit reg
+2024-06-28 15:25:34,014 INFO    MainThread:1781878 [wandb_run.py:_redirect():2235] redirect: wrap_raw
+2024-06-28 15:25:34,014 INFO    MainThread:1781878 [wandb_run.py:_redirect():2300] Wrapping output streams.
+2024-06-28 15:25:34,014 INFO    MainThread:1781878 [wandb_run.py:_redirect():2325] Redirects installed.
+2024-06-28 15:25:34,014 INFO    MainThread:1781878 [wandb_init.py:init():838] run started, returning control to user process
+2024-06-28 15:31:02,136 WARNING MsgRouterThr:1781878 [router.py:message_loop():77] message_loop has been closed
