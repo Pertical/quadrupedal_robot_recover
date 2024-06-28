@@ -419,7 +419,10 @@ class LeggedRobot(BaseTask):
                             "Target DOF Thight Mean": torch.mean(self.target_dof_pos[30, [1, 4, 7, 10]]).item(),
                             "Current DOF Thight Mean": torch.mean(self.dof_pos[30, [1, 4, 7, 10]]).item(),
                             "Target DOF Calf Mean": torch.mean(self.target_dof_pos[30, [2, 5, 8, 11]]).item(),
-                            "Current DOF Calf Mean": torch.mean(self.dof_pos[30, [2, 5, 8, 11]]).item()}) 
+                            "Current DOF Calf Mean": torch.mean(self.dof_pos[30, [2, 5, 8, 11]]).item(),
+                            "Max Foot Contact Force": torch.max(self.contact_forces[30, 0, :]).item()
+                            }) 
+                            
 
 
         else: 

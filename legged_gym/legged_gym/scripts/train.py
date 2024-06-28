@@ -53,7 +53,7 @@ def log_wandb(args):
         "init_state": ["pos", "default_joint_angles"],
         "asset": ["penalize_contacts_on"],
         "rewards": [
-            "max_contact_force", "scales.lin_vel_z", "scales.ang_vel_xy", "scales.orientation", "scales.torques",
+            "max_contact_force", "tracking_sigma", "scales.lin_vel_z", "scales.ang_vel_xy", "scales.orientation", "scales.torques",
             "scales.dof_vel", "scales.dof_acc", "scales.action_rate", "scales.collision", "scales.termination",
             "scales.dof_pos_limits", "scales.dof_vel_limits", "scales.torque_limits", "scales.feet_stumble",
             "scales.stand_still", "scales.feet_contact_forces", "scales.dof_power", "scales.hip_angle",
