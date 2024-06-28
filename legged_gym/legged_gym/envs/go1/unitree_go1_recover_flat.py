@@ -197,7 +197,7 @@ class Go1RecFlatConfigPPO(LeggedRobotCfgPPO):
         #load_run = r"/home/bridge/Desktop/legged_gym/logs/flat_unitree_go1/Jun24_14-28-43_go1_flat"
 
         max_iterations = 2001
-        num_steps_per_env = 48 # 30 steps per env
+        num_steps_per_env = 24 # 30 steps per env
 
         #logging
         save_interval = 100
