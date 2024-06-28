@@ -26,8 +26,6 @@ class cmd:
 
     base_height = 0.0 
 
-
-
 def quaternion_to_euler_array(quat):
 
     #Ensure quaternion is in the correct format (x,y,z,w)

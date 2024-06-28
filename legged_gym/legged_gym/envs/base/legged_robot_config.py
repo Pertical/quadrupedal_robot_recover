@@ -118,8 +118,6 @@ class LeggedRobotCfg(BaseConfig):
         armature = 0.
         thickness = 0.01
 
-        
-
     class domain_rand:
         randomize_friction = True
         friction_range = [0.5, 1.25]

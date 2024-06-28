@@ -23,6 +23,8 @@ class Go1RecFlatConfig(LeggedRobotCfg):
 
         num_envs = 4096
 
+    
+
     class terrain(LeggedRobotCfg.terrain):
 
         mesh_type = 'plane'
@@ -121,7 +123,6 @@ class Go1RecFlatConfig(LeggedRobotCfg):
 
         class scales(LeggedRobotCfg.rewards.scales):
 
-
             #Penalization
             lin_vel_z = -0.0 
             ang_vel_xy = -0.0
@@ -195,7 +196,7 @@ class Go1RecFlatConfigPPO(LeggedRobotCfgPPO):
         #load_run = r"/home/bridge/Desktop/legged_gym/logs/flat_unitree_go1/Jun24_12-12-20_go1_flat" #This one can recover, but poor position. 
         #load_run = r"/home/bridge/Desktop/legged_gym/logs/flat_unitree_go1/Jun24_14-28-43_go1_flat"
 
-        max_iterations = 10001
+        max_iterations = 2001
         num_steps_per_env = 48 # 30 steps per env
 
         #logging

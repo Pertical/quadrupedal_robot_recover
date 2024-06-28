@@ -37,11 +37,51 @@ from legged_gym.envs import *
 from legged_gym.utils import get_args, task_registry
 import torch
 
+import wandb
+from legged_gym.envs import Go1RecFlatConfig, Go1RecFlatConfigPPO
+
+
+
+def log_wandb(args):
+    run = wandb.init(project="Legged_Gym_Recover_FFall", entity="pertical", config=args)
+    
+    # Group configurations
+    config_groups = {
+        "env": ["num_observations", "num_envs", "episode_length_s"],
+        "terrain": ["mesh_type", "measure_heights"],
+        "commands": ["heading_command", "resampling_time", "base_height_command", "default_base_height", "num_commands", "ranges.base_height"],
+        "init_state": ["pos", "default_joint_angles"],
+        "asset": ["penalize_contacts_on"],
+        "rewards": [
+            "max_contact_force", "scales.lin_vel_z", "scales.ang_vel_xy", "scales.orientation", "scales.torques",
+            "scales.dof_vel", "scales.dof_acc", "scales.action_rate", "scales.collision", "scales.termination",
+            "scales.dof_pos_limits", "scales.dof_vel_limits", "scales.torque_limits", "scales.feet_stumble",
+            "scales.stand_still", "scales.feet_contact_forces", "scales.dof_power", "scales.hip_angle",
+            "scales.thigh_angle", "scales.calf_angle", "scales.lin_vel_xy", "scales.tracking_lin_vel",
+            "scales.tracking_ang_vel", "scales.feet_air_time", "scales.base_uprightness", "scales.foot_contact",
+            "scales.tracking_base_height"
+        ]
+    }
+
+    # Log configurations
+    log_data = {}
+    for group, keys in config_groups.items():
+        for key in keys:
+            # Handle nested attributes
+            attr_path = key.split('.')
+            value = getattr(getattr(Go1RecFlatConfig, group), attr_path[0]) if len(attr_path) == 1 else getattr(getattr(getattr(Go1RecFlatConfig, group), attr_path[0]), attr_path[1])
+            log_data[key] = value
+
+    wandb.log(log_data)
+
 def train(args):
+
+
     env, env_cfg = task_registry.make_env(name=args.task, args=args)
     ppo_runner, train_cfg = task_registry.make_alg_runner(env=env, name=args.task, args=args)
     ppo_runner.learn(num_learning_iterations=train_cfg.runner.max_iterations, init_at_random_ep_len=True)
 
 if __name__ == '__main__':
     args = get_args()
+    log_wandb(args)
     train(args)

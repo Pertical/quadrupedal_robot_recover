@@ -52,6 +52,8 @@ from scipy.spatial.transform import Rotation as R
 
 from kinematics import Inverse_Kinematics
 
+import wandb
+
 k = Inverse_Kinematics()
 
 class LeggedRobot(BaseTask):
@@ -206,6 +208,9 @@ class LeggedRobot(BaseTask):
             rew = self.reward_functions[i]() * self.reward_scales[name]
             self.rew_buf += rew
             self.episode_sums[name] += rew
+
+            wandb.log({f"reward_{name}": self.episode_sums[name]})
+
         if self.cfg.rewards.only_positive_rewards:
             self.rew_buf[:] = torch.clip(self.rew_buf[:], min=0.)
         # add termination reward after clipping
@@ -399,9 +404,15 @@ class LeggedRobot(BaseTask):
 
         if self.cfg.commands.base_height_command:
             self.commands[env_ids, 0] = torch_rand_float(self.command_ranges["base_height"][0], self.command_ranges["base_height"][1], (len(env_ids), 1), device=self.device).squeeze(1)
-            #print("self.commands shape", self.commands.shape)
+            #print("self.commands shape", self.commands.shape)'
+            # print("Len of env_ids", len(env_ids))
+            # print("range of num_env", self.num_envs)
+            # print("Target_dof_pose before", self.target_dof_pos)
             for i in range(len(env_ids)):
-                    self._get_target_dof_pos(i)
+                self._get_target_dof_pos(i)
+
+            # print("Target_dof_pose after", self.target_dof_pos)
+
         else: 
             self.commands[env_ids, 0] = torch_rand_float(self.command_ranges["lin_vel_x"][0], self.command_ranges["lin_vel_x"][1], (len(env_ids), 1), device=self.device).squeeze(1)
             self.commands[env_ids, 1] = torch_rand_float(self.command_ranges["lin_vel_y"][0], self.command_ranges["lin_vel_y"][1], (len(env_ids), 1), device=self.device).squeeze(1)
@@ -1156,17 +1167,17 @@ class LeggedRobot(BaseTask):
         reward = [torch.abs(self.dof_pos[:, i] - self.target_dof_pos[:, i]) for i in calf_joint_indices]
         reward = sum(reward)/self.dof_pos.shape[1]
 
-        print("Height Commands", self.commands[:, 0])
-        print("Current base height", self.root_states[:, 2])
+        # print("Height Commands", self.commands[:, 0])
+        # print("Current base height", self.root_states[:, 2])
 
-        # print("Base height target", self.cfg.rewards.base_height_target)
-        # print("Base height", self.root_states[:, 2 ])
-        # print("self.commands", self.commands.shape)
+        # # print("Base height target", self.cfg.rewards.base_height_target)
+        # # print("Base height", self.root_states[:, 2 ])
+        # # print("self.commands", self.commands.shape)
 
-        # print("Command Height of env 20", self.commands[20, 3])
-        # print("Base Height of env 20", self.root_states[20, 2] )
-        print("Target DOF pos of env 20", self.target_dof_pos[:, :3] )
-        print("Current DOF pos of env 20", self.dof_pos[:, :3] ) #
+        # # print("Command Height of env 20", self.commands[20, 3])
+        # # print("Base Height of env 20", self.root_states[20, 2] )
+        # print("Target DOF pos of env 20", self.target_dof_pos[:, :3] )
+        # print("Current DOF pos of env 20", self.dof_pos[:, :3] ) #
 
 
 
