@@ -119,7 +119,7 @@ class Go1RecFlatConfig(LeggedRobotCfg):
     class rewards(LeggedRobotCfg.rewards):
 
         max_contact_force = 350. 
-
+        tracking_sigma  = 0.01
 
         class scales(LeggedRobotCfg.rewards.scales):
 
@@ -162,7 +162,7 @@ class Go1RecFlatConfig(LeggedRobotCfg):
             base_uprightness = 1.0
             foot_contact = 1.0
 
-            tracking_base_height = 0.0
+            tracking_base_height = 1.0
 
     class domain_rand(LeggedRobotCfg.domain_rand):
 
@@ -177,7 +177,7 @@ class Go1RecFlatConfig(LeggedRobotCfg):
             ang_vel = 0.25
             dof_pos = 1.0
             dof_vel = 0.05
-            base_height = 20.0
+            base_height = 3.0
             height_measurements = 10.0
         clip_observations = 100.
         clip_actions = 100.
