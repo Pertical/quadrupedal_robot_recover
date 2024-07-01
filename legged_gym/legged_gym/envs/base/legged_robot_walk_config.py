@@ -30,7 +30,7 @@
 
 from .base_config import BaseConfig
 
-class LeggedRobotCfg(BaseConfig):
+class LeggedRobotWalkCfg(BaseConfig):
     class env:
         num_envs = 4096
         num_observations = 235

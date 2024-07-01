@@ -30,7 +30,7 @@
 
 from .base_config import BaseConfig
 
-class LeggedRobotCfg(BaseConfig):
+class LeggedRobotRecCfg(BaseConfig):
     class env:
         num_envs = 4096
         num_observations = 235
@@ -159,7 +159,8 @@ class LeggedRobotCfg(BaseConfig):
             ang_vel = 0.25
             dof_pos = 1.0
             dof_vel = 0.05
-            height_measurements = 5.0
+            base_height = 10.0
+            height_measurements = 10.0
         clip_observations = 100.
         clip_actions = 100.
 
@@ -199,7 +200,7 @@ class LeggedRobotCfg(BaseConfig):
             default_buffer_size_multiplier = 5
             contact_collection = 2 # 0: never, 1: last sub-step, 2: all sub-steps (default=2)
 
-class LeggedRobotCfgPPO(BaseConfig):
+class LeggedRobotRecCfgPPO(BaseConfig):
     seed = 1
     runner_class_name = 'OnPolicyRunner'
     class policy:
@@ -241,4 +242,4 @@ class LeggedRobotCfgPPO(BaseConfig):
         resume = False
         load_run = -1 # -1 = last run
         checkpoint = -1 # -1 = last saved model
-        resume_path = None # updated from load_run and chkpt
+        resume_path ="/home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/logs/flat_unitree_go1/canstand_but_height_noadjust/model_3000.pt"

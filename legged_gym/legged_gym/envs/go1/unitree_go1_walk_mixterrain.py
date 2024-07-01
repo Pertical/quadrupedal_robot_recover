@@ -6,12 +6,12 @@ Adopted from ETH Zurich "legged_gym example configs"
 
 """
 
+from legged_gym.envs.base.legged_robot_walk_config import LeggedRobotWalkCfg, LeggedRobotWalkCfgPPO
 
-from legged_gym.envs.base.legged_robot_rec_config import LeggedRobotRecCfg, LeggedRobotRecCfgPPO
 
-class Go1RecFlatConfig(LeggedRobotRecCfg):
+class Go1RecFlatConfig(LeggedRobotWalkCfg):
 
-    class env(LeggedRobotRecCfg.env):
+    class env(LeggedRobotWalkCfg.env):
 
 
         # num_observations = 49 #This includes 4 commands
@@ -25,13 +25,13 @@ class Go1RecFlatConfig(LeggedRobotRecCfg):
 
     
 
-    class terrain(LeggedRobotRecCfg.terrain):
+    class terrain(LeggedRobotWalkCfg.terrain):
 
         mesh_type = 'plane'
         measure_heights = False
 
 
-    class commands(LeggedRobotRecCfg.commands):
+    class commands(LeggedRobotWalkCfg.commands):
 
         heading_command = False
         
@@ -53,7 +53,7 @@ class Go1RecFlatConfig(LeggedRobotRecCfg):
             heading = [0., 0.]
             base_height = [0.2, 0.3]
 
-    class init_state(LeggedRobotRecCfg.init_state):
+    class init_state(LeggedRobotWalkCfg.init_state):
 
 
         """
@@ -91,7 +91,7 @@ class Go1RecFlatConfig(LeggedRobotRecCfg):
         }
 
     
-    class control(LeggedRobotRecCfg.control):
+    class control(LeggedRobotWalkCfg.control):
 
         control_type = 'P'
         stiffness = {'joint': 20.}  # [N*m/rad]
@@ -104,7 +104,7 @@ class Go1RecFlatConfig(LeggedRobotRecCfg):
 
 
     
-    class asset(LeggedRobotRecCfg.asset):
+    class asset(LeggedRobotWalkCfg.asset):
 
         self_collision = 1 # 1 to disable, 0 to enable...bitwise filter
         
@@ -116,12 +116,12 @@ class Go1RecFlatConfig(LeggedRobotRecCfg):
 
         terminate_after_contacts_on = []
 
-    class rewards(LeggedRobotRecCfg.rewards):
+    class rewards(LeggedRobotWalkCfg.rewards):
 
         max_contact_force = 350. 
         tracking_sigma  = 0.01
 
-        class scales(LeggedRobotRecCfg.rewards.scales):
+        class scales(LeggedRobotWalkCfg.rewards.scales):
 
             #Penalization
             lin_vel_z = -0.0 
@@ -164,7 +164,7 @@ class Go1RecFlatConfig(LeggedRobotRecCfg):
 
             tracking_base_height = 1.0
 
-    class domain_rand(LeggedRobotRecCfg.domain_rand):
+    class domain_rand(LeggedRobotWalkCfg.domain_rand):
 
         randomize_friction = True 
         randomize_base_mass = True
@@ -184,13 +184,14 @@ class Go1RecFlatConfig(LeggedRobotRecCfg):
         clip_actions = 100.
 
 
-    class noise(LeggedRobotRecCfg.noise):
+    class noise(LeggedRobotWalkCfg.noise):
         add_noise = False
     
-class Go1RecFlatConfigPPO(LeggedRobotRecCfgPPO):
+class Go1WalkFlatConfigPPO(LeggedRobotWalkCfgPPO):
 
 
-    class runner(LeggedRobotRecCfgPPO.runner):
+
+    class runner(LeggedRobotWalkCfgPPO.runner):
 
         
         #load_run = r"/home/bridge/Desktop/legged_gym/logs/flat_unitree_go1/Jun24_12-12-20_go1_flat" #This one can recover, but poor position. 
@@ -203,7 +204,7 @@ class Go1RecFlatConfigPPO(LeggedRobotRecCfgPPO):
         save_interval = 100
 
         run_name = 'go1_recover_flat'
-        experiment_name = 'unitree_go1_recover_flat'
+        experiment_name = 'flat_unitree_go1'
         load_run = -1
         checkpoint = -1 
         resume_path = -1 
