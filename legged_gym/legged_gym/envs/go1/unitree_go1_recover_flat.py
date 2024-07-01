@@ -167,6 +167,7 @@ class Go1RecFlatConfig(LeggedRobotCfg):
     class domain_rand(LeggedRobotCfg.domain_rand):
 
         randomize_friction = True 
+        randomize_base_mass = True
         push_robots = True
         push_intervel_s = 2. 
         max_push_vel_xy = 5.
@@ -196,8 +197,8 @@ class Go1RecFlatConfigPPO(LeggedRobotCfgPPO):
         #load_run = r"/home/bridge/Desktop/legged_gym/logs/flat_unitree_go1/Jun24_12-12-20_go1_flat" #This one can recover, but poor position. 
         #load_run = r"/home/bridge/Desktop/legged_gym/logs/flat_unitree_go1/Jun24_14-28-43_go1_flat"
 
-        max_iterations = 2001
-        num_steps_per_env = 24 # 30 steps per env
+        max_iterations = 2500
+        num_steps_per_env = 48 # 30 steps per env
 
         #logging
         save_interval = 100

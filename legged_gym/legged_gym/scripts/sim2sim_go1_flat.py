@@ -1,243 +1,9 @@
 
 
-# """
-# Sim to sim from Isaac gym to mujoco
+"""
+Sim to sim from Isaac gym to mujoco
 
-# """
-# import argparse
-# import math
-# import numpy as np 
-# import mujoco, mujoco_viewer
-# from tqdm import tqdm
-# from collections import deque
-# from scipy.spatial.transform import Rotation as R
-
-# from legged_gym.envs.base.legged_robot_config import LeggedRobotCfg, LeggedRobotCfgPPO
-# from legged_gym.envs import Go1RecFlatConfig, Go1RecFlatConfigPPO
-
-# from legged_gym.envs import * 
-# from legged_gym.utils import Logger
-
-# import torch
-
-# #Command for the robot to follow in the simulation
-
-# class cmd:
-
-#     base_height = 0.0 
-
-# def quaternion_to_euler_array(quat):
-
-#     #Ensure quaternion is in the correct format (x,y,z,w)
-#     x, y, z, w = quat
-
-#     #Roll (x-axis rotation)
-#     t0 = +2.0 * (w * x + y * z)
-#     t1 = +1.0 - 2.0 * (x * x + y * y)
-#     roll_x = np.arctan2(t0, t1)
-
-#     #Pitch (y-axis rotation)
-#     t2 = +2.0* (w * y - z * x)
-#     t2 = np.clip(t1, -1.0, 1.0)
-#     pitch_y = np.arcsin(t2)
-
-#     #Yaw (z-axis rotation) 
-#     t3 = +2.0 * (w * z + x * y)
-#     t4 = +1.0 - 2.0 * (y * y + z * z)
-#     yaw_z = np.arctan2(t3, t4)
-
-#     #Return as a numpy array IN RADIANS
-#     return np.array([roll_x, pitch_y, yaw_z])
-
-# def get_obs(data):
-#     """
-#     Extracts the observation from the mujoco data structure
-#     """
-
-#     q = data.qpos.astype(np.double)
-#     dq = data.qvel.astype(np.double)
-#     quat = data.sensor('orientation').data[[1, 2, 3, 0]].astype(np.double)
-#     r = R.from_quat(quat)
-#     v = r.apply(data.qvel[:3], inverse=True).astype(np.double) #velocity in body frame
-#     omega = data.sensor('angular-velocity').data.astype(np.double)
-#     gvec = r.apply(np.array([0., 0., -1.]), inverse=True).astype(np.double) #gravity vector in body frame
-
-#     return (q, dq, quat, v, omega, gvec) #return as a tuple
-
-
-
-# def pd_control(target_q, q, kp, target_dq, dq, kd, cfg):
-    
-#     """
-#     Calculates torques from position commands
-
-#     Get the robot's default_dof_pos from config file 
-#     """
-
-#     return (target_q + cfg.default_dof_pos - q) * kp + (target_dq - dq) * kd 
-
-
-# def run_mujoco(policy, cfg):
-#     """
-#     Run the Mujoco simulation using the provided policy and configuration.
-
-#     Args:
-#         policy: The policy used for controlling the simulation.
-#         cfg: The configuration object containing simulation settings.
-
-#     Returns:
-#         None
-#     """
-
-#     model = mujoco.MjModel.from_xml_path(cfg.sim_config.mujoco_model_path)
-#     model.opt.timestep = cfg.sim_config.dt
-
-#     data = mujoco.MjData(model)
-
-#     num_actuated_joints = cfg.env.num_actions
-#     data.qpos[-num_actuated_joints:] = cfg.robot_config.default_dof_pos
-
-#     mujoco.mj_step(model, data)
-#     viewer = mujoco_viewer.MujocoViewer(model, data)
-    
-    
-#     target_q = np.zeros((cfg.env.num_actions), dtype=np.double)
-#     action = np.zeros((cfg.env.num_actions), dtype=np.double)
-
-#     hist_obs = deque()
-
-#     for _ in range(cfg.env.frame_stack):
-#         hist_obs.append(np.zeros([1, cfg.env.num_single_obs], dtype=np.double))
-
-#     count_lowlevel = 1
-#     logger = Logger(cfg.sim_config.dt)
-
-#     stop_state_log = 3000
-
-#     np.set_printoptions(formatter={'float': '{:0.4f}'.format})
-
-#     for _ in tqdm(range(int(cfg.sim_config.sim_duration / cfg.sim_config.dt)), desc="Simulating..."):
-
-#         #Obtain an observation
-#         q, dq, quat, v, omega, gvec = get_obs(data)
-#         q = q[-cfg.env.num_actions:]
-#         dq = dq[-cfg.env.num_actions:]
-
-#         if count_lowlevel % cfg.sim_config.decimation == 0: 
-
-#             obs = np.zeros([1, cfg.env.num_single_obs], dtype=np.float32)
-#             eu_ang = quaternion_to_euler_array(quat)
-#             eu_ang[eu_ang > math.pi] -= 2 * math.pi
-
-#             #Update the observation
-
-#             #Reference code from legged_robot
-#             # self.obs_buf = torch.cat((  self.base_ang_vel * self.obs_scales.ang_vel, #3
-#             #                         self.projected_gravity, #3
-#             #                         self.commands[:, :3] * self.commands_scale, #3
-#             #                         (self.dof_pos - self.default_dof_pos) * self.obs_scales.dof_pos, #12
-#             #                         self.dof_vel * self.obs_scales.dof_vel, #12
-#             #                         self.actions #12
-#             #                         ),dim=-1)
-
-
-#             obs[0, 0:3] = omega #base angular velocity
-#             obs[0, 3:6] = gvec #projected gravity
-#             obs[0, 6:7] = np.array([cmd.base_height]) #commands
-#             obs[0, 7:19] = (q - cfg.robot_config.default_dof_pos) * cfg.obs_scales.dof_pos #dof_pos: 12
-#             obs[0, 19:31] = dq * cfg.obs_scales.dof_vel #angular velocity: 12
-#             obs[0, 31:43] = action
-
-
-#             obs = np.clip(obs, -cfg.normalization.clip_observations, cfg.normalization.clip_observations)
-
-#             hist_obs.append(obs)
-#             hist_obs.popleft()
-
-#             policy_input = np.zeros([1, cfg.env.num_observations], dtype=np.float32)
-#             for i in range(cfg.env.frame_stack):
-#                 policy_input[0, i * cfg.env.num_single_obs:(i + 1) * cfg.env.num_single_obs] = hist_obs[i][0, :]
-            
-#             action[:] = policy(torch.tensor(policy_input))[0].detach().numpy()
-
-#             action = np.clip(action, -cfg.normalization.clip_actions, cfg.normalization.clip_actions)
-#             target_q = action * cfg.control.action_scale
-
-#         #Calculate torques
-#         target_dq = np.zeros((cfg.env.num_actions), dtype=np.double)
-
-#         tau = pd_control(target_q, q, cfg.control.stiffness, target_dq, dq, cfg.control.damping, cfg) 
-#         tau = np.clip(tau, -cfg.robot_config.tau_limit, cfg.robot_config.tau_limit) 
-
-#         data.ctrl = tau
-#         applied_tau = data.actuator_force
-
-#         mujoco.mj_step(model, data)
-#         viewer.render()
-#         count_lowlevel += 1
-#     viewer.close()
-
-# if __name__ == "__main__":
-
-
-#     parser = argparse.ArgumentParser(description='Deployment script.')
-#     parser.add_argument('--load_model', type=str, required=True, help='Run to load from.')
-#     args = parser.parse_args()
-
-#     class Sim2simCfg(Go1RecFlatConfig):
-#         class sim_config:
-#             mujoco_model_path = f'{LEGGED_GYM_ROOT_DIR}/resources/robots/go1/mjmodel.xml'
-#             sim_duration = 60.0 
-#             dt = 0.001
-#             decimation = 10 
-
-#         class robot_config:
-#             kps = np.array([200, 200, 350, 350, 15, 15, 200, 200, 350, 350, 15, 15], dtype=np.double)
-#             kds = np.array([10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10], dtype=np.double)
-#             tau_limit = 200. * np.ones(12, dtype=np.double)
-#             default_dof_pos = np.array([0., 0.8, -1.5, 0., 0.8, -1.5, 0., 0.8, -1.5, 0., 0.8, -1.5])
-
-#     try:
-#         policy = torch.jit.load(args.load_model)
-#         print("Model loaded successfully.")
-#         run_mujoco(policy, Sim2simCfg())
-#     except RuntimeError as e:
-#         print(f"Error loading the model: {e}")
-#     except FileNotFoundError as e:
-#         print(f"File not found: {e}")
-
-
-
-# SPDX-License-Identifier: BSD-3-Clause
-# 
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are met:
-#
-# 1. Redistributions of source code must retain the above copyright notice, this
-# list of conditions and the following disclaimer.
-#
-# 2. Redistributions in binary form must reproduce the above copyright notice,
-# this list of conditions and the following disclaimer in the documentation
-# and/or other materials provided with the distribution.
-#
-# 3. Neither the name of the copyright holder nor the names of its
-# contributors may be used to endorse or promote products derived from
-# this software without specific prior written permission.
-#
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-# Copyright (c) 2024 Beijing RobotEra TECHNOLOGY CO.,LTD. All rights reserved.
-
-
+"""
 import argparse
 import math
 import numpy as np 
@@ -254,52 +20,62 @@ from legged_gym.utils import Logger
 
 import torch
 
+#Command for the robot to follow in the simulation
 
+class cmd:
 
-class cmd: # Command for the robot to follow in the simulation
-    vx = 0.4
-    vy = 0.0
-    dyaw = 0.0
-
+    base_height = 0.0 
 
 def quaternion_to_euler_array(quat):
-    # Ensure quaternion is in the correct format [x, y, z, w]
+
+    #Ensure quaternion is in the correct format (x,y,z,w)
     x, y, z, w = quat
-    
-    # Roll (x-axis rotation)
+
+    #Roll (x-axis rotation)
     t0 = +2.0 * (w * x + y * z)
     t1 = +1.0 - 2.0 * (x * x + y * y)
     roll_x = np.arctan2(t0, t1)
-    
-    # Pitch (y-axis rotation)
-    t2 = +2.0 * (w * y - z * x)
-    t2 = np.clip(t2, -1.0, 1.0)
+
+    #Pitch (y-axis rotation)
+    t2 = +2.0* (w * y - z * x)
+    t2 = np.clip(t1, -1.0, 1.0)
     pitch_y = np.arcsin(t2)
-    
-    # Yaw (z-axis rotation)
+
+    #Yaw (z-axis rotation) 
     t3 = +2.0 * (w * z + x * y)
     t4 = +1.0 - 2.0 * (y * y + z * z)
     yaw_z = np.arctan2(t3, t4)
-    
-    # Returns roll, pitch, yaw in a NumPy array in radians
+
+    #Return as a numpy array IN RADIANS
     return np.array([roll_x, pitch_y, yaw_z])
 
 def get_obs(data):
-    '''Extracts an observation from the mujoco data structure
-    '''
+    """
+    Extracts the observation from the mujoco data structure
+    """
+
     q = data.qpos.astype(np.double)
     dq = data.qvel.astype(np.double)
     quat = data.sensor('orientation').data[[1, 2, 3, 0]].astype(np.double)
     r = R.from_quat(quat)
-    v = r.apply(data.qvel[:3], inverse=True).astype(np.double)  # In the base frame
+    v = r.apply(data.qvel[:3], inverse=True).astype(np.double) #velocity in body frame
     omega = data.sensor('angular-velocity').data.astype(np.double)
-    gvec = r.apply(np.array([0., 0., -1.]), inverse=True).astype(np.double)
-    return (q, dq, quat, v, omega, gvec)
+    gvec = r.apply(np.array([0., 0., -1.]), inverse=True).astype(np.double) #gravity vector in body frame
 
-def pd_control(target_q, q, kp, target_dq, dq, kd):
-    '''Calculates torques from position commands
-    '''
-    return (target_q - q) * kp + (target_dq - dq) * kd
+    return (q, dq, quat, v, omega, gvec) #return as a tuple
+
+
+
+def pd_control(target_q, q, kp, target_dq, dq, kd, cfg):
+    
+    """
+    Calculates torques from position commands
+
+    Get the robot's default_dof_pos from config file 
+    """
+
+    return (target_q + cfg.default_dof_pos - q) * kp + (target_dq - dq) * kd 
+
 
 def run_mujoco(policy, cfg):
     """
@@ -312,99 +88,126 @@ def run_mujoco(policy, cfg):
     Returns:
         None
     """
+
     model = mujoco.MjModel.from_xml_path(cfg.sim_config.mujoco_model_path)
     model.opt.timestep = cfg.sim_config.dt
     data = mujoco.MjData(model)
+
+
+
+
+    num_actuated_joints = cfg.env.num_actions
+    data.qpos[-num_actuated_joints:] = cfg.robot_config.default_dof_pos
+
     mujoco.mj_step(model, data)
     viewer = mujoco_viewer.MujocoViewer(model, data)
-
+    
+    
     target_q = np.zeros((cfg.env.num_actions), dtype=np.double)
     action = np.zeros((cfg.env.num_actions), dtype=np.double)
 
     hist_obs = deque()
-    for _ in range(cfg.env.frame_stack):
-        hist_obs.append(np.zeros([1, cfg.env.num_single_obs], dtype=np.double))
 
-    count_lowlevel = 0
+    # for _ in range(cfg.env.frame_stack):
+    #     hist_obs.append(np.zeros([1, cfg.env.num_single_obs], dtype=np.double))
 
+    count_lowlevel = 1
+    logger = Logger(cfg.sim_config.dt)
+
+    stop_state_log = 3000
+
+    np.set_printoptions(formatter={'float': '{:0.4f}'.format})
 
     for _ in tqdm(range(int(cfg.sim_config.sim_duration / cfg.sim_config.dt)), desc="Simulating..."):
 
-        # Obtain an observation
+        #Obtain an observation
         q, dq, quat, v, omega, gvec = get_obs(data)
         q = q[-cfg.env.num_actions:]
         dq = dq[-cfg.env.num_actions:]
 
-        # 1000hz -> 100hz
-        if count_lowlevel % cfg.sim_config.decimation == 0:
+        if count_lowlevel % cfg.sim_config.decimation == 0: 
 
             obs = np.zeros([1, cfg.env.num_single_obs], dtype=np.float32)
             eu_ang = quaternion_to_euler_array(quat)
             eu_ang[eu_ang > math.pi] -= 2 * math.pi
 
-            obs[0, 0] = math.sin(2 * math.pi * count_lowlevel * cfg.sim_config.dt  / 0.64) # 0.64 is the period of the sine wave
-            obs[0, 1] = math.cos(2 * math.pi * count_lowlevel * cfg.sim_config.dt  / 0.64)
-            obs[0, 2] = cmd.vx * cfg.normalization.obs_scales.lin_vel
-            obs[0, 3] = cmd.vy * cfg.normalization.obs_scales.lin_vel
-            obs[0, 4] = cmd.dyaw * cfg.normalization.obs_scales.ang_vel
-            obs[0, 5:17] = q * cfg.normalization.obs_scales.dof_pos
-            obs[0, 17:29] = dq * cfg.normalization.obs_scales.dof_vel
-            obs[0, 29:41] = action
-            obs[0, 41:44] = omega
-            obs[0, 44:47] = eu_ang
+            obs[0, 0:3] = omega #base angular velocity
+            obs[0, 3:6] = gvec #projected gravity
+            obs[0, 6:7] = np.array([cmd.base_height]) #commands
+            obs[0, 7:19] = (q - cfg.robot_config.default_dof_pos) * cfg.obs_scales.dof_pos #dof_pos: 12
+            obs[0, 19:31] = dq * cfg.obs_scales.dof_vel #angular velocity: 12
+            obs[0, 31:43] = action
+
 
             obs = np.clip(obs, -cfg.normalization.clip_observations, cfg.normalization.clip_observations)
 
-            hist_obs.append(obs)
-            hist_obs.popleft()
+            # hist_obs.append(obs)
+            # hist_obs.popleft()
 
-            policy_input = np.zeros([1, cfg.env.num_observations], dtype=np.float32)
-            for i in range(cfg.env.frame_stack):
-                policy_input[0, i * cfg.env.num_single_obs : (i + 1) * cfg.env.num_single_obs] = hist_obs[i][0, :]
+            # policy_input = np.zeros([1, cfg.env.num_observations], dtype=np.float32)
+            # for i in range(cfg.env.frame_stack):
+            #     policy_input[0, i * cfg.env.num_single_obs:(i + 1) * cfg.env.num_single_obs] = hist_obs[i][0, :]
+            
             action[:] = policy(torch.tensor(policy_input))[0].detach().numpy()
-            action = np.clip(action, -cfg.normalization.clip_actions, cfg.normalization.clip_actions)
 
+            action = np.clip(action, -cfg.normalization.clip_actions, cfg.normalization.clip_actions)
             target_q = action * cfg.control.action_scale
 
-
+        #Calculate torques
         target_dq = np.zeros((cfg.env.num_actions), dtype=np.double)
-        # Generate PD control
-        tau = pd_control(target_q, q, cfg.robot_config.kps,
-                        target_dq, dq, cfg.robot_config.kds)  # Calc torques
-        tau = np.clip(tau, -cfg.robot_config.tau_limit, cfg.robot_config.tau_limit)  # Clamp torques
+
+        tau = pd_control(target_q, q, cfg.control.stiffness, target_dq, dq, cfg.control.damping, cfg) 
+        tau = np.clip(tau, -cfg.robot_config.tau_limit, cfg.robot_config.tau_limit) 
+
         data.ctrl = tau
+        applied_tau = data.actuator_force
 
         mujoco.mj_step(model, data)
         viewer.render()
         count_lowlevel += 1
-
     viewer.close()
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
 
 
     parser = argparse.ArgumentParser(description='Deployment script.')
-    parser.add_argument('--load_model', type=str, required=True,
-                        help='Run to load from.')
-    parser.add_argument('--terrain', action='store_true', help='terrain or plane')
+    parser.add_argument('--load_model', type=str, required=True, help='Run to load from.')
     args = parser.parse_args()
 
     class Sim2simCfg(Go1RecFlatConfig):
-
         class sim_config:
-            if args.terrain:
-                mujoco_model_path = f'{LEGGED_GYM_ROOT_DIR}/resources/robots/XBot/mjcf/XBot-L-terrain.xml'
-            else:
-                mujoco_model_path = f'{LEGGED_GYM_ROOT_DIR}/resources/robots/go1/mjmodel.xml'
-            sim_duration = 60.0
-            dt = 0.001
-            decimation = 10
+            mujoco_model_path = f'{LEGGED_GYM_ROOT_DIR}/resources/robots/go1/urdf/go1_bridgedp.xml'
+            sim_duration = 60.0 
+            dt = 0.005
+            decimation = 10 
 
         class robot_config:
             kps = np.array([200, 200, 350, 350, 15, 15, 200, 200, 350, 350, 15, 15], dtype=np.double)
             kds = np.array([10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10], dtype=np.double)
             tau_limit = 200. * np.ones(12, dtype=np.double)
+            default_dof_pos = np.array([0., 0.8, -1.5, 0., 0.8, -1.5, 0., 0.8, -1.5, 0., 0.8, -1.5])
 
-    policy = torch.jit.load(args.load_model)
-    run_mujoco(policy, Sim2simCfg())
+    if not args.load_model:
+        args.load_model = f'{LEGGED_GYM_ROOT_DIR}/logs/flat_unitree_go1/exported/policies/policy_1.pt'
+
+    try:
+        policy = torch.jit.load(args.load_model)
+        print("Model loaded successfully.")
+        run_mujoco(policy, Sim2simCfg())
+    except RuntimeError as e:
+        print(f"Error loading the model: {e}")
+    except FileNotFoundError as e:
+        print(f"File not found: {e}")
+
+
+
+
+
+
+
+
+
+
+
+
+
