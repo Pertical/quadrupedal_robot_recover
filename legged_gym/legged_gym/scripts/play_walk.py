@@ -38,11 +38,12 @@ from legged_gym.utils import  get_args, export_policy_as_jit, task_registry, Log
 import numpy as np
 import torch
 
+#TODO add controller
 
 def play(args):
     env_cfg, train_cfg = task_registry.get_cfgs(name=args.task)
     # override some parameters for testing
-    env_cfg.env.num_envs = min(env_cfg.env.num_envs, 50)
+    env_cfg.env.num_envs = min(env_cfg.env.num_envs, 1)
     env_cfg.terrain.num_rows = 5
     env_cfg.terrain.num_cols = 5
     env_cfg.terrain.curriculum = False

@@ -12,6 +12,7 @@ class Go1WalkConfig(LeggedRobotWalkCfg):
     class env(LeggedRobotWalkCfg.env):
         num_envs = 4096
         num_actions = 12
+        episode_length_s = 25
 
     
     class terrain(LeggedRobotWalkCfg.terrain):
@@ -74,7 +75,15 @@ class Go1WalkConfig(LeggedRobotWalkCfg):
             pass
 
     class domain_rand(LeggedRobotWalkCfg.domain_rand):
+        randomize_friction = True
+        friction_range = [0.5, 1.25]
+
         randomize_base_mass = True
+        added_mass_range = [-2., 2.]
+
+        push_robots = True 
+        push_interval_s = 5 
+        max_push_vel_xy = 2. 
 
 
 class Go1WalkConfigPPO(LeggedRobotCfgPPO):
@@ -85,7 +94,7 @@ class Go1WalkConfigPPO(LeggedRobotCfgPPO):
         #load_run = r"/home/bridge/Desktop/legged_gym/logs/flat_unitree_go1/Jun24_12-12-20_go1_flat" #This one can recover, but poor position. 
         #load_run = r"/home/bridge/Desktop/legged_gym/logs/flat_unitree_go1/Jun24_14-28-43_go1_flat"
 
-        max_iterations = 2500
+        max_iterations = 5001
         num_steps_per_env = 24 # 30 steps per env
 
         #logging
