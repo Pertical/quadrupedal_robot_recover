@@ -12,7 +12,7 @@ from tqdm import tqdm
 from collections import deque
 from scipy.spatial.transform import Rotation as R
 
-from legged_gym.envs.base.legged_robot_config import LeggedRobotCfg, LeggedRobotCfgPPO
+from legged_gym.envs.base.legged_robot_rec_config import LeggedRobotRecCfg, LeggedRobotRecCfgPPO
 from legged_gym.envs import Go1RecFlatConfig, Go1RecFlatConfigPPO
 
 from legged_gym.envs import * 
@@ -56,25 +56,15 @@ def get_obs(data):
 
     q = data.qpos.astype(np.double)
     dq = data.qvel.astype(np.double)
-    quat = data.sensor('orientation').data[[1, 2, 3, 0]].astype(np.double)
+    quat = data.sensor('Body_Quat').data[[1, 2, 3, 0]].astype(np.double)
     r = R.from_quat(quat)
     v = r.apply(data.qvel[:3], inverse=True).astype(np.double) #velocity in body frame
-    omega = data.sensor('angular-velocity').data.astype(np.double)
+    omega = data.sensor('Body_Gyro').data.astype(np.double)
     gvec = r.apply(np.array([0., 0., -1.]), inverse=True).astype(np.double) #gravity vector in body frame
 
     return (q, dq, quat, v, omega, gvec) #return as a tuple
 
 
-
-def pd_control(target_q, q, kp, target_dq, dq, kd, cfg):
-    
-    """
-    Calculates torques from position commands
-
-    Get the robot's default_dof_pos from config file 
-    """
-
-    return (target_q + cfg.default_dof_pos - q) * kp + (target_dq - dq) * kd 
 
 
 def run_mujoco(policy, cfg):
@@ -93,7 +83,10 @@ def run_mujoco(policy, cfg):
     model.opt.timestep = cfg.sim_config.dt
     data = mujoco.MjData(model)
 
+    action_startup = np.array([0., 0.8, -1.5, 0., 0.8, -1.5, 0., 0.8, -1.5, 0., 0.8, -1.5])
+    data.qpos[-num_actuated_joints:] = action_startup[:]
 
+    
 
 
     num_actuated_joints = cfg.env.num_actions
@@ -148,7 +141,7 @@ def run_mujoco(policy, cfg):
             # for i in range(cfg.env.frame_stack):
             #     policy_input[0, i * cfg.env.num_single_obs:(i + 1) * cfg.env.num_single_obs] = hist_obs[i][0, :]
             
-            action[:] = policy(torch.tensor(policy_input))[0].detach().numpy()
+            action[:] = policy(torch.tensor(obs))[0].detach().numpy()
 
             action = np.clip(action, -cfg.normalization.clip_actions, cfg.normalization.clip_actions)
             target_q = action * cfg.control.action_scale
@@ -171,12 +164,16 @@ if __name__ == "__main__":
 
 
     parser = argparse.ArgumentParser(description='Deployment script.')
-    parser.add_argument('--load_model', type=str, required=True, help='Run to load from.')
+    # parser.add_argument('--load_model', type=str, required=True, help='Run to load from.')
     args = parser.parse_args()
 
     class Sim2simCfg(Go1RecFlatConfig):
+
+        default_dof_pos = np.array([0., 0.8, -1.5, 0., 0.8, -1.5, 0., 0.8, -1.5, 0., 0.8, -1.5])
+
         class sim_config:
-            mujoco_model_path = f'{LEGGED_GYM_ROOT_DIR}/resources/robots/go1/urdf/go1_bridgedp.xml'
+            mujoco_model_path = f'{LEGGED_GYM_ROOT_DIR}/resources/robots/go1/urdf/go1.xml'
+            # mujoco_model_path = f'{LEGGED_GYM_ROOT_DIR}/resources/robots/go1/urdf/zq_box_foot.xml'
             sim_duration = 60.0 
             dt = 0.005
             decimation = 10 
@@ -187,11 +184,12 @@ if __name__ == "__main__":
             tau_limit = 200. * np.ones(12, dtype=np.double)
             default_dof_pos = np.array([0., 0.8, -1.5, 0., 0.8, -1.5, 0., 0.8, -1.5, 0., 0.8, -1.5])
 
-    if not args.load_model:
-        args.load_model = f'{LEGGED_GYM_ROOT_DIR}/logs/flat_unitree_go1/exported/policies/policy_1.pt'
+    # if args.load_model is None:
+    #     args.load_model = f'{LEGGED_GYM_ROOT_DIR}/logs/flat_unitree_go1/exported/policies/policy_1.pt'
+    load_model = f'{LEGGED_GYM_ROOT_DIR}/logs/flat_unitree_go1/exported/policies/policy_1.pt'
 
     try:
-        policy = torch.jit.load(args.load_model)
+        policy = torch.jit.load(load_model)
         print("Model loaded successfully.")
         run_mujoco(policy, Sim2simCfg())
     except RuntimeError as e:
