@@ -59,7 +59,7 @@ class Go1WalkConfig(LeggedRobotWalkCfg):
 
         self_collision = 1 # 1 to disable, 0 to enable...bitwise filter
         
-        file = "{LEGGED_GYM_ROOT_DIR}/resources/robots/go1/urdf/go1_bridgedp.urdf"
+        file = "{LEGGED_GYM_ROOT_DIR}/resources/robots/go1/urdf/go1_bridgedp_dae.urdf"
 
         name = "go1"
         foot_name = "foot"
