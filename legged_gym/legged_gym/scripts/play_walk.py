@@ -36,9 +36,85 @@ from legged_gym.envs import *
 from legged_gym.utils import  get_args, export_policy_as_jit, task_registry, Logger
 
 import numpy as np
+import pygame
+from threading import Thread
 import torch
 
-#TODO add controller
+x_vel_cmd, y_vel_cmd, yaw_vel_cmd = 0.0, 0.0, 0.0
+x_vel_cmd_scale, y_vel_cmd_scale, yaw_vel_cmd_scale = 0.49, 0.49, 1.0
+joystick_use = True
+joystick_opened = False
+
+if joystick_use:
+    pygame.init()
+    screen = pygame.display.set_mode((500, 500))
+
+    try:
+        # 获取手柄
+        joystick = pygame.joystick.Joystick(0)
+        joystick.init()
+        joystick_opened = True
+    except Exception as e:
+        print(f"无法打开手柄：{e}")
+
+    # 用于控制线程退出的标志
+    exit_flag = False
+
+
+# 处理手柄输入的线程
+    def handle_joystick_input():
+        global exit_flag, x_vel_cmd, y_vel_cmd, yaw_vel_cmd
+
+        while not exit_flag:
+            # 获取手柄输入
+            # pygame.event.get()
+            #
+            # # 更新机器人命令
+            # x_vel_cmd = -joystick.get_axis(1) * 1.0
+            # yaw_vel_cmd = -joystick.get_axis(3) * 3.14
+            # # if yaw_vel_cmd >= math.pi:
+            # #     yaw_vel_cmd -= 2 * math.pi
+            # # if yaw_vel_cmd <= -math.pi:
+            # #     yaw_vel_cmd += 2 * math.pi
+            #
+            # # 等待一小段时间，可以根据实际情况调整
+
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_w:
+                        x_vel_cmd += 1
+                    if event.key == pygame.K_s:
+                        x_vel_cmd -= 1
+                    if event.key == pygame.K_a:
+                        y_vel_cmd += 1
+                    if event.key == pygame.K_d:
+                        y_vel_cmd -= 1
+                    if event.key == pygame.K_q:
+                        yaw_vel_cmd += 1
+                    if event.key == pygame.K_e:
+                        yaw_vel_cmd -= 1
+
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_w:
+                        x_vel_cmd -= 1
+                    if event.key == pygame.K_s:
+                        x_vel_cmd += 1
+                    if event.key == pygame.K_a:
+                        y_vel_cmd -= 1
+                    if event.key == pygame.K_d:
+                        y_vel_cmd += 1
+                    if event.key == pygame.K_q:
+                        yaw_vel_cmd -= 1
+                    if event.key == pygame.K_e:
+                        yaw_vel_cmd += 1
+
+            pygame.time.delay(100)
+
+    # 启动线程
+    # if joystick_opened and joystick_use:
+    if True:
+        joystick_thread = Thread(target=handle_joystick_input)
+        joystick_thread.start()
 
 def play(args):
     env_cfg, train_cfg = task_registry.get_cfgs(name=args.task)
@@ -76,6 +152,11 @@ def play(args):
     img_idx = 0
 
     for i in range(10*int(env.max_episode_length)):
+        if joystick_use:
+            env.commands[:, 0] = x_vel_cmd * x_vel_cmd_scale
+            env.commands[:, 1]= y_vel_cmd * y_vel_cmd_scale
+            env.commands[:, 2] = yaw_vel_cmd * yaw_vel_cmd_scale
+            
         actions = policy(obs.detach())
         obs, _, rews, dones, infos = env.step(actions.detach())
         if RECORD_FRAMES:
@@ -113,10 +194,35 @@ def play(args):
                     logger.log_rewards(infos["episode"], num_episodes)
         elif i==stop_rew_log:
             logger.print_rewards()
+            
+        cmd_vx, cmd_vy, cmd_yaw, _ = env.commands[robot_index].cpu().numpy()
+        real_vx, real_vy, _ = env.base_lin_vel[robot_index].cpu().numpy()
+        _, _, real_yaw = env.base_ang_vel[robot_index].cpu().numpy()
+        real_base_height = torch.mean(env.root_states[:, 2].unsqueeze(1) - env.measured_heights).cpu().numpy()
+
+        print("time: %.2f | cmd  vx %.2f | cmd  vy %.2f | cmd  yaw %.2f" % (
+            env.episode_length_buf[robot_index].item() / 50,
+            cmd_vx,
+            cmd_vy,
+            cmd_yaw
+        ))
+
+        print("time: %.2f | real vx %.2f | real vy %.2f | real yaw %.2f | base height %.2f" % (
+            env.episode_length_buf[robot_index].item() / 50,
+            real_vx,
+            real_vy,
+            real_yaw,
+            real_base_height
+        ))
 
 if __name__ == '__main__':
     EXPORT_POLICY = True
     RECORD_FRAMES = False
     MOVE_CAMERA = False
     args = get_args()
-    play(args)
+    
+    try:
+        play(args)
+    except KeyboardInterrupt:
+        exit_flag = True
+
