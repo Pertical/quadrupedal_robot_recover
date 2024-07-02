@@ -505,7 +505,23 @@ class LeggedRecRobot(BaseTask):
         Args:
             env_ids (List[int]): Environemnt ids
         """
-        self.dof_pos[env_ids] = self.default_dof_pos * torch_rand_float(0.5, 1.5, (len(env_ids), self.num_dof), device=self.device)
+        # self.dof_pos[env_ids] = self.default_dof_pos * torch_rand_float(0.5, 1.5, (len(env_ids), self.num_dof), device=self.device)
+        
+        # used for go1; change the parameters id needed
+        # Convert env_ids to a tensor
+        env_ids = torch.tensor(env_ids, device=self.device)
+
+        # Generate random values for the hip, thigh, and calf joints
+        hip_joints_rand = torch.rand((len(env_ids), 1), device=self.device) * 2.0944 - 1.0472
+        thigh_joints_rand = torch.rand((len(env_ids), 1), device=self.device) * 3.6303 - 0.663225115
+        calf_joints_rand = torch.rand((len(env_ids), 1), device=self.device) * -1.8675023 - -2.70526034
+
+        # Concatenate the random values along the column dimension
+        joints_rand = torch.cat((hip_joints_rand, thigh_joints_rand, calf_joints_rand), dim=1)
+
+        # Assign the random values to the appropriate slice of self.dof_pos
+        self.dof_pos[env_ids.unsqueeze(1), torch.tensor([0, 1, 2], device=self.device)] = joints_rand
+        
         self.dof_vel[env_ids] = 0.
 
         env_ids_int32 = env_ids.to(dtype=torch.int32)
