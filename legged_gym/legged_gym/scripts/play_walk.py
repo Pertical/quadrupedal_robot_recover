@@ -40,8 +40,8 @@ import pygame
 from threading import Thread
 import torch
 
-x_vel_cmd, y_vel_cmd, yaw_vel_cmd = 0.0, 0.0, 0.0
-x_vel_cmd_scale, y_vel_cmd_scale, yaw_vel_cmd_scale = 0.49, 0.49, 1.0
+x_vel_cmd, y_vel_cmd, yaw_vel_cmd, base_height_cmd = 0.0, 0.0, 0.0, 0.0
+x_vel_cmd_scale, y_vel_cmd_scale, yaw_vel_cmd_scale, base_height_cmd_scale = 0.49, 0.49, 1.0, 1.0
 joystick_use = True
 joystick_opened = False
 
@@ -63,7 +63,7 @@ if joystick_use:
 
 # 处理手柄输入的线程
     def handle_joystick_input():
-        global exit_flag, x_vel_cmd, y_vel_cmd, yaw_vel_cmd
+        global exit_flag, x_vel_cmd, y_vel_cmd, yaw_vel_cmd, base_height_cmd
 
         while not exit_flag:
             # 获取手柄输入
@@ -93,6 +93,8 @@ if joystick_use:
                         yaw_vel_cmd += 1
                     if event.key == pygame.K_e:
                         yaw_vel_cmd -= 1
+                    if event.key == pygame.K_r:
+                        base_height_cmd += 1
 
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_w:
@@ -107,6 +109,8 @@ if joystick_use:
                         yaw_vel_cmd -= 1
                     if event.key == pygame.K_e:
                         yaw_vel_cmd += 1
+                    if event.key == pygame.K_r:
+                        base_height_cmd -= 1
 
             pygame.time.delay(100)
 
@@ -156,6 +160,7 @@ def play(args):
             env.commands[:, 0] = x_vel_cmd * x_vel_cmd_scale
             env.commands[:, 1]= y_vel_cmd * y_vel_cmd_scale
             env.commands[:, 2] = yaw_vel_cmd * yaw_vel_cmd_scale
+            env.commands[:, 4] = base_height_cmd * base_height_cmd_scale
             
         actions = policy(obs.detach())
         obs, _, rews, dones, infos = env.step(actions.detach())
@@ -178,6 +183,7 @@ def play(args):
                     'command_x': env.commands[robot_index, 0].item(),
                     'command_y': env.commands[robot_index, 1].item(),
                     'command_yaw': env.commands[robot_index, 2].item(),
+                    'command_height': env.commands[robot_index, 4].item(),
                     'base_vel_x': env.base_lin_vel[robot_index, 0].item(),
                     'base_vel_y': env.base_lin_vel[robot_index, 1].item(),
                     'base_vel_z': env.base_lin_vel[robot_index, 2].item(),
@@ -195,16 +201,17 @@ def play(args):
         elif i==stop_rew_log:
             logger.print_rewards()
             
-        cmd_vx, cmd_vy, cmd_yaw, _ = env.commands[robot_index].cpu().numpy()
+        cmd_vx, cmd_vy, cmd_yaw, _, cmd_base_height = env.commands[robot_index].cpu().numpy()
         real_vx, real_vy, _ = env.base_lin_vel[robot_index].cpu().numpy()
         _, _, real_yaw = env.base_ang_vel[robot_index].cpu().numpy()
         real_base_height = torch.mean(env.root_states[:, 2].unsqueeze(1) - env.measured_heights).cpu().numpy()
 
-        print("time: %.2f | cmd  vx %.2f | cmd  vy %.2f | cmd  yaw %.2f" % (
+        print("time: %.2f | cmd  vx %.2f | cmd  vy %.2f | cmd  yaw %.2f | cmd  base  height %.2f" % (
             env.episode_length_buf[robot_index].item() / 50,
             cmd_vx,
             cmd_vy,
-            cmd_yaw
+            cmd_yaw,
+            cmd_base_height
         ))
 
         print("time: %.2f | real vx %.2f | real vy %.2f | real yaw %.2f | base height %.2f" % (

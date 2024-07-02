@@ -41,6 +41,8 @@ import torch
 from torch import Tensor
 from typing import Tuple, Dict
 
+import wandb
+
 from legged_gym import LEGGED_GYM_ROOT_DIR
 from legged_gym.envs.base.base_task import BaseTask
 from legged_gym.utils.terrain import Terrain
@@ -213,7 +215,7 @@ class LeggedRobotWalk(BaseTask):
         self.obs_buf = torch.cat((  self.base_lin_vel * self.obs_scales.lin_vel,
                                     self.base_ang_vel  * self.obs_scales.ang_vel,
                                     self.projected_gravity,
-                                    self.commands[:, :3] * self.commands_scale,
+                                    self.commands[:, :5] * self.commands_scale,
                                     (self.dof_pos - self.default_dof_pos) * self.obs_scales.dof_pos,
                                     self.dof_vel * self.obs_scales.dof_vel,
                                     self.actions
@@ -343,6 +345,7 @@ class LeggedRobotWalk(BaseTask):
         """
         self.commands[env_ids, 0] = torch_rand_float(self.command_ranges["lin_vel_x"][0], self.command_ranges["lin_vel_x"][1], (len(env_ids), 1), device=self.device).squeeze(1)
         self.commands[env_ids, 1] = torch_rand_float(self.command_ranges["lin_vel_y"][0], self.command_ranges["lin_vel_y"][1], (len(env_ids), 1), device=self.device).squeeze(1)
+        self.commands[env_ids, 4] = torch_rand_float(self.command_ranges["base_height_command"][0], self.command_ranges["base_height_command"][1], (len(env_ids), 1), device=self.device).squeeze(1)
         if self.cfg.commands.heading_command:
             self.commands[env_ids, 3] = torch_rand_float(self.command_ranges["heading"][0], self.command_ranges["heading"][1], (len(env_ids), 1), device=self.device).squeeze(1)
         else:
@@ -350,6 +353,18 @@ class LeggedRobotWalk(BaseTask):
 
         # set small commands to zero
         self.commands[env_ids, :2] *= (torch.norm(self.commands[env_ids, :2], dim=1) > 0.2).unsqueeze(1)
+        
+        # If wandb has been initialized, log the data
+        if wandb.run is not None:
+            wandb.log({"Command Base Height": self.commands[30, 4].item(),
+                       "Currnet Base Height": self.root_states[30, 2].item(),
+                       "Command X": self.commands[30, 0].item(),
+                       "Current X": self.root_states[30, 7].item(), 
+                       "Command Y": self.commands[30, 1].item(),
+                       "Current Y": self.root_states[30, 8].item(),
+                       "Command ang_vel": self.commands[30, 2].item(),
+                        "Current ang_vel": self.base_ang_vel[30, 2].item()
+                       })
 
     def _compute_torques(self, actions):
         """ Compute torques from actions.
@@ -470,12 +485,12 @@ class LeggedRobotWalk(BaseTask):
         noise_vec[:3] = noise_scales.lin_vel * noise_level * self.obs_scales.lin_vel
         noise_vec[3:6] = noise_scales.ang_vel * noise_level * self.obs_scales.ang_vel
         noise_vec[6:9] = noise_scales.gravity * noise_level
-        noise_vec[9:12] = 0. # commands
-        noise_vec[12:24] = noise_scales.dof_pos * noise_level * self.obs_scales.dof_pos
-        noise_vec[24:36] = noise_scales.dof_vel * noise_level * self.obs_scales.dof_vel
-        noise_vec[36:48] = 0. # previous actions
+        noise_vec[9:14] = 0. # commands
+        noise_vec[14:26] = noise_scales.dof_pos * noise_level * self.obs_scales.dof_pos
+        noise_vec[26:38] = noise_scales.dof_vel * noise_level * self.obs_scales.dof_vel
+        noise_vec[38:50] = 0. # previous actions
         if self.cfg.terrain.measure_heights:
-            noise_vec[48:235] = noise_scales.height_measurements* noise_level * self.obs_scales.height_measurements
+            noise_vec[50:237] = noise_scales.height_measurements* noise_level * self.obs_scales.height_measurements
         return noise_vec
 
     #----------------------------------------
@@ -512,8 +527,8 @@ class LeggedRobotWalk(BaseTask):
         self.last_actions = torch.zeros(self.num_envs, self.num_actions, dtype=torch.float, device=self.device, requires_grad=False)
         self.last_dof_vel = torch.zeros_like(self.dof_vel)
         self.last_root_vel = torch.zeros_like(self.root_states[:, 7:13])
-        self.commands = torch.zeros(self.num_envs, self.cfg.commands.num_commands, dtype=torch.float, device=self.device, requires_grad=False) # x vel, y vel, yaw vel, heading
-        self.commands_scale = torch.tensor([self.obs_scales.lin_vel, self.obs_scales.lin_vel, self.obs_scales.ang_vel], device=self.device, requires_grad=False,) # TODO change this
+        self.commands = torch.zeros(self.num_envs, self.cfg.commands.num_commands, dtype=torch.float, device=self.device, requires_grad=False) # x vel, y vel, yaw vel, heading, base height
+        self.commands_scale = torch.tensor([self.obs_scales.lin_vel, self.obs_scales.lin_vel, self.obs_scales.ang_vel, self.obs_scales.heading, self.obs_scales.base_height_command], device=self.device, requires_grad=False,) # TODO change this
         self.feet_air_time = torch.zeros(self.num_envs, self.feet_indices.shape[0], dtype=torch.float, device=self.device, requires_grad=False)
         self.last_contacts = torch.zeros(self.num_envs, len(self.feet_indices), dtype=torch.bool, device=self.device, requires_grad=False)
         self.base_lin_vel = quat_rotate_inverse(self.base_quat, self.root_states[:, 7:10])
@@ -524,6 +539,7 @@ class LeggedRobotWalk(BaseTask):
         self.measured_heights = 0
 
         # joint positions offsets and PD gains
+        # TODO: add randomize Kp and Kd
         self.default_dof_pos = torch.zeros(self.num_dof, dtype=torch.float, device=self.device, requires_grad=False)
         for i in range(self.num_dofs):
             name = self.dof_names[i]
@@ -879,6 +895,10 @@ class LeggedRobotWalk(BaseTask):
         # Tracking of angular velocity commands (yaw) 
         ang_vel_error = torch.square(self.commands[:, 2] - self.base_ang_vel[:, 2])
         return torch.exp(-ang_vel_error/self.cfg.rewards.tracking_sigma)
+    
+    def _reward_tracking_base_height_command(self):
+        base_height = torch.mean(self.root_states[:, 2].unsqueeze(1) - self.measured_heights, dim=1)
+        return torch.exp(-torch.square(base_height - self.commands[:, 4])/self.cfg.rewards.tracking_base_height_sigma)
 
     def _reward_feet_air_time(self):
         # Reward long steps

@@ -33,7 +33,7 @@ from .base_config import BaseConfig
 class LeggedRobotWalkCfg(BaseConfig):
     class env:
         num_envs = 4096
-        num_observations = 235
+        num_observations = 237
         num_privileged_obs = None # if not None a priviledge_obs_buf will be returned by step() (critic obs for assymetric training). None is returned otherwise 
         num_actions = 12
         env_spacing = 3.  # not used with heightfields/trimeshes 
@@ -68,7 +68,7 @@ class LeggedRobotWalkCfg(BaseConfig):
     class commands:
         curriculum = False
         max_curriculum = 1.
-        num_commands = 4 # default: lin_vel_x, lin_vel_y, ang_vel_yaw, heading (in heading mode ang_vel_yaw is recomputed from heading error)
+        num_commands = 5 # default: lin_vel_x, lin_vel_y, ang_vel_yaw, heading (in heading mode ang_vel_yaw is recomputed from heading error)
         resampling_time = 10. # time before command are changed[s]
         heading_command = True # if true: compute ang vel command from heading error
         class ranges:
@@ -76,6 +76,7 @@ class LeggedRobotWalkCfg(BaseConfig):
             lin_vel_y = [-1.0, 1.0]   # min max [m/s]
             ang_vel_yaw = [-1, 1]    # min max [rad/s]
             heading = [-3.14, 3.14]
+            base_height_command = [0.2, 0.3] # [m]
 
     class init_state:
         pos = [0.0, 0.0, 1.] # x,y,z [m]
@@ -100,7 +101,7 @@ class LeggedRobotWalkCfg(BaseConfig):
         file = ""
         name = "legged_robot"  # actor name
         foot_name = "None" # name of the feet bodies, used to index body state and contact force tensors
-        penalize_contacts_on = []
+        penalize_contacts_on = ["base"]
         terminate_after_contacts_on = []
         disable_gravity = False
         collapse_fixed_joints = True # merge bodies connected by fixed joints. Specific fixed joints can be kept by adding " <... dont_collapse="true">
@@ -121,7 +122,7 @@ class LeggedRobotWalkCfg(BaseConfig):
     class domain_rand:
         randomize_friction = True
         friction_range = [0.5, 1.25]
-        randomize_base_mass = False
+        randomize_base_mass = True
         added_mass_range = [-1., 1.]
         push_robots = True
         push_interval_s = 15
@@ -132,6 +133,7 @@ class LeggedRobotWalkCfg(BaseConfig):
             termination = -0.0
             tracking_lin_vel = 1.0
             tracking_ang_vel = 0.5
+            tracking_base_height_command = 0.5
             lin_vel_z = -2.0
             ang_vel_xy = -0.05
             orientation = -0.
@@ -147,6 +149,7 @@ class LeggedRobotWalkCfg(BaseConfig):
 
         only_positive_rewards = True # if true negative total rewards are clipped at zero (avoids early termination problems)
         tracking_sigma = 0.25 # tracking reward = exp(-error^2/sigma)
+        tracking_base_height_sigma = 0.01
         soft_dof_pos_limit = 1. # percentage of urdf limits, values above this limit are penalized
         soft_dof_vel_limit = 1.
         soft_torque_limit = 1.
@@ -160,6 +163,8 @@ class LeggedRobotWalkCfg(BaseConfig):
             dof_pos = 1.0
             dof_vel = 0.05
             height_measurements = 5.0
+            heading = 1.0
+            base_height_command = 3.0 #TODO: tune
         clip_observations = 100.
         clip_actions = 100.
 
