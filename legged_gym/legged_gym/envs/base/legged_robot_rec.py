@@ -413,7 +413,7 @@ class LeggedRecRobot(BaseTask):
             #If wandb has been inititialized, log the data
             if wandb.run is not None:
                 wandb.log({"Commanded Height": self.commands[30, 0].item(),
-                            "Current Height": torch.mean(self.root_states[:, 2].unsqueeze(1) - self.measured_heights, dim=1),
+                            "Current Height": torch.mean(self.root_states[30, 2].unsqueeze(1) - self.measured_heights, dim=1),
                             "Target DOF Hip Mean": torch.mean(self.target_dof_pos[30, [0, 3, 6, 9]]).item(),
                             "Current DOF Hip Mean": torch.mean(self.dof_pos[30, [0, 3, 6, 9]]).item(),
                             "Target DOF Thight Mean": torch.mean(self.target_dof_pos[30, [1, 4, 7, 10]]).item(),

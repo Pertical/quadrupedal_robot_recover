@@ -127,6 +127,9 @@ class LeggedRobotWalkCfg(BaseConfig):
         push_robots = True
         push_interval_s = 15
         max_push_vel_xy = 1.
+        random_k = True
+        kp_range = [-1., 1.]
+        kd_range = [-1., 1.]
 
     class rewards:
         class scales:
@@ -164,7 +167,7 @@ class LeggedRobotWalkCfg(BaseConfig):
             dof_vel = 0.05
             height_measurements = 5.0
             heading = 1.0
-            base_height_command = 3.0 #TODO: tune
+            base_height_command = 3.0 
         clip_observations = 100.
         clip_actions = 100.
 
