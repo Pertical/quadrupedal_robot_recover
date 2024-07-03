@@ -129,7 +129,7 @@ class LeggedRobotWalkCfg(BaseConfig):
         max_push_vel_xy = 1.
         random_k = True
         kp_range = [-1., 1.]
-        kd_range = [-1., 1.]
+        kd_range = [-0.1, 0.1]
 
     class rewards:
         class scales:

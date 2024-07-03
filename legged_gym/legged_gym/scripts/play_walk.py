@@ -78,43 +78,50 @@ if joystick_use:
             # #     yaw_vel_cmd += 2 * math.pi
             #
             # # 等待一小段时间，可以根据实际情况调整
-
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_w:
-                        x_vel_cmd += 1
-                    if event.key == pygame.K_s:
-                        x_vel_cmd -= 1
-                    if event.key == pygame.K_a:
-                        y_vel_cmd += 1
-                    if event.key == pygame.K_d:
-                        y_vel_cmd -= 1
-                    if event.key == pygame.K_q:
-                        heading_cmd += 1
-                    if event.key == pygame.K_e:
-                        heading_cmd -= 1
-                    if event.key == pygame.K_r:
-                        base_height_cmd += 1
-                    if event.key == pygame.K_f:
-                        base_height_cmd -= 1
-
-
-                if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_w:
-                        x_vel_cmd -= 1
-                    if event.key == pygame.K_s:
-                        x_vel_cmd += 1
-                    if event.key == pygame.K_a:
-                        y_vel_cmd -= 1
-                    if event.key == pygame.K_d:
-                        y_vel_cmd += 1
+            if joystick_opened:
+                pygame.event.get()
+                x_vel_cmd = -joystick.get_axis(1) 
+                y_vel_cmd = -joystick.get_axis(0) 
+                heading_cmd = joystick.get_axis(3)
+                base_height_cmd = -joystick.get_axis(4) 
+                
+            if not joystick_opened:
+                for event in pygame.event.get():
+                    
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_w:
+                            x_vel_cmd += 1
+                        if event.key == pygame.K_s:
+                            x_vel_cmd -= 1
+                        if event.key == pygame.K_a:
+                            y_vel_cmd += 1
+                        if event.key == pygame.K_d:
+                            y_vel_cmd -= 1
+                        if event.key == pygame.K_q:
+                            heading_cmd += 1
+                        if event.key == pygame.K_e:
+                            heading_cmd -= 1
+                        if event.key == pygame.K_r:
+                            base_height_cmd += 1
+                        if event.key == pygame.K_f:
+                            base_height_cmd -= 1
+                            
+                    if event.type == pygame.KEYUP:
+                        if event.key == pygame.K_w:
+                            x_vel_cmd -= 1
+                        if event.key == pygame.K_s:
+                            x_vel_cmd += 1
+                        if event.key == pygame.K_a:
+                            y_vel_cmd -= 1
+                        if event.key == pygame.K_d:
+                            y_vel_cmd += 1
                     
                     
             pygame.time.delay(100)
 
     # 启动线程
     # if joystick_opened and joystick_use:
-    if True:
+    if joystick_use and joystick_opened:
         joystick_thread = Thread(target=handle_joystick_input)
         joystick_thread.start()
 
