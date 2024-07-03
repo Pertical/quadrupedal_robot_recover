@@ -357,7 +357,7 @@ class LeggedRobotWalk(BaseTask):
         # If wandb has been initialized, log the data
         if wandb.run is not None:
             wandb.log({"Command Base Height": self.commands[30, 4].item(),
-                       "Currnet Base Height": self.root_states[30, 2].item(),
+                       "Currnet Base Height": torch.mean(self.root_states[30, 2] - self.measured_heights).item(),
                        "Command X": self.commands[30, 0].item(),
                        "Current X": self.root_states[30, 7].item(), 
                        "Command Y": self.commands[30, 1].item(),
@@ -405,6 +405,21 @@ class LeggedRobotWalk(BaseTask):
         self.gym.set_dof_state_tensor_indexed(self.sim,
                                               gymtorch.unwrap_tensor(self.dof_state),
                                               gymtorch.unwrap_tensor(env_ids_int32), len(env_ids_int32))
+        # randomize PD gains
+        if self.cfg.domain_rand.random_k:
+            for i in range(self.num_dofs):
+                name = self.dof_names[i]
+                found = False
+                for dof_name in self.cfg.control.stiffness.keys():
+                    if dof_name in name:
+                        self.p_gains[i] = self.cfg.control.stiffness[dof_name] + torch.rand(1, device=self.device) * (self.cfg.domain_rand.kp_range[1] - self.cfg.domain_rand.kp_range[0]) + self.cfg.domain_rand.kp_range[0]
+                        self.d_gains[i] = self.cfg.control.damping[dof_name] + torch.rand(1, device=self.device) * (self.cfg.domain_rand.kd_range[1] - self.cfg.domain_rand.kd_range[0]) + self.cfg.domain_rand.kd_range[0]
+                        found = True
+                if not found:
+                    self.p_gains[i] = 0
+                    self.d_gains[i] = 0
+                    if self.cfg.control.control_type in ["P", "V"]:
+                        print(f"PD gain of joint {name} were not defined, setting them to zero")
     def _reset_root_states(self, env_ids):
         """ Resets ROOT states position and velocities of selected environmments
             Sets base position based on the curriculum
@@ -426,7 +441,6 @@ class LeggedRobotWalk(BaseTask):
         self.gym.set_actor_root_state_tensor_indexed(self.sim,
                                                      gymtorch.unwrap_tensor(self.root_states),
                                                      gymtorch.unwrap_tensor(env_ids_int32), len(env_ids_int32))
-
     def _push_robots(self):
         """ Random pushes the robots. Emulates an impulse by setting a randomized base velocity. 
         """
@@ -528,7 +542,7 @@ class LeggedRobotWalk(BaseTask):
         self.last_dof_vel = torch.zeros_like(self.dof_vel)
         self.last_root_vel = torch.zeros_like(self.root_states[:, 7:13])
         self.commands = torch.zeros(self.num_envs, self.cfg.commands.num_commands, dtype=torch.float, device=self.device, requires_grad=False) # x vel, y vel, yaw vel, heading, base height
-        self.commands_scale = torch.tensor([self.obs_scales.lin_vel, self.obs_scales.lin_vel, self.obs_scales.ang_vel, self.obs_scales.heading, self.obs_scales.base_height_command], device=self.device, requires_grad=False,) # TODO change this
+        self.commands_scale = torch.tensor([self.obs_scales.lin_vel, self.obs_scales.lin_vel, self.obs_scales.ang_vel, self.obs_scales.heading, self.obs_scales.base_height_command], device=self.device, requires_grad=False,) 
         self.feet_air_time = torch.zeros(self.num_envs, self.feet_indices.shape[0], dtype=torch.float, device=self.device, requires_grad=False)
         self.last_contacts = torch.zeros(self.num_envs, len(self.feet_indices), dtype=torch.bool, device=self.device, requires_grad=False)
         self.base_lin_vel = quat_rotate_inverse(self.base_quat, self.root_states[:, 7:10])
@@ -539,7 +553,6 @@ class LeggedRobotWalk(BaseTask):
         self.measured_heights = 0
 
         # joint positions offsets and PD gains
-        # TODO: add randomize Kp and Kd
         self.default_dof_pos = torch.zeros(self.num_dof, dtype=torch.float, device=self.device, requires_grad=False)
         for i in range(self.num_dofs):
             name = self.dof_names[i]
