@@ -101,8 +101,8 @@ class LeggedRobotWalkCfg(BaseConfig):
         file = ""
         name = "legged_robot"  # actor name
         foot_name = "None" # name of the feet bodies, used to index body state and contact force tensors
-        penalize_contacts_on = ["base"]
-        terminate_after_contacts_on = []
+        penalize_contacts_on = ["hip", "thigh", "calf"]
+        terminate_after_contacts_on = ["base"]
         disable_gravity = False
         collapse_fixed_joints = True # merge bodies connected by fixed joints. Specific fixed joints can be kept by adding " <... dont_collapse="true">
         fix_base_link = False # fixe the base of the robot
@@ -133,10 +133,10 @@ class LeggedRobotWalkCfg(BaseConfig):
             termination = -0.0
             tracking_lin_vel = 1.0
             tracking_ang_vel = 0.5
-            tracking_base_height_command = 0.5
+            tracking_base_height_command = 0.8
             lin_vel_z = -2.0
             ang_vel_xy = -0.05
-            orientation = -0.
+            orientation = -0.2
             torques = -0.00001
             dof_vel = -0.
             dof_acc = -2.5e-7
@@ -159,7 +159,7 @@ class LeggedRobotWalkCfg(BaseConfig):
     class normalization:
         class obs_scales:
             lin_vel = 2.0
-            ang_vel = 0.25
+            ang_vel = 0.5
             dof_pos = 1.0
             dof_vel = 0.05
             height_measurements = 5.0
@@ -236,7 +236,7 @@ class LeggedRobotCfgPPO(BaseConfig):
         policy_class_name = 'ActorCritic'
         algorithm_class_name = 'PPO'
         num_steps_per_env = 24 # per iteration
-        max_iterations = 1500 # number of policy updates
+        max_iterations = 3000 # number of policy updates
 
         # logging
         save_interval = 50 # check for potential saves every this many iterations

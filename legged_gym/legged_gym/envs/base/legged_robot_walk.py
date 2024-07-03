@@ -357,7 +357,7 @@ class LeggedRobotWalk(BaseTask):
         # If wandb has been initialized, log the data
         if wandb.run is not None:
             wandb.log({"Command Base Height": self.commands[30, 4].item(),
-                       "Currnet Base Height": self.root_states[30, 2].item(),
+                       "Currnet Base Height": torch.mean(self.root_states[:, 2].unsqueeze(1) - self.measured_heights, dim=1),
                        "Command X": self.commands[30, 0].item(),
                        "Current X": self.root_states[30, 7].item(), 
                        "Command Y": self.commands[30, 1].item(),
