@@ -194,7 +194,7 @@ def run_mujoco(policy, cfg):
     #qvel denotes velocities of these joints. 
     num_actuated_joints = cfg.env.num_actions 
     # print("qpos shape", data.qpos.shape) #qpos shape (19,)
-    # print("qpos", data.qpos)
+    print("qpos", data.qpos)
 
     # data.qpos[-num_actuated_joints:] = action_startup
     data.qpos[7:] = action_startup
@@ -283,8 +283,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     class Sim2simCfg(Go1RecFlatConfig):
-
-        default_dof_pos = np.array([0., 0.8, -1.5, 0., 0.8, -1.5, 0., 0.8, -1.5, 0., 0.8, -1.5])
 
 
         class sim_config:
