@@ -60,3 +60,7 @@ __pycache__
 
 #wandb
 legged_gym/legged_gym/scripts/wandb
+legged_gym/legged_gym/scripts/wandb/debug.log
+legged_gym/legged_gym/scripts/wandb/debug.log
+legged_gym/legged_gym/scripts/wandb/debug-internal.log
+legged_gym/legged_gym/scripts/wandb/debug-internal.log

@@ -100,12 +100,10 @@ class Go1RecFlatConfig(LeggedRobotRecCfg):
         decimation = 4
 
         use_actuator_network = False
-
-
     
     class asset(LeggedRobotRecCfg.asset):
 
-        self_collision = 1 # 1 to disable, 0 to enable...bitwise filter
+        self_collision = 0 # 1 to disable, 0 to enable...bitwise filter
         
         file = "{LEGGED_GYM_ROOT_DIR}/resources/robots/go1/urdf/go1_bridgedp_dae.urdf"
 

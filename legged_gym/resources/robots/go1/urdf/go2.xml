@@ -1,9 +1,6 @@
 <mujoco model="go1_description">
-    <compiler angle="radian" meshdir="/home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/resources/robots/go1/meshes/" autolimits="true"/>
+    <compiler angle="radian" meshdir="/home/bridge/Desktop/quadrupedal_robot_recover/legged_gym/resources/robots/go1/meshes/" />
     <size njmax="500" nconmax="100" />
-
-    
-
     <asset>
         <mesh name="trunk" file="trunk.stl" />
         <mesh name="hip" file="hip.stl" />
@@ -16,8 +13,6 @@
         <geom type="mesh" contype="0" conaffinity="0" group="1" rgba="0.913725 0.913725 0.847059 1" mesh="trunk" />
         <geom size="0.1881 0.04675 0.057" type="box" rgba="0.913725 0.913725 0.847059 1" />
         <geom size="0.0005 0.0005 0.0005" pos="-0.01592 -0.06659 -0.00617" type="box" contype="0" conaffinity="0" group="1" rgba="0.8 0 0 1" />
-        
-        
         <body name="FR_hip" pos="0.1881 -0.04675 0">
             <inertial pos="-0.00541 0.00074 6e-06" quat="0.506126 0.507401 0.493705 0.492582" mass="0.510299" diaginertia="0.000591107 0.000396595 0.000305077" />
             <joint name="FR_hip_joint" pos="0 0 0" axis="1 0 0" limited="true" range="-0.802851 0.802851" />
@@ -38,7 +33,6 @@
                 </body>
             </body>
         </body>
-        
         <body name="FL_hip" pos="0.1881 0.04675 0">
             <inertial pos="-0.00541 -0.00074 6e-06" quat="0.492582 0.493705 0.507401 0.506126" mass="0.510299" diaginertia="0.000591107 0.000396595 0.000305077" />
             <joint name="FL_hip_joint" pos="0 0 0" axis="1 0 0" limited="true" range="-0.802851 0.802851" />
@@ -100,58 +94,4 @@
             </body>
         </body>
     </worldbody>
-
-    <actuator>
-        <motor class ="abduction" name = "FR_hip" joint ="FR_hip_joint" />
-        <motor class ="hip" name = "FR_thigh" joint ="FR_thigh_joint" />
-        <motor class ="knee" name = "FR_calf" joint ="FR_calf_joint" />
-        <motor class ="abduction" name = "FL_hip" joint ="FL_hip_joint" />
-        <motor class ="hip" name = "FL_thigh" joint ="FL_thigh_joint" />
-        <motor class ="knee" name = "FL_calf" joint ="FL_calf_joint" />
-        <motor class ="abduction" name = "RR_hip" joint ="RR_hip_joint" />
-        <motor class ="hip" name = "RR_thigh" joint ="RR_thigh_joint" />
-        <motor class ="knee" name = "RR_calf" joint ="RR_calf_joint" />
-        <motor class ="abduction" name = "RL_hip" joint ="RL_hip_joint" />
-        <motor class ="hip" name = "RL_thigh" joint ="RL_thigh_joint" />
-        <motor class ="knee" name = "RL_calf" joint ="RL_calf_joint" />
-
-    </actuator>
-
-    <sensor>
-        <jointpos name="FR_hip_pos" joint="FR_hip_joint" />
-        <jointpos name="FR_thigh_pos" joint="FR_thigh_joint" />
-        <jointpos name="FR_calf_pos" joint="FR_calf_joint" />
-        <jointpos name="FL_hip_pos" joint="FL_hip_joint" />
-        <jointpos name="FL_thigh_pos" joint="FL_thigh_joint" />
-        <jointpos name="FL_calf_pos" joint="FL_calf_joint" />
-        <jointpos name="RR_hip_pos" joint="RR_hip_joint" />
-        <jointpos name="RR_thigh_pos" joint="RR_thigh_joint" />
-        <jointpos name="RR_calf_pos" joint="RR_calf_joint" />
-        <jointpos name="RL_hip_pos" joint="RL_hip_joint" />
-        <jointpos name="RL_thigh_pos" joint="RL_thigh_joint" />
-        <jointpos name="RL_calf_pos" joint="RL_calf_joint" />
-
-        <jointvel name="FR_hip_vel" joint="FR_hip_joint" />
-        <jointvel name="FR_thigh_vel" joint="FR_thigh_joint" />
-        <jointvel name="FR_calf_vel" joint="FR_calf_joint" />
-        <jointvel name="FL_hip_vel" joint="FL_hip_joint" />
-        <jointvel name="FL_thigh_vel" joint="FL_thigh_joint" />
-        <jointvel name="FL_calf_vel" joint="FL_calf_joint" />
-        <jointvel name="RR_hip_vel" joint="RR_hip_joint" />
-        <jointvel name="RR_thigh_vel" joint="RR_thigh_joint" />
-        <jointvel name="RR_calf_vel" joint="RR_calf_joint" />
-        <jointvel name="RL_hip_vel" joint="RL_hip_joint" />
-        <jointvel name="RL_thigh_vel" joint="RL_thigh_joint" />
-        <jointvel name="RL_calf_vel" joint="RL_calf_joint" />
-
-
-
-        <framequat name="imu_quat" objtype="site" noise="0.001" objname="imu"/>
-        <framepos name="frame_pos" objtype="site" noise="0.001" objname="imu"/>
-        <gyro name="imu_gyro" site="imu" noise="0.005" cutoff="34.9"/>
-        <velocimeter name="linear-velocity" site="imu" noise="0.001" cutoff="30"/>
-        <accelerometer name="linear-acceleration" site="imu" noise="0.005" cutoff="157"/>
-        <magnetometer name="magnetometer" site="imu"/>
-    </sensor>
-        
 </mujoco>

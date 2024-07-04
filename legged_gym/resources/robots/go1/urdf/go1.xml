@@ -1,7 +1,7 @@
 <mujoco model="go1_description">
     <compiler angle="radian" meshdir="../meshes/" />
     <size njmax="500" nconmax="100" />
-    <option gravity='0 0 -9.806' iterations='50' solver='Newton' timestep='0.002'/>
+    <option gravity='0 0 -9.80665' iterations='50' solver='Newton' timestep='0.002'/>
 
     <default>
         <geom contype="1" conaffinity="1" friction="0.6 0.3 0.3" rgba="0.5 0.6 0.7 1" margin="0.001" group="0"/>
@@ -69,6 +69,7 @@
                     </body>
                 </body>
             </body>
+
             <body name="FL_hip" pos="0.1881 0.04675 0">
                 <inertial pos="-0.00406411 0.0193463 4.50733e-06" quat="0.531662 0.467526 -0.530431 0.466259" mass="0.679292" diaginertia="0.00131334 0.00122648 0.000728484" />
                 <joint name="FL_hip_joint" pos="0 0 0" axis="1 0 0" limited="true" range="-0.802851 0.802851" />
@@ -153,12 +154,12 @@
         <motor name="RL_hip"       gear="1" joint="RL_hip_joint"/>
         <motor name="RL_thigh"     gear="1" joint="RL_thigh_joint"/>
         <motor name="RL_calf"      gear="1" joint="RL_calf_joint"/> -->
-        <motor name = "FR_hip" gear = "1" joint ="FR_hip_joint" ctrllimited="true" ctrlrange="-20 20"/>
-        <motor name = "FR_thigh" gear = "1" joint ="FR_thigh_joint" ctrllimited="true" ctrlrange="-20 20"/>
-        <motor name = "FR_calf" gear = "1" joint ="FR_calf_joint" ctrllimited="true" ctrlrange="-20 20"/>
-        <motor name = "FL_hip" gear = "1" joint ="FL_hip_joint" ctrllimited="true" ctrlrange="-20 20"/>
-        <motor name = "FL_thigh" gear = "1" joint ="FL_thigh_joint" ctrllimited="true" ctrlrange="-20 20"/>
-        <motor name = "FL_calf" gear = "1" joint ="FL_calf_joint" ctrllimited="true" ctrlrange="-20 20"/>
+        <motor name = "FR_hip" gear = "1" joint ="FR_hip_joint" ctrllimited="true" ctrlrange="-60 60"/>
+        <motor name = "FR_thigh" gear = "1" joint ="FR_thigh_joint" ctrllimited="true" ctrlrange="-38 170"/>
+        <motor name = "FR_calf" gear = "1" joint ="FR_calf_joint" ctrllimited="true" ctrlrange="-156 -48"/>
+        <motor name = "FL_hip" gear = "1" joint ="FL_hip_joint" ctrllimited="true" ctrlrange="-0.1 0.1"/>
+        <motor name = "FL_thigh" gear = "1" joint ="FL_thigh_joint" ctrllimited="true" ctrlrange="-0.1 0.1"/>
+        <motor name = "FL_calf" gear = "1" joint ="FL_calf_joint" ctrllimited="true" ctrlrange="-0.1 0.1"/>
         <motor name = "RR_hip" gear = "1" joint ="RR_hip_joint" ctrllimited="true" ctrlrange="-20 20"/>
         <motor name = "RR_thigh" gear = "1" joint ="RR_thigh_joint" ctrllimited="true" ctrlrange="-20 20"/>
         <motor name = "RR_calf" gear = "1" joint ="RR_calf_joint" ctrllimited="true" ctrlrange="-20 20"/>
