@@ -12,7 +12,7 @@
         <joint damping="0.01" armature="0.01" frictionloss="0.2" />
     
     </default>
-=
+
     <asset>
         <mesh name="trunk" file="trunk.stl" />
         <mesh name="hip" file="hip.stl" />
@@ -33,11 +33,12 @@
     </visual>
 
     <worldbody>
-        <light directional="true" diffuse=".8 .8 .8" pos="0 0 10" dir="0 0 -10"/>
+        <light directional="true" diffuse=".8 .8 .8" pos="0 0 10" dir="0 0 -1" castshadow="false"/>
         <camera name="track" mode="trackcom" pos="0 -1.3 1.6" xyaxes="1 0 0 0 0.707 0.707"/>
-        <geom name='floor' type='plane' conaffinity='1' condim='3' contype='1' rgba="0.5 0.9 0.9 0.1" material='plane' pos='0 0 0' size='0 0 1'/>
+        <geom name='floor' type='plane' conaffinity='1' condim='3' contype='1' rgba="0.5 0.9 0.9 1" material='plane' pos='0 0 0' size='0 0 1'/>
 
-        <body name="trunk" pos="0 0 0.35">
+        <!--Here is the pos to change the drop position: xyz-->
+        <body name="trunk" pos="0 0 0.3">
             <inertial pos="0.0116053 0.00442221 0.000106692" quat="0.0111438 0.707126 -0.00935374 0.706938" mass="4.801" diaginertia="0.0447997 0.0366257 0.0162187" />
             <joint type="free" />
             <geom type="mesh" contype="0" conaffinity="0" group="1" rgba="0.913725 0.913725 0.847059 1" mesh="trunk" />
@@ -140,7 +141,7 @@
     </worldbody>
     <actuator>       
         
-        <motor name="FR_hip"       gear="1" joint="FR_hip_joint"/>
+        <!-- <motor name="FR_hip"       gear="1" joint="FR_hip_joint"/>
         <motor name="FR_thigh"     gear="1" joint="FR_thigh_joint"/>
         <motor name="FR_calf"      gear="1" joint="FR_calf_joint"/>
         <motor name="FL_hip"       gear="1" joint="FL_hip_joint"/>
@@ -151,7 +152,21 @@
         <motor name="RR_calf"      gear="1" joint="RR_calf_joint" />
         <motor name="RL_hip"       gear="1" joint="RL_hip_joint"/>
         <motor name="RL_thigh"     gear="1" joint="RL_thigh_joint"/>
-        <motor name="RL_calf"      gear="1" joint="RL_calf_joint"/>
+        <motor name="RL_calf"      gear="1" joint="RL_calf_joint"/> -->
+        <motor name = "FR_hip" gear = "1" joint ="FR_hip_joint" ctrllimited="true" ctrlrange="-20 20"/>
+        <motor name = "FR_thigh" gear = "1" joint ="FR_thigh_joint" ctrllimited="true" ctrlrange="-20 20"/>
+        <motor name = "FR_calf" gear = "1" joint ="FR_calf_joint" ctrllimited="true" ctrlrange="-20 20"/>
+        <motor name = "FL_hip" gear = "1" joint ="FL_hip_joint" ctrllimited="true" ctrlrange="-20 20"/>
+        <motor name = "FL_thigh" gear = "1" joint ="FL_thigh_joint" ctrllimited="true" ctrlrange="-20 20"/>
+        <motor name = "FL_calf" gear = "1" joint ="FL_calf_joint" ctrllimited="true" ctrlrange="-20 20"/>
+        <motor name = "RR_hip" gear = "1" joint ="RR_hip_joint" ctrllimited="true" ctrlrange="-20 20"/>
+        <motor name = "RR_thigh" gear = "1" joint ="RR_thigh_joint" ctrllimited="true" ctrlrange="-20 20"/>
+        <motor name = "RR_calf" gear = "1" joint ="RR_calf_joint" ctrllimited="true" ctrlrange="-20 20"/>
+        <motor name = "RL_hip" gear = "1" joint ="RL_hip_joint" ctrllimited="true" ctrlrange="-20 20"/>
+        <motor name = "RL_thigh" gear = "1" joint ="RL_thigh_joint" ctrllimited="true" ctrlrange="-20 20"/>
+        <motor name = "RL_calf" gear = "1" joint ="RL_calf_joint" ctrllimited="true" ctrlrange="-20 20"/>
+
+
     </actuator>
 
     <sensor>

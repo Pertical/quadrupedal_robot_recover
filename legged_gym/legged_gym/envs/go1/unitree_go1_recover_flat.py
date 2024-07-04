@@ -20,7 +20,6 @@ class Go1RecFlatConfig(LeggedRobotRecCfg):
         num_observations = 43 #This includes 1 command and without base lin vel
 
         episode_length_s = 20.
-
         num_envs = 4096
 
     
@@ -94,8 +93,8 @@ class Go1RecFlatConfig(LeggedRobotRecCfg):
     class control(LeggedRobotRecCfg.control):
 
         control_type = 'P'
-        stiffness = {'joint': 20.}  # [N*m/rad]
-        damping = {'joint': 0.5}     # [N*m*s/rad]
+        stiffness = {'joint': 20.}  # [N*m/rad] # p gains 
+        damping = {'joint': 0.5}     # [N*m*s/rad]  # d gains
 
         action_scale = 0.25
         decimation = 4
@@ -196,8 +195,8 @@ class Go1RecFlatConfigPPO(LeggedRobotRecCfgPPO):
         #load_run = r"/home/bridge/Desktop/legged_gym/logs/flat_unitree_go1/Jun24_12-12-20_go1_flat" #This one can recover, but poor position. 
         #load_run = r"/home/bridge/Desktop/legged_gym/logs/flat_unitree_go1/Jun24_14-28-43_go1_flat"
 
-        max_iterations = 2500
-        num_steps_per_env = 48 # 30 steps per env
+        max_iterations = 5001
+        num_steps_per_env = 24 # 30 steps per env
 
         #logging
         save_interval = 100
@@ -207,7 +206,6 @@ class Go1RecFlatConfigPPO(LeggedRobotRecCfgPPO):
         load_run = -1
         checkpoint = -1 
         resume_path = -1 
-
 
 
 
