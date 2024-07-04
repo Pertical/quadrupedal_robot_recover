@@ -207,7 +207,7 @@ class LeggedRobotWalkCfg(BaseConfig):
             default_buffer_size_multiplier = 5
             contact_collection = 2 # 0: never, 1: last sub-step, 2: all sub-steps (default=2)
 
-class LeggedRobotCfgPPO(BaseConfig):
+class LeggedRobotWalkCfgPPO(BaseConfig):
     seed = 1
     runner_class_name = 'OnPolicyRunner'
     class policy:

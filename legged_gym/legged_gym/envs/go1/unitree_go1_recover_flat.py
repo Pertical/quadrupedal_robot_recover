@@ -50,7 +50,7 @@ class Go1RecFlatConfig(LeggedRobotRecCfg):
             lin_vel_y = [0., 0.]
             ang_vel_yaw = [0., 0.]
             heading = [0., 0.]
-            base_height = [0.2, 0.3]
+            base_height = [0.15, 0.35]
 
     class init_state(LeggedRobotRecCfg.init_state):
 
@@ -165,10 +165,15 @@ class Go1RecFlatConfig(LeggedRobotRecCfg):
 
         randomize_friction = True 
         randomize_base_mass = True
+        added_mass_range = [-1.5, 1.5]
         push_robots = True
         push_intervel_s = 2. 
         max_push_vel_xy = 5.
-
+        push_robots = True
+        random_k = True
+        kp_range = [-1., 1.]
+        kd_range = [-0.1, 0.1]
+        
     class normalization:
         class obs_scales:
             lin_vel = 2.0

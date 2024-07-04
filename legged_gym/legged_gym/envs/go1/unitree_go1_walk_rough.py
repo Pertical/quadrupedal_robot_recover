@@ -5,7 +5,7 @@ Config for simulation Unitree go1 recover from fail on flat terrain
 Adopted from ETH Zurich "legged_gym example configs"
 
 """
-from legged_gym.envs.base.legged_robot_walk_config import LeggedRobotWalkCfg, LeggedRobotCfgPPO
+from legged_gym.envs.base.legged_robot_walk_config import LeggedRobotWalkCfg, LeggedRobotWalkCfgPPO
 
 class Go1WalkConfig(LeggedRobotWalkCfg):
 
@@ -86,9 +86,9 @@ class Go1WalkConfig(LeggedRobotWalkCfg):
         max_push_vel_xy = 2. 
 
 
-class Go1WalkConfigPPO(LeggedRobotCfgPPO):
+class Go1WalkConfigPPO(LeggedRobotWalkCfgPPO):
 
-    class runner(LeggedRobotCfgPPO.runner):
+    class runner(LeggedRobotWalkCfgPPO.runner):
 
         
         #load_run = r"/home/bridge/Desktop/legged_gym/logs/flat_unitree_go1/Jun24_12-12-20_go1_flat" #This one can recover, but poor position. 
