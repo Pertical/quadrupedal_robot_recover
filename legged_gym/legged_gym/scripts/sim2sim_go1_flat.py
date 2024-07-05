@@ -286,7 +286,7 @@ if __name__ == "__main__":
 
 
         class sim_config:
-            mujoco_model_path = f'{LEGGED_GYM_ROOT_DIR}/resources/robots/go1/urdf/a1.xml'
+            mujoco_model_path = f'{LEGGED_GYM_ROOT_DIR}/resources/robots/go1/urdf/go2.xml'
             # mujoco_model_path = f'{LEGGED_GYM_ROOT_DIR}/resources/robots/go1/urdf/zq_box_foot.xml'
             sim_duration = 60.0 
             dt = 0.001

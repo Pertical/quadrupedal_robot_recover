@@ -144,7 +144,7 @@ class Go1RecFlatConfig(LeggedRobotRecCfg):
 
             dof_power = -0.0
 
-            hip_angle = -3.
+            hip_angle = -3.5
             thigh_angle = -1.
             calf_angle = -1.
             # target_dof_pos = -2.0
@@ -164,10 +164,16 @@ class Go1RecFlatConfig(LeggedRobotRecCfg):
     class domain_rand(LeggedRobotRecCfg.domain_rand):
 
         randomize_friction = True 
+        friction_range = [0.2, 1.2]
         randomize_base_mass = True
-        push_robots = True
-        push_intervel_s = 2. 
+        push_robots = False 
+        push_intervel_s = 999. 
         max_push_vel_xy = 5.
+
+        erfi = False
+        erfi_torq_lim = 7.0/9 
+
+
 
     class normalization:
         class obs_scales:
@@ -182,7 +188,16 @@ class Go1RecFlatConfig(LeggedRobotRecCfg):
 
 
     class noise(LeggedRobotRecCfg.noise):
-        add_noise = False
+        add_noise = True 
+        noise_level = 1.0
+
+        class noise_scales:
+            dof_pos = 0.01
+            dof_vel = 1.5
+            lin_vel = 0.1
+            ang_vel = 0.2
+            gravity = 0.05
+            height_measurements = 0.1
     
 class Go1RecFlatConfigPPO(LeggedRobotRecCfgPPO):
 
@@ -197,7 +212,7 @@ class Go1RecFlatConfigPPO(LeggedRobotRecCfgPPO):
         num_steps_per_env = 24 # 30 steps per env
 
         #logging
-        save_interval = 100
+        save_interval = 200
 
         run_name = 'go1_recover_flat'
         experiment_name = 'unitree_go1_recover_flat'

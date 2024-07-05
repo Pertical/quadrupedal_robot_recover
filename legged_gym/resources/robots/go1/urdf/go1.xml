@@ -38,7 +38,7 @@
         <geom name='floor' type='plane' conaffinity='1' condim='3' contype='1' rgba="0.5 0.9 0.9 1" material='plane' pos='0 0 0' size='0 0 1'/>
 
         <!--Here is the pos to change the drop position: xyz-->
-        <body name="trunk" pos="0 0 0.3">
+        <body name="trunk" pos="0 0 5">
             <inertial pos="0.0116053 0.00442221 0.000106692" quat="0.0111438 0.707126 -0.00935374 0.706938" mass="4.801" diaginertia="0.0447997 0.0366257 0.0162187" />
             <joint type="free" />
             <geom type="mesh" contype="0" conaffinity="0" group="1" rgba="0.913725 0.913725 0.847059 1" mesh="trunk" />

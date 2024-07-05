@@ -177,6 +177,11 @@ class LeggedRecRobot(BaseTask):
 
         self._resample_commands(env_ids)
 
+
+    
+        if self.cfg.domain_rand.erfi:
+            self.erfi_rnd[env_ids] = self.erfi_rnd[env_ids].uniform_(0., 1.)
+
         # reset buffers
         self.last_actions[env_ids] = 0.
         self.last_dof_vel[env_ids] = 0.
@@ -368,6 +373,9 @@ class LeggedRecRobot(BaseTask):
         if self.cfg.domain_rand.randomize_base_mass:
             rng = self.cfg.domain_rand.added_mass_range
             props[0].mass += np.random.uniform(rng[0], rng[1])
+
+        # print("props shape", len(props)) #Should be 17
+        # print("props", props[0])
         return props
     
     def _post_physics_step_callback(self):
@@ -423,7 +431,6 @@ class LeggedRecRobot(BaseTask):
                             "Max Foot Contact Force": torch.max(self.contact_forces[30, 0, :]).item()
                             }) 
                             
-
 
         else: 
             self.commands[env_ids, 0] = torch_rand_float(self.command_ranges["lin_vel_x"][0], self.command_ranges["lin_vel_x"][1], (len(env_ids), 1), device=self.device).squeeze(1)
@@ -481,6 +488,11 @@ class LeggedRecRobot(BaseTask):
             torques = actions_scaled
         else:
             raise NameError(f"Unknown controller type: {control_type}")
+        
+        if self.cfg.domain_rand.erfi:
+            torques = torques + (self.erfi_rnd < 0.5) * (self.erfi_rnd * 4 - 1.) \
+                             + (self.erfi_rnd > 0.5) * (torch.rand_like(torques)*2-1.)
+        
         return torch.clip(torques, -self.torque_limits, self.torque_limits)
     
 
@@ -750,6 +762,12 @@ class LeggedRecRobot(BaseTask):
                 if self.cfg.control.control_type in ["P", "V"]:
                     print(f"PD gain of joint {name} were not defined, setting them to zero")
         self.default_dof_pos = self.default_dof_pos.unsqueeze(0)
+
+
+        #Add extended random force injection: ERFI
+        self.erfi_rnd = torch.zeros(self.num_envs, self.num_actions, device = self.device)
+        if self.cfg.domain_rand.erfi:
+            self.erfi_rnd.uniform_(0.0, 1.0)
 
     def _prepare_reward_function(self):
         """ Prepares a list of reward functions, whcih will be called to compute the total reward.
@@ -1190,8 +1208,8 @@ class LeggedRecRobot(BaseTask):
         reward = [torch.abs(self.dof_pos[:, i] - self.target_dof_pos[:, i]) for i in calf_joint_indices]
         reward = sum(reward)/self.dof_pos.shape[1]
 
-        print("Height Commands", self.commands[:, 0])
-        print("Current base height", self.root_states[:, 2])
+        # print("Height Commands", self.commands[:, 0])
+        # print("Current base height", self.root_states[:, 2])
 
         # # print("Base height target", self.cfg.rewards.base_height_target)
         # # print("Base height", self.root_states[:, 2 ])
