@@ -50,7 +50,7 @@ class Go1RecFlatConfig(LeggedRobotRecCfg):
             lin_vel_y = [0., 0.]
             ang_vel_yaw = [0., 0.]
             heading = [0., 0.]
-            base_height = [0.2, 0.3]
+            base_height = [0.15, 0.35]
 
     class init_state(LeggedRobotRecCfg.init_state):
 
