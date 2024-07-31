@@ -37,7 +37,7 @@ class Go1RecFlatConfig(LeggedRobotRecCfg):
         resampling_time = 10.
 
         base_height_command = True
-        default_base_height = 0.25
+        default_base_height = 0.25          
 
         if base_height_command: 
             num_commands = 1 #Only one command for base height
