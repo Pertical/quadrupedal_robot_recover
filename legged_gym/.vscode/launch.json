@@ -21,7 +21,7 @@
             "name": "Python: Play Go1_Flat", 
             "type": "debugpy",
             "request": "launch",
-            "program": "legged_gym/scripts/play.py",
+            "program": "legged_gym/legged_gym/legged_gym/scripts/play_rec.py",
 
             "env": {
                 "PYTHONPATH": "/home/bridge/miniconda3/envs/legged_gym/bin/python3.8"

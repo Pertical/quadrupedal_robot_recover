@@ -539,21 +539,7 @@ class LeggedRecRobot(BaseTask):
         self.gym.set_dof_state_tensor_indexed(self.sim,
                                               gymtorch.unwrap_tensor(self.dof_state),
                                               gymtorch.unwrap_tensor(env_ids_int32), len(env_ids_int32))
-        # randomize PD gains
-        if self.cfg.domain_rand.random_k:
-            for i in range(self.num_dofs):
-                name = self.dof_names[i]
-                found = False
-                for dof_name in self.cfg.control.stiffness.keys():
-                    if dof_name in name:
-                        self.p_gains[i] = self.cfg.control.stiffness[dof_name] + torch.rand(1, device=self.device) * (self.cfg.domain_rand.kp_range[1] - self.cfg.domain_rand.kp_range[0]) + self.cfg.domain_rand.kp_range[0]
-                        self.d_gains[i] = self.cfg.control.damping[dof_name] + torch.rand(1, device=self.device) * (self.cfg.domain_rand.kd_range[1] - self.cfg.domain_rand.kd_range[0]) + self.cfg.domain_rand.kd_range[0]
-                        found = True
-                if not found:
-                    self.p_gains[i] = 0
-                    self.d_gains[i] = 0
-                    if self.cfg.control.control_type in ["P", "V"]:
-                        print(f"PD gain of joint {name} were not defined, setting them to zero")
+  
     def _reset_root_states(self, env_ids):
         """ Resets ROOT states position and velocities of selected environmments
             Sets base position based on the curriculum

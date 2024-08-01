@@ -127,6 +127,7 @@ class LeggedRobotRecCfg(BaseConfig):
         push_interval_s = 15
         max_push_vel_xy = 1.
 
+
     class rewards:
         class scales:
             termination = -0.0
