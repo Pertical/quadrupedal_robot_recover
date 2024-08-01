@@ -178,7 +178,6 @@ class LeggedRecRobot(BaseTask):
         self._resample_commands(env_ids)
 
 
-    
         if self.cfg.domain_rand.erfi:
             self.erfi_rnd[env_ids] = self.erfi_rnd[env_ids].uniform_(0., 1.)
 
